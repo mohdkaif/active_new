@@ -1,4 +1,5 @@
 <form role="" method="post" action="{{url('/signup')}}" enctype="multipart/form-data" id="contact-form"/>
+<input type="hidden" name="type" value="provider">
  <div class="col-md-12 col-sm-12 col-xs-12 form-group">
   <h2> Personal Information</h2>
   <div class="container1 row">
@@ -73,16 +74,20 @@
        <div class="container1 row">
         <div class="col-md-6 col-sm-6 col-xs-12 form-group">
              <label>State</label>
-             <select  name="present_state" class="form-group" onChange="get_city(this.value);" required>
+             <select id="state" name="present_state" class="form-group" onChange="get_city(this.value);" required>
                 <option value="">-- State --</option>
               
-                <option value="">asdf</option>
+                @if(!empty($state))
+                   @foreach($state as $states)
+                      <option value="{{$states->id}}">{{$states->state_name}}</option>
+                   @endforeach
+                @endif
                
              </select>
         </div>
         <div class="col-md-6 col-sm-6 col-xs-12 form-group">
              <label>City</label>
-             <select  name="present_city" id="city" class="form-group" required>
+             <select name="present_city" id="city" class="form-group" required>
                 <option>-- City --</option>
              </select>
         </div>
@@ -106,11 +111,14 @@
        <div class="container1 row">
         <div class="col-md-6 col-sm-6 col-xs-12 form-group">
              <label>State</label>
-             <select  name="permanent_state" onChange="get_city1(this.value);" class="form-group" required>
+             <select id="state1" name="permanent_state" onChange="get_city1(this.value);" class="form-group" required>
                 <option value="">-- State --</option>
                
-                <option value="asf"></option>
-                
+                @if(!empty($state))
+                   @foreach($state as $states)
+                      <option value="{{$states->id}}">{{$states->state_name}}</option>
+                   @endforeach
+                @endif
              </select>
         </div>
         <div class="col-md-6 col-sm-6 col-xs-12 form-group">
@@ -142,6 +150,6 @@
          </ul>
     </div>
  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-group">
-       <button type="submit" name="add_service_provider" class="theme-btn btn-style">Submit</button>
+       <button type="button" data-request="ajax-submit" data-target='[role="user-signup"]'  class="theme-btn btn-style">Submit</button>
     </div>
  </form>

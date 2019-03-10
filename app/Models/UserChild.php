@@ -1,22 +1,19 @@
 <?php
 
 namespace App\Models;
-use Laravel\Passport\HasApiTokens;
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Model;
-class State extends Authenticatable
+
+class UserChild extends Authenticatable
 {
-    use HasApiTokens, Notifiable;
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $table = "states";
+    protected $table = "user_child";
     protected $fillable = [
-        'state_name'
+        'user_id','name','gender','age','status','created_at','updated_at'
     ];
 
    

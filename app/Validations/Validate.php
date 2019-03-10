@@ -147,7 +147,7 @@ class Validate
 	        	'child_name.*'					=> $this->validation('child_details'),
 	        	'child_age'						=> $this->validation('child'),
 	        	'child_age.*'					=> $this->validation('child_details'),
-	        	'child_gender'				=> $this->validation('child'),
+	        	'child_gender'					=> $this->validation('child'),
 	        	'child_gender.*'				=> $this->validation('child_details'),
 	        	'mobile'						=> $this->validation('mobile_number'),
 	        	'otp'							=> $this->validation('name'),

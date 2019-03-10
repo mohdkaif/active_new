@@ -66,6 +66,10 @@
       <script src="{{asset('assets/script.js')}}"></script>
 
       <script type="text/javascript">
+
+        var base_url = "{{url('/')}}";
+        var token    = $('meta[name="csrf-token"]').attr('content');
+        
       $(function () {
           $.ajaxSetup({
             headers: {
