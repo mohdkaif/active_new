@@ -287,19 +287,7 @@ session_start();
   </script>
     
 <script>
-   function get_city(str) {
-    var dataString = 'city_id='+str;
-    
-    $.ajax({
-      type:'POST',
-      data:dataString,
-      url:'get_city.php',
-      success:function(data) {
-         $("#city").html(data);
-     
-      }
-    });
-  }
+   
 </script>
 
 <script>

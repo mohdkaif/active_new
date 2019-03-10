@@ -6,7 +6,9 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Model;
-class State extends Authenticatable
+
+
+class City extends Authenticatable
 {
     use HasApiTokens, Notifiable;
     /**
@@ -14,7 +16,7 @@ class State extends Authenticatable
      *
      * @var array
      */
-    protected $table = "city";
+    protected $table = "cities";
     protected $fillable = [
         'state_id','city_name'
     ];

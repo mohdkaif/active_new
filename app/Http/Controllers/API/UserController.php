@@ -68,11 +68,11 @@ class UserController extends Controller
         if ($validator->fails()){
             $this->message = $validator->errors();
         }else{
-            if(is_numeric($request->username)){
-                $login = Auth::attempt(['mobile' => $request->username,'password' => $request->password]);
+            if(is_numeric($request->email)){
+                $login = Auth::attempt(['mobile' => $request->email,'password' => $request->password]);
             }else{
 
-                $login = Auth::attempt(['email' => $request->username,'password' => $request->password]);
+                $login = Auth::attempt(['email' => $request->email,'password' => $request->password]);
             }
             if ($login){
                 $user = Auth::user(); 
@@ -180,18 +180,18 @@ class UserController extends Controller
             $this->message = $validator->errors();
         }else{
             
-                $data['first_name']=$request->first_name                
-                $data['last_name']=$request->last_name ;                 
-                $data['date_of_birth']=$request->date_of_birth ;             
-                $data['email']=$request->email ;                     
-                $data['permanent_address']=$request->permanent_address ;         
-                $data['country']=$request->country ;                   
+                $data['first_name']=$request->first_name;              
+                $data['last_name']=$request->last_name;                 
+                $data['date_of_birth']=$request->date_of_birth;             
+                $data['email']=$request->email;                     
+                $data['permanent_address']=$request->permanent_address;         
+                $data['country']=$request->country;                   
                 $data['state']=$request->state;                     
-                $data['city']=$request->city ;                      
-                $data['bank_name']=$request->bank_name ;                 
+                $data['city']=$request->city;                      
+                $data['bank_name']=$request->bank_name;                 
                 $data['bank_account']=$request->bank_account;              
-                $data['bank_holder_name']=$request->bank_holder_name ;          
-                $data['bank_ifsc_code']=$request->bank_ifsc_code ;            
+                $data['bank_holder_name']=$request->bank_holder_name;          
+                $data['bank_ifsc_code']=$request->bank_ifsc_code;            
                 $data['service_start_time']=$request->service_start_time;        
                 $data['service_end_time']=$request->service_end_time;          
                 $data['distance_travel']=$request->distance_travel;           

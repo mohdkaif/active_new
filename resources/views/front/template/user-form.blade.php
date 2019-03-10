@@ -85,11 +85,11 @@
                <label>
                State 
                </label>
-               <select  name="state" class="form-group">
+               <select id="state" name="state" class="form-group" onChange="get_city(this.value);">
                   <option value="">-- State --</option>
                   @if(!empty($state))
                      @foreach($state as $states)
-                        <option value="{{$states->state_id}}">{{$states->state_name}}</option>
+                        <option value="{{$states->id}}">{{$states->state_name}}</option>
                      @endforeach
                   @endif
                  
@@ -99,7 +99,7 @@
                <label>
                City 
                </label>
-               <select  name="city" class="form-group">
+               <select id="city" name="city" class="form-group">
                   <option value="">-- City --</option>
                   <option value="">Delhi</option>
                </select>
