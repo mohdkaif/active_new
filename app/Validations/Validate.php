@@ -65,15 +65,15 @@ class Validate
 		return $validation[$key];
 	}
 	public function login(){
-		if(is_numeric($this->data->username)){
+		if(is_numeric($this->data->email)){
 			 $validations = [
-            'username' 		       => $this->validation('mobile_number'),
+            'email' 		       => $this->validation('mobile_number'),
 			'password'       	   => $this->validation('password'),
     	];
     }else{
 
         $validations = [
-            'username' 		       => $this->validation('req_email'),
+            'email' 		       => $this->validation('req_email'),
 			'password'       	   => $this->validation('password'),
     	];
     }
