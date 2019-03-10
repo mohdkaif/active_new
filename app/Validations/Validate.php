@@ -57,7 +57,9 @@ class Validate
 			'slug_no_space'		    => ['required','alpha_dash','max:255'],
 			'password_check'	    => ['required'],
 			'file'					=> ['required','mimes:pdf'],
-			'newpassword'		    => ['required','max:10']	
+			'newpassword'		    => ['required','max:10'],	
+			'child'		    		=> ['required','array','min:1'],	
+			'child_details'		    => ['required','string'],	
 
 		];
 		return $validation[$key];
@@ -127,6 +129,65 @@ class Validate
         	'confirm_password'				=> $this->validation('c_password')
         	
     	];
+    	$validator = \Validator::make($this->data->all(), $validations,[
+			
+		]);
+		
+		return $validator;
+	}
+
+	public function signup()
+	{
+		if($this->data->type="user"){
+
+			$validations = [
+				'first_name'					=> $this->validation('name'),
+	        	'last_name' 					=> $this->validation('name'),
+	        	'child_name'					=> $this->validation('child'),
+	        	'child_name.*'					=> $this->validation('child_details'),
+	        	'child_age'						=> $this->validation('child'),
+	        	'child_age.*'					=> $this->validation('child_details'),
+	        	'child_gender'				=> $this->validation('child'),
+	        	'child_gender.*'				=> $this->validation('child_details'),
+	        	'mobile'						=> $this->validation('mobile_number'),
+	        	'otp'							=> $this->validation('name'),
+	        	'address'						=> $this->validation('address'),
+	        	'region'						=> $this->validation('name'),
+	        	'state'							=> $this->validation('name'),
+	        	'city'							=> $this->validation('name'),
+	        	'password' 						=> $this->validation('password'),
+	        	'confirm_password'				=> $this->validation('c_password')
+	    	];
+		}else{
+			$validations = [
+				'first_name'					=> $this->validation('name'),
+	        	'last_name' 					=> $this->validation('name'),
+	        	'date_of_birth' 				=> $this->validation('name'),
+	        	'email'							=> $this->validation('email'),
+	        	'permanent_address'				=> $this->validation('address'),
+	        	'country'						=> $this->validation('name'),
+	        	'state'							=> $this->validation('name'),
+	        	'city'							=> $this->validation('name'),
+	        	'bank_name'						=> $this->validation('name'),
+	        	'bank_account'					=> $this->validation('name'),
+	        	'bank_holder_name'				=> $this->validation('name'),
+	        	'bank_ifsc_code'				=> $this->validation('name'),
+	        	'day_of_service'				=> $this->validation('name'),
+	        	'service_start_time'			=> $this->validation('name'),
+	        	'service_end_time'				=> $this->validation('name'),
+	        	'special_service'				=> $this->validation('name'),
+	        	'distance_travel'				=> $this->validation('name'),
+	        	'long_distance_travel'			=> $this->validation('name'),
+	        	'location_track_permission'		=> $this->validation('name'),
+	        	'term_condition'				=> $this->validation('name'),
+	        	'document_high_school'			=> $this->validation('name'),
+	        	'document_graduation'			=> $this->validation('name'),
+	        	'document_post_graduation'		=> $this->validation('name'),
+	        	'document_adhar_card'			=> $this->validation('name'),
+	        	'document_other'				=> $this->validation('name'),
+
+	    	];
+		}
     	$validator = \Validator::make($this->data->all(), $validations,[
 			
 		]);

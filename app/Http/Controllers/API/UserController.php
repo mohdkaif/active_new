@@ -170,6 +170,62 @@ class UserController extends Controller
         }
         return $this->populateresponse();
     }
+
+
+    public function signup(Request $request)
+    {
+        $validation = new Validations($request);
+        $validator = $validation->forgotpass();
+        if ($validator->fails()){
+            $this->message = $validator->errors();
+        }else{
+            
+                $data['first_name']=$request->first_name                
+                $data['last_name']=$request->last_name ;                 
+                $data['date_of_birth']=$request->date_of_birth ;             
+                $data['email']=$request->email ;                     
+                $data['permanent_address']=$request->permanent_address ;         
+                $data['country']=$request->country ;                   
+                $data['state']=$request->state;                     
+                $data['city']=$request->city ;                      
+                $data['bank_name']=$request->bank_name ;                 
+                $data['bank_account']=$request->bank_account;              
+                $data['bank_holder_name']=$request->bank_holder_name ;          
+                $data['bank_ifsc_code']=$request->bank_ifsc_code ;            
+                $data['service_start_time']=$request->service_start_time;        
+                $data['service_end_time']=$request->service_end_time;          
+                $data['distance_travel']=$request->distance_travel;           
+                $data['long_distance_travel']=$request->long_distance_travel;      
+                $data['term_condition']=$request->term_condition;           
+                $data['document_high_school']=$request->document_high_school;     
+                $data['document_graduation']=$request->document_graduation;       
+                $data['document_post_graduation']=$request->document_post_graduation;  
+                $data['document_adhar_card']=$request->document_adhar_card;       
+                $data['document_other']=$request->document_other;
+
+                $subject = "Reset Password Request";
+                $msg = "Your OTP is : ".$autopass;
+                $emailData               = ___email_settings();
+                $emailData['name']       = $user->name; //!empty($request->name)?$request->name:'';
+                $emailData['email']      = !empty($request->email)?$request->email:'';
+                $emailData['subject']    = 'Reset Password Request';
+                $emailData['password']    = !empty($autopass)?$autopass:'';
+                $emailData['date']       = date('Y-m-d H:i:s');
+
+                $emailData['custom_text'] = 'Your Enquiry has been submitted successfully';
+                $mailSuccess = ___mail_sender($emailData['email'],$request->name,"forgot_password",$emailData);
+               
+       
+                $success['otp'] =  $autopass;
+                $this->status   = true;
+                $response = new Response($success);
+                $this->jsondata = $response->api_common_response();
+                $this->message = "OTP send Successfully. Please Check your email.";
+               
+            
+        }
+        return $this->populateresponse();
+    }
 /** 
      * Register api 
      * 

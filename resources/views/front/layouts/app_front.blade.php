@@ -7,19 +7,18 @@
         <meta content="" name="description"/>
         <meta content="" name="author"/>
         <meta name="_token" content="{{ csrf_token() }}">
-        <link rel="dns-prefetch" href="https://fonts.gstatic.com">
        
         <title>ACTIVE BACCHA</title>
+        <link rel="shortcut icon" href="{{url('assets/images/favicon.png')}}" type="image/x-icon">
+        <link rel="dns-prefetch" href="https://fonts.gstatic.com">
         <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
-        <link rel="shortcut icon" href="images/favicon.png" type="image/x-icon">
-        <link rel="icon" href="images/favicon.png" type="image/x-icon">
         <!-- Stylesheets -->
         <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
         <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet">
         <link href="{{url('assets/css/style.css')}}" rel="stylesheet">
         <link href="{{url('assets/css/responsive.css')}}" rel="stylesheet">
-       
+        <link rel="stylesheet" href="{{url('assets/select2.min.css')}}">
         <!-- Responsive -->
         <style>
           .contact-form .form-group {
@@ -62,7 +61,8 @@
       <script src="{{asset('assets/sweetalert2.min.js') }}"></script>
       <script src="{{asset('assets/jquery.slimscroll.min.js') }}" type="text/javascript"></script>
       <script src="{{asset('assets/select2.full.min.js')}}"></script>
-      <script src="{{asset('plugins/datatables/jquery.dataTables.min.js')}}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" type="text/javascript"></script>
+      <script src="{{asset('assets/admin/plugins/datatables/jquery.dataTables.min.js')}}"></script>
       <script src="{{asset('assets/script.js')}}"></script>
 
       <script type="text/javascript">

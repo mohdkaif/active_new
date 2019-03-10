@@ -174,12 +174,13 @@ $(document).on('click','[data-request="add-another"]',function(){
         processData:false,
         contentType:false,
         success:function($response){
+            console.log($response.html);
             if($response.status == true){
                 $this.attr('data-count',$count+1);
-                $($response.data).hide().appendTo($target).fadeIn(1000);
+                $($response.html).hide().appendTo($target).fadeIn(1000);
                 $('#popup').hide();
             }else{
-                show_validation_error($response.data);
+                show_validation_error($response.html);
                 $('#popup').hide();
             }
         }
@@ -193,7 +194,38 @@ $(document).on('keypress keyup','[data-request="isnumeric"]', function(event){
         event.preventDefault();
     }
 });
+$(document).on('click','[data-request="address-form"]',function(){
+    
+    $('#popup').show();  $('.alert').remove(); $(".has-error").removeClass('has-error');$('.error-message').remove();   
+    /*var $formData       = new FormData();*/
+    var $this           = $(this);
+    var $id             = $this.data('id');
+    var $target         = $this.data('target');
+    var $url            = $this.data('url');
+    
 
+    //$formData.append('count',$count);
+    $.ajax({
+        url:$url,
+        type:'GET',
+        data:'id='+$id,
+        dataType:'JSON',
+        processData:false,
+        contentType:false,
+        success:function($response){
+            if($response.status == true){
+                /*$this.attr('data-count',$count+1);*/
+               // console.lo
+               $($target).html($response.html);
+                //$($response.html).html();
+                $('#popup').hide();
+            }else{
+                show_validation_error($response.data);
+                $('#popup').hide();
+            }
+        }
+    });
+});
 
 function readURL(input,$attribute) {
     if (input.files && input.files[0]) {

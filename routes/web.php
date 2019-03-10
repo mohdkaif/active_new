@@ -17,5 +17,10 @@
 Route::get('/', 'FrontController@index');
 Route::get('event', 'FrontController@event');
 Route::get('about', 'FrontController@about');
+Route::get('signup', 'FrontController@register');
+Route::post('signup', 'FrontController@SignUp');
+Route::get('get-user-form', 'FrontController@getUserFrom');
+Route::post('add-more-child', 'FrontController@addMoreChild');
+
 Route::get('admin/login', 'Admin\LoginController@login');
 Route::get('admin/dashboard', 'Admin\LoginController@dashboard');
