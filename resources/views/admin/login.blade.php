@@ -27,30 +27,37 @@
   <!-- /.login-logo -->
   <div class="card">
     <div class="card-body login-card-body">
-      <p class="login-box-msg">Please login with your Username and Password.</p>
+      <p class="login-box-msg">Please login with your Email and Password.</p>
 
-      <form  method="post" enctype="multipart/form-data">
+      <form action="{{route('admin.login')}}" method="post" enctype="multipart/form-data">
+        {{ csrf_field() }}
+        @if( $errors->any() )
+        <div class = "alert alert-error">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            {{$errors->first()}}        
+        </div>
+        @endif
         <div class="form-group has-feedback">
-          <input type="text" name="userName"  class="form-control" placeholder="Username">
-<!--           <span class="fa fa-envelope form-control-feedback"></span> -->
-        </div>
-        <div class="form-group has-feedback">
-          <input type="password" class="form-control" name="password"  placeholder="Password">
-<!--           <span class="fa fa-lock form-control-feedback"></span> -->
-        </div>
-        <div class="row">
-          <div class="col-8">
-            <div class="checkbox icheck">
-             
-              <label> <input type="checkbox" class="checkbox icheck" name="remember" id="remember"  /> Remember Me</label>
-            </div>
+        <input type="email" name="email" value="{{old('email')}}" class="form-control" placeholder="Email">
+        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+      </div>
+      <div class="form-group has-feedback">
+        <input type="password" name="password" class="form-control" placeholder="Password">
+        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+      </div>
+      <div class="row">
+        <div class="col-xs-8">
+          <div class="checkbox icheck">
+            <label>
+            </label>
           </div>
-          <!-- /.col -->
-          <div class="col-4">
-            <button type="submit" name="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
-          </div>
-          <!-- /.col -->
         </div>
+        <!-- /.col -->
+        <div class="col-xs-4">
+          <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
+        </div>
+        <!-- /.col -->
+      </div>
       </form>
 
       <!-- /.social-auth-links -->

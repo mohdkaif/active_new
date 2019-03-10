@@ -24,4 +24,9 @@ Route::get('get-user-form', 'FrontController@getUserFrom');
 Route::post('add-more-child', 'FrontController@addMoreChild');
 
 Route::get('admin/login', 'Admin\LoginController@login');
-Route::get('admin/dashboard', 'Admin\LoginController@dashboard');
+Route::post('admin/authenticate','Admin\LoginController@validateLogin')->name('admin.login');
+Route::get('admin/logout','Admin\LoginController@logout')->name('admin.logout');
+
+Route::group(['namespace' => 'Admin','prefix' => 'admin', 'middleware' => ['adminAuth']] ,function(){
+	Route::get('dashboard', 'LoginController@dashboard');
+});

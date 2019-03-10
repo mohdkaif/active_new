@@ -44,7 +44,7 @@ $("#time").load("hh.php");
 
          <a href="#" class=""  data-toggle="dropdown">
 
-                  <img src="images/logo.png" class="user-image" alt="User Image">
+                  <img src="{{asset('assets/images/logo.png')}}" class="user-image" alt="User Image">
 
                   <span class="hidden-xs">admin</span>
 
@@ -56,7 +56,7 @@ $("#time").load("hh.php");
 
               <li class="user-header">
 
-               <img src="assests/images/logo.png" class="img-circle" alt="User Image">
+               <img src="{{asset('assets/images/logo.png')}}" class="img-circle" alt="User Image">
 
                 <p>
 
@@ -78,7 +78,7 @@ $("#time").load("hh.php");
 
                 <div class="pull-right">
 
-                  <a href="logout.php" class="btn btn-default btn-flat">Sign out</a>
+                  <a href="{{route('admin.logout')}}" class="btn btn-default btn-flat">Sign out</a>
 
                </div>
 
