@@ -138,7 +138,7 @@ class Validate
 
 	public function signup()
 	{
-		if($this->data->type="user"){
+		if($this->data->type=="user"){
 
 			$validations = [
 				'first_name'					=> $this->validation('name'),
@@ -169,7 +169,7 @@ class Validate
 	        	'state'							=> $this->validation('name'),
 	        	'city'							=> $this->validation('name'),
 	        	'bank_name'						=> $this->validation('name'),
-	        	'bank_account'					=> $this->validation('name'),
+	        	'bank_account_number'					=> $this->validation('name'),
 	        	'bank_holder_name'				=> $this->validation('name'),
 	        	'bank_ifsc_code'				=> $this->validation('name'),
 	        	'day_of_service'				=> $this->validation('name'),
@@ -180,11 +180,11 @@ class Validate
 	        	'long_distance_travel'			=> $this->validation('name'),
 	        	'location_track_permission'		=> $this->validation('name'),
 	        	'term_condition'				=> $this->validation('name'),
-	        	'document_high_school'			=> $this->validation('name'),
-	        	'document_graduation'			=> $this->validation('name'),
-	        	'document_post_graduation'		=> $this->validation('name'),
-	        	'document_adhar_card'			=> $this->validation('name'),
-	        	'document_other'				=> $this->validation('name'),
+	        	'document_high_school'			=> $this->validation('photo_null'),
+	        	'document_graduation'			=> $this->validation('photo_null'),
+	        	'document_post_graduation'		=> $this->validation('photo_null'),
+	        	'document_adhar_card'			=> $this->validation('photo_null'),
+	        	'document_other'				=> $this->validation('photo_null'),
 
 	    	];
 		}
@@ -192,6 +192,45 @@ class Validate
 			
 		]);
 		
+		return $validator;
+	}
+
+	
+	public function verifyEmailPhone(){
+		if(is_numeric($this->data->username)){
+			$validations = [
+			'username' 						=> $this->validation('mobile_number')
+			];
+			$validator = \Validator::make($this->data->all(), $validations,[
+			'username.required' 						=>  'E-mail is required.',
+			'username.numeric' 						    =>  'The Mobile Number must be a numeric.'
+			]);
+			if(!empty($this->data->username)){
+	    		$userDetails = User::where('mobile',$this->data->username)->first();
+			    $validator->after(function ($validator) use($userDetails) {
+			    	if(empty($userDetails)){
+			    		$validator->errors()->add('username', 'No Account Found With This Mobile Number.');
+			    	}        
+			    });
+    		}
+		}else{
+			$validations = [
+	        	'username' 						=> $this->validation('req_email')
+	    	];
+	    	$validator = \Validator::make($this->data->all(), $validations,[
+				'username.required' 						=>  'E-mail is required.',
+				'username.email' 						    =>  'The email must be a valid email address.'
+			]);
+			if(!empty($this->data->username)){
+	    		$userDetails = User::where('email',$this->data->username)->first();
+			    $validator->after(function ($validator) use($userDetails) {
+			    	if(empty($userDetails)){
+			    		$validator->errors()->add('username', 'No Account Found With This Email.');
+			    	}        
+			    });
+    		}
+		}
+
 		return $validator;
 	}
 }

@@ -20,6 +20,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::post('signup', 'API\UserController@signup');
 Route::post('login', 'API\UserController@login');
+Route::post('verify_email_phone', 'API\UserController@verifyEmailPhone');
 Route::post('register', 'API\UserController@register');
 Route::post('forgot_password', 'API\UserController@forgotPassword');
 Route::post('otp', 'API\UserController@otp');

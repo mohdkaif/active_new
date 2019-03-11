@@ -19,6 +19,7 @@ Route::get('event', 'FrontController@event');
 Route::get('about', 'FrontController@about');
 Route::post('/cities/list','FrontController@cityList')->name('cities.list');
 Route::get('signup', 'FrontController@register');
+Route::get('login', 'FrontController@login');
 Route::post('signup', 'FrontController@SignUp');
 Route::get('get-user-form', 'FrontController@getUserFrom');
 Route::post('add-more-child', 'FrontController@addMoreChild');

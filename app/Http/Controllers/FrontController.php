@@ -38,6 +38,12 @@ class FrontController extends Controller
         $data['view']='front.signup';
         return view('front.index',$data);
     }
+
+    public function login(Request $request)
+    {
+        $data['view']='front.login';
+        return view('front.index',$data);
+    }
     public function getUserFrom(Request $request)
     {
         $state = State::where('country_id','101')->get();

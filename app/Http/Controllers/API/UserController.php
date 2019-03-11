@@ -3,10 +3,14 @@ namespace App\Http\Controllers\API;
 use Illuminate\Http\Request; 
 use App\Http\Controllers\Controller; 
 use App\User; 
+use App\Models\ProviderUser; 
 use Illuminate\Support\Facades\Auth; 
 use Validator;
 use Validations\Validate as Validations;
 use Perks\Response;
+use Intervention\Image\ImageManagerStatic as Image;
+use File;
+use TextLocal;
 class UserController extends Controller 
 {
    /* public function __construct(Request $request){
@@ -30,15 +34,12 @@ class UserController extends Controller
         if($request->ajax()){
             $this->ajax = 'web';
         }
-
         $json = json_decode(file_get_contents('php://input'),true);
         if(!empty($json)){
             $this->post = $json;
         }else{
             $this->post = $request->all();
         }
-
-  
         $request->replace($this->post);
     }
     public $successStatus = 200;
@@ -175,7 +176,7 @@ class UserController extends Controller
     public function signup(Request $request)
     {
         $validation = new Validations($request);
-        $validator = $validation->forgotpass();
+        $validator = $validation->signup();
         if ($validator->fails()){
             $this->message = $validator->errors();
         }else{
@@ -184,25 +185,88 @@ class UserController extends Controller
                 $data['last_name']=$request->last_name;                 
                 $data['date_of_birth']=$request->date_of_birth;             
                 $data['email']=$request->email;                     
-                $data['permanent_address']=$request->permanent_address;         
+                $data['address']=$request->permanent_address;         
                 $data['country']=$request->country;                   
                 $data['state']=$request->state;                     
-                $data['city']=$request->city;                      
-                $data['bank_name']=$request->bank_name;                 
-                $data['bank_account']=$request->bank_account;              
-                $data['bank_holder_name']=$request->bank_holder_name;          
-                $data['bank_ifsc_code']=$request->bank_ifsc_code;            
-                $data['service_start_time']=$request->service_start_time;        
-                $data['service_end_time']=$request->service_end_time;          
-                $data['distance_travel']=$request->distance_travel;           
-                $data['long_distance_travel']=$request->long_distance_travel;      
-                $data['term_condition']=$request->term_condition;           
-                $data['document_high_school']=$request->document_high_school;     
-                $data['document_graduation']=$request->document_graduation;       
-                $data['document_post_graduation']=$request->document_post_graduation;  
-                $data['document_adhar_card']=$request->document_adhar_card;       
-                $data['document_other']=$request->document_other;
+                $data['city']=$request->city;
+                $data['user_type']=$request->user_type;
+                $data['mobile']=$request->mobile;
+                $data['otp']='KSKD';
+                $data['password']=\Hash::make($request->password);
+                $data['remember_token']=\Hash::make($request->password);
 
+                $provider['bank_name']=$request->bank_name;                 
+                $provider['bank_account_number']=$request->bank_account;              
+                $provider['bank_holder_name']=$request->bank_holder_name;          
+                $provider['bank_ifsc_code']=$request->bank_ifsc_code;            
+                $provider['service_start_time']=$request->service_start_time;        
+                $provider['service_end_time']=$request->service_end_time;          
+                $provider['distance_travel']=$request->distance_travel;           
+                $provider['long_distance_travel']=$request->long_distance_travel;      
+                $provider['term_condition']=$request->term_condition;  
+
+                if($request->file('document_high_school')){
+                    $path = url('/assets/images/document/');
+                    if(!File::exists($path)) {
+                        File::makeDirectory($path, $mode = 0777, true);
+                    }
+                    $image       = $request->file('document_high_school');
+                    $document_high_school    = time().$image->getClientOriginalName();
+                    $image = Image::make($image->getRealPath());              
+                    $image->save('assets/images/document/' .$document_high_school);
+                    $provider['document_high_school'] = $document_high_school;
+                }   
+
+                if($request->file('document_graduation')){
+                    $path = url('/assets/images/document/');
+                    if(!File::exists($path)) {
+                        File::makeDirectory($path, $mode = 0777, true);
+                    }
+                    $image       = $request->file('document_graduation');
+                    $document_graduation    = time().$image->getClientOriginalName();
+                    $image = Image::make($image->getRealPath());              
+                    $image->save('assets/images/document/' .$document_graduation);
+                    $provider['document_graduation'] = $document_graduation;
+                }       
+                if($request->file('document_post_graduation')){
+                    $path = url('/assets/images/document/');
+                    if(!File::exists($path)) {
+                        File::makeDirectory($path, $mode = 0777, true);
+                    }
+                    $image       = $request->file('document_post_graduation');
+                    $document_post_graduation    = time().$image->getClientOriginalName();
+                    $image = Image::make($image->getRealPath());              
+                    $image->save('assets/images/document/' .$document_post_graduation);
+                    $provider['document_post_graduation'] = $document_post_graduation;
+                } 
+                if($request->file('document_adhar_card')){
+                    $path = url('/assets/images/document/');
+                    if(!File::exists($path)) {
+                        File::makeDirectory($path, $mode = 0777, true);
+                    }
+                    $image       = $request->file('document_adhar_card');
+                    $document_adhar_card    = time().$image->getClientOriginalName();
+                    $image = Image::make($image->getRealPath());              
+                    $image->save('assets/images/document/' .$document_adhar_card);
+                    $provider['document_adhar_card'] = $document_adhar_card;
+                }
+
+                if($request->file('document_other')){
+                    $path = url('/assets/images/document/');
+                    if(!File::exists($path)) {
+                        File::makeDirectory($path, $mode = 0777, true);
+                    }
+                    $image       = $request->file('document_other');
+                    $document_other    = time().$image->getClientOriginalName();
+                    $image = Image::make($image->getRealPath());              
+                    $image->save('assets/images/document/' .$document_other);
+                    $provider['document_other'] = $document_other;
+                }
+
+                $user = User::create($data);
+                $provider['user_id']=$user->id;
+                $provider_user = ProviderUser::create($provider);
+/*
                 $subject = "Reset Password Request";
                 $msg = "Your OTP is : ".$autopass;
                 $emailData               = ___email_settings();
@@ -216,11 +280,12 @@ class UserController extends Controller
                 $mailSuccess = ___mail_sender($emailData['email'],$request->name,"forgot_password",$emailData);
                
        
-                $success['otp'] =  $autopass;
+               */
+                $success['success'] =  'success';
                 $this->status   = true;
                 $response = new Response($success);
                 $this->jsondata = $response->api_common_response();
-                $this->message = "OTP send Successfully. Please Check your email.";
+                $this->message = "Provider added Successfully. Please Check your email.";
                
             
         }
@@ -259,4 +324,53 @@ return response()->json(['success'=>$success], $this-> successStatus);
         $user = Auth::user(); 
         return response()->json(['success' => $user], $this-> successStatus); 
     } 
+
+    
+    public function verifyEmailPhone(Request $request)
+    {
+        $validation = new Validations($request);
+        $validator = $validation->verifyEmailPhone();
+        if ($validator->fails()){
+            $this->message = $validator->errors();
+        }else{
+
+            if(is_numeric($request->username)){
+            $user = User::where(['mobile' => $request->username])->first();
+
+            $apiKey = urlencode('Af8JoCyMRKc-3KCSW0EBcsbim6Y7FVTtg6SD1bOvfC');
+            // Message details
+            $phone_code=91;
+            $numbers = array($phone_code.$user->mobile);
+            $sender = urlencode('ACTIV-BACCHA');
+            $message = rawurlencode('This is your message your otp KJKKK');
+
+            $numbers = implode(',', $numbers);
+
+            // Prepare data for POST request
+            $data = array('apikey' => $apiKey, 'numbers' => $numbers, "sender" => $sender, "message" => $message);
+
+            // Send the POST request with cURL
+            $ch = curl_init('https://api.textlocal.in/send/');
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            $response = curl_exec($ch);
+            curl_close($ch);
+
+            // Process your response here
+            
+
+            }else{
+                $user = User::where(['email' => $request->username])->first();
+            }
+
+            $success['success'] =  'success';
+            $this->status   = true;
+            $response = new Response($success);
+            $this->jsondata = $response->api_common_response();
+            $this->message = "Verification OTP send Successfully. Please Check your email.";
+            
+        }
+        return $this->populateresponse();
+    }
 }
