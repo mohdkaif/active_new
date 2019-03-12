@@ -30,4 +30,10 @@ Route::get('admin/logout','Admin\LoginController@logout')->name('admin.logout');
 
 Route::group(['namespace' => 'Admin','prefix' => 'admin', 'middleware' => ['adminAuth']] ,function(){
 	Route::get('dashboard', 'LoginController@dashboard');
+
+	//state	
+	Route::get('states/table/','StateController@datatableView')->name('states.table');
+	Route::post('states/drop-down','StateController@getStateAsDropDownOptions')->name('states.drop-down');
+	Route::patch('states/changestatus/{users}','StateController@changeStatus')->name('states.changestatus');
+	Route::resource('states','StateController');
 });

@@ -54,7 +54,6 @@
 <!-- jQuery Knob Chart -->
 <script src="{{url('assets/admin/plugins/knob/jquery.knob.js')}}"></script>
 <!-- daterangepicker -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.2/moment.min.js')}}"></script>
 <script src="{{url('assets/admin/plugins/daterangepicker/daterangepicker.js')}}"></script>
 <!-- datepicker -->
 <script src="{{url('assets/admin/plugins/datepicker/bootstrap-datepicker.js')}}"></script>
@@ -74,7 +73,8 @@
 <script src="{{asset('assets/sweetalert2.min.js') }}"></script>
 <script src="{{asset('assets/jquery.slimscroll.min.js') }}" type="text/javascript"></script>
 <script src="{{asset('assets/select2.full.min.js')}}"></script>
-<script src="{{asset('plugins/datatables/jquery.dataTables.min.js')}}"></script>
+<script src={{ url("assets/js/jquery.dataTables.min.js") }}></script>
+<script src={{ url("assets/js/datatables.bootstrap.min.js") }}></script>
 <script src="{{asset('assets/script.js')}}"></script>
 
       <script type="text/javascript">
@@ -86,12 +86,12 @@
           });
         }); 
 
-        $(window).load(function(){
-          setTimeout(function(){
-            $('#cover').fadeOut(500);
-          },500)
-        });
+        // $(window).load(function(){
+        //   setTimeout(function(){
+        //     $('#cover').fadeOut(500);
+        //   },500)
+        // });
       </script>
-      @yield('requirejs')
+      @stack('scripts')
     </body>
 </html>

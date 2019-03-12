@@ -58,7 +58,7 @@
                         </li>
                         
                        <li class="nav-item">
-                        <a href="state.php" class="nav-link">
+                        <a href="{{ route('states.index') }}" class="nav-link">
                         <i class="fa fa-globe nav-icon"></i>
                         <p>State</p>
                         </a>

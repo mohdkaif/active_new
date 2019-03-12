@@ -23,6 +23,9 @@
         return str_replace($encryption,'', $encrypted_id);
     }    
 
+    function _arrayfy($data=''){
+        return json_decode(json_encode($data),true);
+    }
     function __random_string($length = 10){
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $charactersLength = strlen($characters);
