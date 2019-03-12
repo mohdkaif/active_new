@@ -48,20 +48,7 @@ class UserController extends Controller
      * 
      * @return \Illuminate\Http\Response 
      */ 
-    /*public function login(){ 
-        if(Auth::attempt(['email' => request('email'), 'password' => request('password')])){ 
-            $user = Auth::user(); 
-            $success['user_details']=$user;
-            $success['token'] =  $user->createToken('MyApp')->accessToken; 
-            return response()->json([
-                    'success' => $success
-            ], $this-> successStatus); 
-        } 
-        else{ 
-            return response()->json(['error'=>'Unauthorised'], 401); 
-        } 
-    }*/
-
+    
     public function login(Request $request)
     {
         $validation = new Validations($request);
@@ -69,11 +56,10 @@ class UserController extends Controller
         if ($validator->fails()){
             $this->message = $validator->errors();
         }else{
-            if(is_numeric($request->email)){
-                $login = Auth::attempt(['mobile' => $request->email,'password' => $request->password]);
+            if(is_numeric($request->username)){
+                $login = Auth::attempt(['mobile' => $request->username,'password' => $request->password]);
             }else{
-
-                $login = Auth::attempt(['email' => $request->email,'password' => $request->password]);
+                $login = Auth::attempt(['email' => $request->username,'password' => $request->password]);
             }
             if ($login){
                 $user = Auth::user(); 
@@ -100,22 +86,24 @@ class UserController extends Controller
         }else{
             
                 $user = Auth::user(); 
+                $autopass = strtoupper(str_random(8));
                 $success['user_details']=$user;
-                $user = User::where('email', '=', $request->email)->firstOrFail();
-                $autopass = strtoupper(str_random(4));
+            if(!is_numeric($request->username)){
+
+                $user = User::where('email', '=', $request->username)->firstOrFail();
                 $input['otp'] = $autopass;
                 $upd = $user->update($input);
                 $subject = "Reset Password Request";
                 $msg = "Your OTP is : ".$autopass;
                 $emailData               = ___email_settings();
                 $emailData['name']       = $user->name; //!empty($request->name)?$request->name:'';
-                $emailData['email']      = !empty($request->email)?$request->email:'';
+                $emailData['email']      = !empty($user->email)?$user->email:'';
                 $emailData['subject']    = 'Reset Password Request';
                 $emailData['password']    = !empty($autopass)?$autopass:'';
                 $emailData['date']       = date('Y-m-d H:i:s');
 
                 $emailData['custom_text'] = 'Your Enquiry has been submitted successfully';
-                $mailSuccess = ___mail_sender($emailData['email'],$request->name,"forgot_password",$emailData);
+                $mailSuccess = ___mail_sender($emailData['email'],$user->name,"forgot_password",$emailData);
                
        
                 $success['otp'] =  $autopass;
@@ -123,6 +111,30 @@ class UserController extends Controller
                 $response = new Response($success);
                 $this->jsondata = $response->api_common_response();
                 $this->message = "OTP send Successfully. Please Check your email.";
+            }else{
+                $user = User::where(['mobile' => $request->username])->first();
+                $upd = User::where(['mobile' => $request->username])->update($data);
+                $apiKey = urlencode('Af8JoCyMRKc-3KCSW0EBcsbim6Y7FVTtg6SD1bOvfC');
+                // Message details
+                $phone_code=91;
+                $numbers = array($phone_code.$user->mobile);
+                $sender = urlencode('TXTLCL');
+                $message = rawurlencode('Active Bachha Mobile verification OTP is '.$autopass);
+                $numbers = implode(',', $numbers);
+                $data = array('apikey' => $apiKey, 'numbers' => $numbers, "sender" => $sender, "message" => $message);
+                $ch = curl_init('https://api.textlocal.in/send/');
+                curl_setopt($ch, CURLOPT_POST, true);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                $response = curl_exec($ch);
+                curl_close($ch);
+                $success['otp'] =  $autopass;
+                $this->status   = true;
+                $response = new Response($success);
+                $this->jsondata = $response->api_common_response();
+                $this->message = "Verification OTP send Successfully. Please Check your Register Mobile Number.";
+            }
+                
                
             
         }
@@ -291,39 +303,7 @@ class UserController extends Controller
         }
         return $this->populateresponse();
     }
-/** 
-     * Register api 
-     * 
-     * @return \Illuminate\Http\Response 
-     */ 
-    public function register(Request $request) 
-    { 
-        $validator = Validator::make($request->all(), [ 
-            'name' => 'required', 
-            'email' => 'required|email', 
-            'password' => 'required', 
-            'c_password' => 'required|same:password', 
-        ]);
-if ($validator->fails()) { 
-            return response()->json(['error'=>$validator->errors()], 401);            
-        }
-$input = $request->all(); 
-        $input['password'] = bcrypt($input['password']); 
-        $user = User::create($input); 
-        $success['token'] =  $user->createToken('MyApp')-> accessToken; 
-        $success['name'] =  $user->name;
-return response()->json(['success'=>$success], $this-> successStatus); 
-    }
-/** 
-     * details api 
-     * 
-     * @return \Illuminate\Http\Response 
-     */ 
-    public function details() 
-    { 
-        $user = Auth::user(); 
-        return response()->json(['success' => $user], $this-> successStatus); 
-    } 
+
 
     
     public function verifyEmailPhone(Request $request)
@@ -333,42 +313,55 @@ return response()->json(['success'=>$success], $this-> successStatus);
         if ($validator->fails()){
             $this->message = $validator->errors();
         }else{
+            $autopass = strtoupper(str_random(4));
+            $data['otp'] = $autopass;
 
             if(is_numeric($request->username)){
-            $user = User::where(['mobile' => $request->username])->first();
-
-            $apiKey = urlencode('Af8JoCyMRKc-3KCSW0EBcsbim6Y7FVTtg6SD1bOvfC');
-            // Message details
-            $phone_code=91;
-            $numbers = array($phone_code.$user->mobile);
-            $sender = urlencode('ACTIV-BACCHA');
-            $message = rawurlencode('This is your message your otp KJKKK');
-
-            $numbers = implode(',', $numbers);
-
-            // Prepare data for POST request
-            $data = array('apikey' => $apiKey, 'numbers' => $numbers, "sender" => $sender, "message" => $message);
-
-            // Send the POST request with cURL
-            $ch = curl_init('https://api.textlocal.in/send/');
-            curl_setopt($ch, CURLOPT_POST, true);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            $response = curl_exec($ch);
-            curl_close($ch);
-
-            // Process your response here
-            
+                $user = User::where(['mobile' => $request->username])->first();
+                $upd = User::where(['mobile' => $request->username])->update($data);
+                $apiKey = urlencode('Af8JoCyMRKc-3KCSW0EBcsbim6Y7FVTtg6SD1bOvfC');
+                // Message details
+                $phone_code=91;
+                $numbers = array($phone_code.$user->mobile);
+                $sender = urlencode('TXTLCL');
+                $message = rawurlencode('Active Bachha Mobile verification OTP is '.$autopass);
+                $numbers = implode(',', $numbers);
+                $data = array('apikey' => $apiKey, 'numbers' => $numbers, "sender" => $sender, "message" => $message);
+                $ch = curl_init('https://api.textlocal.in/send/');
+                curl_setopt($ch, CURLOPT_POST, true);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                $response = curl_exec($ch);
+                curl_close($ch);
+                $success['otp'] =  $autopass;
+                $this->status   = true;
+                $response = new Response($success);
+                $this->jsondata = $response->api_common_response();
+                $this->message = "Verification OTP send Successfully. Please Check your Register Mobile Number.";
 
             }else{
                 $user = User::where(['email' => $request->username])->first();
-            }
+                $upd = User::where(['email' => $request->username])->update($data);
+                $subject = "Email Verification OTP";
+                $msg = "Your OTP is : ".$autopass;
+                $emailData               = ___email_settings();
+                $emailData['name']       = $user->name; //!empty($request->name)?$request->name:'';
+                $emailData['email']      = !empty($request->username)?$request->username:'';
+                $emailData['subject']    = 'Email Verification OTP';
+                $emailData['message']    = '';
+                $emailData['otp']        = !empty($autopass)?$autopass:'';
+                $emailData['date']       = date('Y-m-d H:i:s');
 
-            $success['success'] =  'success';
+                $emailData['custom_text'] = 'Your Enquiry has been submitted successfully';
+                $mailSuccess = ___mail_sender($emailData['email'],$user->name,"verify_email",$emailData);
+                $success['otp'] =  $autopass;
             $this->status   = true;
             $response = new Response($success);
             $this->jsondata = $response->api_common_response();
             $this->message = "Verification OTP send Successfully. Please Check your email.";
+            }
+
+            
             
         }
         return $this->populateresponse();
