@@ -112,6 +112,7 @@ class UserController extends Controller
                 $this->jsondata = $response->api_common_response();
                 $this->message = "OTP send Successfully. Please Check your email.";
             }else{
+                $data['otp']=$autopass;
                 $user = User::where(['mobile' => $request->username])->first();
                 $upd = User::where(['mobile' => $request->username])->update($data);
                 $apiKey = urlencode('Af8JoCyMRKc-3KCSW0EBcsbim6Y7FVTtg6SD1bOvfC');

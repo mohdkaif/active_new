@@ -118,11 +118,11 @@ class Validate
 				'username.numeric' 						    =>  'The Mobile Number must be a valid number.'
 			]);
 
-			if(!empty($this->data->email)){
+			if(!empty($this->data->username)){
 	    		$userDetails = User::where('mobile',$this->data->username)->first();
 			    $validator->after(function ($validator) use($userDetails) {
 			    	if(empty($userDetails)){
-			    		$validator->errors()->add('email', 'No Account Found With This Email.');
+			    		$validator->errors()->add('username', 'No Account Found With This Email.');
 			    	}        
 			    });
 	    	}
@@ -135,11 +135,11 @@ class Validate
 				'username.email' 						    =>  'The email must be a valid email address.'
 			]);
 
-			if(!empty($this->data->email)){
+			if(!empty($this->data->username)){
 	    		$userDetails = User::where('email',$this->data->username)->first();
 			    $validator->after(function ($validator) use($userDetails) {
 			    	if(empty($userDetails)){
-			    		$validator->errors()->add('email', 'No Account Found With This Email.');
+			    		$validator->errors()->add('username', 'No Account Found With This Email.');
 			    	}        
 			    });
 	    	}
@@ -168,7 +168,9 @@ class Validate
 	}
 
 	public function changePassword(){
-		$validations = [
+		if($this->data->web =='web'){
+			$validations = [
+			'otp'							=> $this->validation('name'),
 			'id'							=> $this->validation('name'),
         	'password' 						=> $this->validation('password'),
         	'confirm_password'				=> $this->validation('c_password')
@@ -177,6 +179,23 @@ class Validate
     	$validator = \Validator::make($this->data->all(), $validations,[
 			
 		]);
+    	if(!empty($this->data->otp)){
+    		$userDetails = User::where(['otp'=> $this->data->otp,'id'=>___decrypt($this->data->id)])->first();
+		    $validator->after(function ($validator) use($userDetails) {
+		    	if(empty($userDetails)){
+		    		$validator->errors()->add('otp', 'Invalid OTP.Please enter correct OTP.');
+		    	}        
+		    });
+    	}
+		}else{
+			$validations = [
+				'id'							=> $this->validation('name'),
+				'password' 						=> $this->validation('password'),
+				'confirm_password'				=> $this->validation('c_password')
+			];
+			$validator = \Validator::make($this->data->all(), $validations,[
+			]);
+		}
 		
 		return $validator;
 	}

@@ -20,10 +20,21 @@ Route::get('about', 'FrontController@about');
 Route::post('/cities/list','FrontController@cityList')->name('cities.list');
 Route::get('signup', 'FrontController@register');
 Route::get('login', 'FrontController@login');
+Route::post('login', 'FrontController@auth');
+Route::get('forgot-password', 'FrontController@forgotPassword');
+Route::post('forgot', 'FrontController@sendForgotOTp');
+Route::get('change-password', 'FrontController@newPassword');
+Route::post('change-password', 'FrontController@changePassword');
 Route::post('signup', 'FrontController@SignUp');
 Route::get('get-user-form', 'FrontController@getUserFrom');
 Route::post('add-more-child', 'FrontController@addMoreChild');
 
+/*ROUTE FOR USER*/
+Route::group(['prefix' => 'user', 'middleware' => ['userAuth']] ,function(){
+	Route::get('profile', 'UserProfileController@profile');
+});
+
+/*ROUTE FOR ADMIN*/
 Route::get('admin/login', 'Admin\LoginController@login');
 Route::post('admin/authenticate','Admin\LoginController@validateLogin')->name('admin.login');
 Route::get('admin/logout','Admin\LoginController@logout')->name('admin.logout');

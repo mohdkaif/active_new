@@ -17,14 +17,6 @@ class User extends Authenticatable
     protected $fillable = [
         'token','lat','lng','device_id','user_type','first_name', 'last_name','email', 'password','is_email_verified','is_mobile_verified','mobile','otp','address','region','city','state','remember_token','status'
     ];
-
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'password', 'remember_token',
-    ];
+    
    
 }

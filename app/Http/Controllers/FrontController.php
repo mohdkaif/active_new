@@ -8,8 +8,7 @@ use App\Models\State;
 use App\Models\City;
 use App\User;
 use App\Models\UserChild;
-
-
+use Auth;
 class FrontController extends Controller
 {
     public function __construct(Request $request)
@@ -39,11 +38,7 @@ class FrontController extends Controller
         return view('front.index',$data);
     }
 
-    public function login(Request $request)
-    {
-        $data['view']='front.login';
-        return view('front.index',$data);
-    }
+    
     public function getUserFrom(Request $request)
     {
         $state = State::where('country_id','101')->get();
@@ -137,9 +132,9 @@ class FrontController extends Controller
             $this->status   = true;
             $this->alert    = true;
 
-            $this->message = "Login Successful";
+            $this->message = "SignUp Successful";
             $this->modal = true;
-            $this->redirect = url('user/account');
+            $this->redirect = url('user/profile');
         }
         return $this->populateresponse();
     }
@@ -149,5 +144,128 @@ class FrontController extends Controller
         'status'    => true,
         'html'      => view("front.template.add-child")->render()
         ]);
+    }
+
+    public function login(Request $request)
+    {
+        $data['view']='front.login';
+        return view('front.index',$data);
+    }
+    public function auth(Request $request)
+    {
+        $validation = new Validations($request);
+        $validator = $validation->login();
+        if ($validator->fails()){
+            $this->message = $validator->errors();
+        }else{
+            if(is_numeric($request->username)){
+                $login = \Auth::attempt(['mobile' => $request->username,'password' => $request->password]);
+            }else{
+                $login = \Auth::attempt(['email' => $request->username,'password' => $request->password]);
+            }
+            if ($login){
+                $this->status   = true;
+                $this->alert    = true;
+                $this->message  = "Login Successful";
+                $this->modal    = true;
+                $this->redirect = url('user/profile');
+            }else{
+                $this->message = $validator->errors()->add('password', 'Username or Password is invalid');
+            }
+        }
+        return $this->populateresponse();
+    }
+
+    public function forgotPassword(Request $request)
+    {
+        $data['view']='front.forgotpass';
+        return view('front.index',$data);
+    }
+
+    public function sendForgotOTp(Request $request)
+    {
+        $validation = new Validations($request);
+        $validator = $validation->forgotpass();
+        if ($validator->fails()){
+            $this->message = $validator->errors();
+        }else{
+            
+                $user = Auth::user(); 
+                $autopass = strtoupper(str_random(8));
+               $data['otp']=$autopass;
+            if(!is_numeric($request->username)){
+
+                $user = User::where('email', '=', $request->username)->firstOrFail();
+                $input['otp'] = $autopass;
+                $upd = $user->update($input);
+                $subject = "Reset Password Request";
+                $msg = "Your OTP is : ".$autopass;
+                $emailData               = ___email_settings();
+                $emailData['name']       = $user->name; //!empty($request->name)?$request->name:'';
+                $emailData['email']      = !empty($user->email)?$user->email:'';
+                $emailData['subject']    = 'Reset Password Request';
+                $emailData['password']    = !empty($autopass)?$autopass:'';
+                $emailData['date']       = date('Y-m-d H:i:s');
+
+                $emailData['custom_text'] = 'Your Enquiry has been submitted successfully';
+                $mailSuccess = ___mail_sender($emailData['email'],$user->name,"forgot_password",$emailData);
+               
+       
+                $this->status   = true;
+                $this->alert    = true;
+                $this->message  = "Forgot OTP send  Successful";
+                $this->modal    = true;
+                $this->redirect = url('change-password?user='.___encrypt($user->id));
+            }else{
+                $user = User::where(['mobile' => $request->username])->first();
+                $upd = User::where(['mobile' => $request->username])->update($data);
+                $apiKey = urlencode('Af8JoCyMRKc-3KCSW0EBcsbim6Y7FVTtg6SD1bOvfC');
+                // Message details
+                $phone_code=91;
+                $numbers = array($phone_code.$user->mobile);
+                $sender = urlencode('TXTLCL');
+                $message = rawurlencode('Active Bachha Mobile verification OTP is '.$autopass);
+                $numbers = implode(',', $numbers);
+                $data = array('apikey' => $apiKey, 'numbers' => $numbers, "sender" => $sender, "message" => $message);
+                $ch = curl_init('https://api.textlocal.in/send/');
+                curl_setopt($ch, CURLOPT_POST, true);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                $response = curl_exec($ch);
+                curl_close($ch);
+                $this->status   = true;
+                $this->alert    = true;
+                $this->message  = "Forgot OTP send  Successful";
+                $this->modal    = true;
+                $this->redirect = url('change-password?user='.___encrypt($user->id));
+            }
+        }
+        return $this->populateresponse();
+    }
+
+    public function newPassword(Request $request)
+    {
+        $data['id']=$request->user;
+        $data['view']='front.newpassword';
+        return view('front.index',$data);
+    }
+
+    public function changePassword(Request $request)
+    {
+        $validation = new Validations($request);
+        $validator = $validation->changePassword();
+        if ($validator->fails()){
+            $this->message = $validator->errors();
+        }else{
+            $id = ___decrypt($request->id);
+            $data['password']=\Hash::make($request->password);
+            $user = User::where('id', '=', $id)->update($data);
+            $this->status   = true;
+            $this->alert    = true;
+            $this->message  = "Password Change Successfully.";
+            $this->modal    = true;
+            $this->redirect = url('login');
+        }
+        return $this->populateresponse();
     }
 }
