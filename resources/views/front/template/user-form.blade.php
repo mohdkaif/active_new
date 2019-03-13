@@ -27,7 +27,7 @@
                   <option value="2">2</option>
                </select>
             </div>
-            <div class="clearfix"></div>
+            
             <div  class="col-md-6 form-group">
                <label> Gender</label>
                <ul class="list-inline">
@@ -46,15 +46,16 @@
                      <span class="checkround"></span>
                      </label>
                   </li>
-                  
-                  <li class="pull-right"><button type="button" data-request="add-another" data-target="#child-more" data-url="{{url('add-more-child')}}" data-count="1" class="add_form_field btn-style">+ Add More</button></li>
                </ul>
-               <div>
-               </div>
             </div>
          </div>
-         <div id="child-more"></div>
+         <div  id="child-more"></div>
+         <div  class="row form-group">
+            <button type="button" data-request="add-another" data-target="#child-more" data-url="{{url('add-more-child')}}" data-count="1" class="add_form_field btn-style">+ Add More</button>
       </div>
+      </div>
+      
+      
       <div class="col-md-6 col-sm-6 col-xs-12 form-group">
          <label>
          Mobile number

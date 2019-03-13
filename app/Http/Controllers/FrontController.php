@@ -88,14 +88,14 @@ class FrontController extends Controller
             $this->message = $validator->errors();
         }else{
             if($request->type == 'user'){
-                $data['user_type'] = \Hash::make($request->type);
+                $data['user_type'] = $request->type;
                 $data['first_name'] = $request->first_name;
                 $data['last_name'] = $request->last_name;
                 $data['mobile'] = $request->mobile;
                 $data['otp'] = $request->otp;
                 $data['email'] = $request->email;
                 $data['address'] = $request->address;
-                $data['region'] = $request->region;
+                $data['country'] = $request->region;
                 $data['state'] = $request->state;
                 $data['city'] = $request->city;
                 $data['password'] = \Hash::make($request->password);
@@ -134,15 +134,17 @@ class FrontController extends Controller
 
             $this->message = "SignUp Successful";
             $this->modal = true;
-            $this->redirect = url('user/profile');
+            $this->redirect = url('login');
         }
         return $this->populateresponse();
     }
     public function addMoreChild(Request $request)
     {
+        $count = (!empty($request->count)?$request->count:'');
         return response()->json([
         'status'    => true,
-        'html'      => view("front.template.add-child")->render()
+        'count'     => $count,
+        'html'      => view("front.template.add-child",compact('count'))->render()
         ]);
     }
 
@@ -267,5 +269,11 @@ class FrontController extends Controller
             $this->redirect = url('login');
         }
         return $this->populateresponse();
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        return redirect('/');
     }
 }

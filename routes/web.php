@@ -28,6 +28,7 @@ Route::post('change-password', 'FrontController@changePassword');
 Route::post('signup', 'FrontController@SignUp');
 Route::get('get-user-form', 'FrontController@getUserFrom');
 Route::post('add-more-child', 'FrontController@addMoreChild');
+Route::get('logout', 'FrontController@logout');
 
 /*ROUTE FOR USER*/
 Route::group(['prefix' => 'user', 'middleware' => ['userAuth']] ,function(){

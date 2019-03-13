@@ -174,7 +174,7 @@ $(document).on('click','[data-request="add-another"]',function(){
         processData:false,
         contentType:false,
         success:function($response){
-            console.log($response.html);
+            
             if($response.status == true){
                 $this.attr('data-count',$count+1);
                 $($response.html).hide().appendTo($target).fadeIn(1000);

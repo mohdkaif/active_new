@@ -14,17 +14,14 @@
                 <!--Nav Outer-->
                 <div class=" col-md-9 col-xs-6">
                    <!-- Main Menu -->
-                   <div class="dropdown pull-right">
-                <button class="dropbtn "><i class="fa fa-user"></i>&nbsp; Profile  <span class="caret"></span></button>
-                <div class="dropdown-content">
-                <a href="#">Link 1</a>
-                <a href="#">Link 2</a>
-                <a href="#">Link 3</a>
-                </div>
-              </div>
-
-                   <!-- Main Menu End-->
-                   <!-- Call btn -->
+                  <div class="dropdown pull-right">
+                    <button class="dropbtn "><i class="fa fa-user"></i>&nbsp; Profile  <span class="caret"></span></button>
+                    <div class="dropdown-content">
+                    <a href="#">Link 1</a>
+                    <a href="#">Link 2</a>
+                    <a href="{{url('logout')}}">Logout</a>
+                    </div>
+                  </div>
                 </div>
              </div>
           </div>

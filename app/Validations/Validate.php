@@ -59,7 +59,7 @@ class Validate
 			'file'					=> ['required','mimes:pdf'],
 			'newpassword'		    => ['required','max:10'],	
 			'child'		    		=> ['required','array','min:1'],	
-			'child_details'		    => ['required','string'],	
+			'child_details'		    => ['required','string','distinct','min:1'],	
 
 		];
 		return $validation[$key];
@@ -207,7 +207,7 @@ class Validate
 			$validations = [
 				'first_name'					=> $this->validation('name'),
 	        	'last_name' 					=> $this->validation('name'),
-	        	'child_name'					=> $this->validation('child'),
+	        	'child_name.*'					=> $this->validation('child'),
 	        	'child_name.*'					=> $this->validation('child_details'),
 	        	'child_age'						=> $this->validation('child'),
 	        	'child_age.*'					=> $this->validation('child_details'),
