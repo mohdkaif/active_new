@@ -261,7 +261,11 @@ class FrontController extends Controller
                 $this->alert    = true;
                 $this->message  = "Login Successful";
                 $this->modal    = true;
-                $this->redirect = url('user/profile');
+                if(\Auth::user()->user_type=='user'){
+                    $this->redirect = url('user/profile');
+                }else{
+                    $this->redirect = url('provider/profile');
+                }
             }else{
                 $this->message = $validator->errors()->add('password', 'Username or Password is invalid');
             }
