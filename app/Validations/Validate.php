@@ -203,7 +203,6 @@ class Validate
 	public function signup()
 	{
 		if($this->data->type=="user"){
-
 			$validations = [
 				'first_name'					=> $this->validation('name'),
 	        	'last_name' 					=> $this->validation('name'),
@@ -226,8 +225,9 @@ class Validate
 			$validations = [
 				'first_name'					=> $this->validation('name'),
 	        	'last_name' 					=> $this->validation('name'),
-	        	'date_of_birth' 				=> $this->validation('name'),
+	        	'mobile'						=> $this->validation('mobile_number'),
 	        	'email'							=> $this->validation('email'),
+	        	'date_of_birth' 				=> $this->validation('name'),
 	        	'permanent_address'				=> $this->validation('address'),
 	        	'country'						=> $this->validation('name'),
 	        	'state'							=> $this->validation('name'),
@@ -236,19 +236,21 @@ class Validate
 	        	'bank_account_number'			=> $this->validation('name'),
 	        	'bank_holder_name'				=> $this->validation('name'),
 	        	'bank_ifsc_code'				=> $this->validation('name'),
-	        	'day_of_service'				=> $this->validation('name'),
+	        	/*'day_of_service'				=> $this->validation('name'),
 	        	'service_start_time'			=> $this->validation('name'),
 	        	'service_end_time'				=> $this->validation('name'),
 	        	'special_service'				=> $this->validation('name'),
 	        	'distance_travel'				=> $this->validation('name'),
 	        	'long_distance_travel'			=> $this->validation('name'),
-	        	'location_track_permission'		=> $this->validation('name'),
-	        	'term_condition'				=> $this->validation('name'),
+	        	'location_track_permission'		=> $this->validation('name'),*/
 	        	'document_high_school'			=> $this->validation('photo_null'),
 	        	'document_graduation'			=> $this->validation('photo_null'),
 	        	'document_post_graduation'		=> $this->validation('photo_null'),
 	        	'document_adhar_card'			=> $this->validation('photo_null'),
 	        	'document_other'				=> $this->validation('photo_null'),
+	        	'password' 						=> $this->validation('password'),
+	        	'confirm_password'				=> $this->validation('c_password'),
+	        	'term_condition'				=> $this->validation('name')
 
 	    	];
 		}

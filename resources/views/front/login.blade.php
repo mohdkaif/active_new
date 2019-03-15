@@ -21,7 +21,7 @@
           <ul class="nav nav-tabs" role="tablist">
              <li role="presentation" class="active"><a href="javascript:void(0)" aria-controls="home" id="user" role="tab" data-toggle="tab"></i>User Login</a></li>
              <li role="presentation"><a href="javascript:void(0)" aria-controls="settings" role="tab" id="provider" data-toggle="tab">Service Provider</a></li>
-             <li role="presentation"><a href="javascript:void(0)" aria-controls="profile" role="tab" id="guest" data-toggle="tab">Guest Login</a></li>
+             {{-- <li role="presentation"><a href="javascript:void(0)" aria-controls="profile" role="tab" id="guest" data-toggle="tab">Guest Login</a></li> --}}
           </ul>
           <!-- Tab panes -->
           <div class="tab-content">

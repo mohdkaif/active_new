@@ -29,10 +29,16 @@ Route::post('signup', 'FrontController@SignUp');
 Route::get('get-user-form', 'FrontController@getUserFrom');
 Route::post('add-more-child', 'FrontController@addMoreChild');
 Route::get('logout', 'FrontController@logout');
+Route::get('contact', 'FrontController@contact');
 
 /*ROUTE FOR USER*/
 Route::group(['prefix' => 'user', 'middleware' => ['userAuth']] ,function(){
 	Route::get('profile', 'UserProfileController@profile');
+});
+
+/*ROUTE FOR USER*/
+Route::group(['prefix' => 'provider', 'middleware' => ['providerAuth']] ,function(){
+	Route::get('profile', 'FrontController@providerDashboard');
 });
 
 /*ROUTE FOR ADMIN*/

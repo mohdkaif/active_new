@@ -9,6 +9,9 @@ use App\Models\City;
 use App\User;
 use App\Models\UserChild;
 use Auth;
+use Intervention\Image\ImageManagerStatic as Image;
+use File;
+use App\Models\ProviderUser;
 class FrontController extends Controller
 {
     public function __construct(Request $request)
@@ -35,6 +38,12 @@ class FrontController extends Controller
     public function register(Request $request)
     {
         $data['view']='front.signup';
+        return view('front.index',$data);
+    }
+
+    public function contact(Request $request)
+    {
+        $data['view']='front.contact';
         return view('front.index',$data);
     }
 
@@ -126,12 +135,94 @@ class FrontController extends Controller
 
             }else{
 
-                
-                
+                $data['user_type'] = $request->type;
+                $data['first_name'] = $request->first_name;
+                $data['last_name'] = $request->last_name;
+                $data['mobile'] = $request->mobile;
+                $data['otp'] = $request->otp;
+                $data['email'] = $request->email;
+                $data['address'] = $request->permanent_address;
+                $data['country'] = $request->region;
+                $data['state'] = $request->state;
+                $data['city'] = $request->city;
+                $data['password'] = \Hash::make($request->password);
+                $data['status'] = 'active';
+                $data['email'] = isset($request->email)?$request->email:'';
+                $data['otp'] = 'SHDJS';
+                $user = User::create($data);
+
+                $provider['bank_name']=$request->bank_name;                 
+                $provider['bank_account_number']=$request->bank_account;              
+                $provider['bank_holder_name']=$request->bank_holder_name;          
+                $provider['bank_ifsc_code']=$request->bank_ifsc_code;            
+                $provider['service_start_time']=$request->service_start_time;        
+                $provider['service_end_time']=$request->service_end_time;          
+                $provider['distance_travel']=$request->distance_travel;           
+                $provider['long_distance_travel']=$request->long_distance_travel;      
+                $provider['term_condition']=$request->term_condition;  
+
+                if($request->file('document_high_school')){
+                    $path = url('/assets/images/document/');
+                    if(!File::exists($path)) {
+                        File::makeDirectory($path, $mode = 0777, true);
+                    }
+                    $image       = $request->file('document_high_school');
+                    $document_high_school    = time().$image->getClientOriginalName();
+                    $image = Image::make($image->getRealPath());              
+                    $image->save('assets/images/document/' .$document_high_school);
+                    $provider['document_high_school'] = $document_high_school;
+                }   
+
+                if($request->file('document_graduation')){
+                    $path = url('/assets/images/document/');
+                    if(!File::exists($path)) {
+                        File::makeDirectory($path, $mode = 0777, true);
+                    }
+                    $image       = $request->file('document_graduation');
+                    $document_graduation    = time().$image->getClientOriginalName();
+                    $image = Image::make($image->getRealPath());              
+                    $image->save('assets/images/document/' .$document_graduation);
+                    $provider['document_graduation'] = $document_graduation;
+                }       
+                if($request->file('document_post_graduation')){
+                    $path = url('/assets/images/document/');
+                    if(!File::exists($path)) {
+                        File::makeDirectory($path, $mode = 0777, true);
+                    }
+                    $image       = $request->file('document_post_graduation');
+                    $document_post_graduation    = time().$image->getClientOriginalName();
+                    $image = Image::make($image->getRealPath());              
+                    $image->save('assets/images/document/' .$document_post_graduation);
+                    $provider['document_post_graduation'] = $document_post_graduation;
+                } 
+                if($request->file('document_adhar_card')){
+                    $path = url('/assets/images/document/');
+                    if(!File::exists($path)) {
+                        File::makeDirectory($path, $mode = 0777, true);
+                    }
+                    $image       = $request->file('document_adhar_card');
+                    $document_adhar_card    = time().$image->getClientOriginalName();
+                    $image = Image::make($image->getRealPath());              
+                    $image->save('assets/images/document/' .$document_adhar_card);
+                    $provider['document_adhar_card'] = $document_adhar_card;
+                }
+
+                if($request->file('document_other')){
+                    $path = url('/assets/images/document/');
+                    if(!File::exists($path)) {
+                        File::makeDirectory($path, $mode = 0777, true);
+                    }
+                    $image       = $request->file('document_other');
+                    $document_other    = time().$image->getClientOriginalName();
+                    $image = Image::make($image->getRealPath());              
+                    $image->save('assets/images/document/' .$document_other);
+                    $provider['document_other'] = $document_other;
+                }
+                $provider['user_id']=$user->id;
+                $provider_user = ProviderUser::create($provider);
             }
             $this->status   = true;
             $this->alert    = true;
-
             $this->message = "SignUp Successful";
             $this->modal = true;
             $this->redirect = url('login');
@@ -275,5 +366,12 @@ class FrontController extends Controller
     {
         Auth::logout();
         return redirect('/');
+    }
+
+    public function providerDashboard(Request $request)
+    {
+        $data['id']=$request->user;
+        $data['view']='front.service_provider_dashboard';
+        return view('front.index',$data);
     }
 }

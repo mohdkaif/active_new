@@ -31,7 +31,8 @@
  
     @yield('css')
     </head>
-    <body > 
+    <body> 
+      <div id="cover"></div>
       <div class="page-wrapper">
          <div id="wrapper">
           @yield('content')

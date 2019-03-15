@@ -61,6 +61,7 @@ class Kernel extends HttpKernel
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'adminAuth' => \App\Http\Middleware\AdminAuth::class,
         'userAuth' => \App\Http\Middleware\UserAuth::class,
+        'providerAuth' => \App\Http\Middleware\ProviderAuth::class,
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,

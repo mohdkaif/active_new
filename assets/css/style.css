@@ -8075,6 +8075,15 @@ li.contact.active p {
     text-align: justify!important;
     color: #3db8b7;
 }
+#cover {
+    background: url("../images/default.gif") no-repeat scroll center center;
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    z-index: 9999;
+    background-color: #fff;
+    background-size: 100px;
+}
 
 h3.inner-column1 {
     font-family: roboto;

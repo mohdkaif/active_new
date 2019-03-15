@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 
-class UserAuth
+class ProviderAuth
 {
     /**
      * Handle an incoming request.
@@ -18,7 +18,6 @@ class UserAuth
         if(!\Auth::check()) {
             return redirect('/');
         } else {
-           
             // $isAdmin = \App\Models\User::select('*')
             //             ->where('id',\Auth::id())
             //             ->Where(function ($query) {
