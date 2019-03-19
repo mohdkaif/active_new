@@ -31,6 +31,9 @@ Route::post('add-more-child', 'FrontController@addMoreChild');
 Route::get('logout', 'FrontController@logout');
 Route::get('contact', 'FrontController@contact');
 
+Route::get('/redirect', 'SocialAuthFacebookController@redirect');
+Route::get('/callback', 'SocialAuthFacebookController@callback');
+
 /*ROUTE FOR USER*/
 Route::group(['prefix' => 'user', 'middleware' => ['userAuth']] ,function(){
 	Route::get('profile', 'UserProfileController@profile');

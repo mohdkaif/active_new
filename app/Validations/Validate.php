@@ -50,6 +50,7 @@ class Validate
 			'start_from'			=> ['required'],
 			'photo'					=> ['required','mimes:jpg,jpeg,png','max:2408'],
 			'photomimes'			=> ['mimes:jpg,jpeg,png','max:2408'],
+			'video'  				=> ['mimes:mp4,mov,ogg,qt','max:51200'],
 			'photo_null'			=> ['nullable'],
 			'gallery'				=> ['required','mimes:jpg,jpeg,png','max:2048'],
 			'gallery_null'			=> ['nullable'],
@@ -243,16 +244,24 @@ class Validate
 	        	'distance_travel'				=> $this->validation('name'),
 	        	'long_distance_travel'			=> $this->validation('name'),
 	        	'location_track_permission'		=> $this->validation('name'),*/
-	        	'document_high_school'			=> $this->validation('photo_null'),
-	        	'document_graduation'			=> $this->validation('photo_null'),
-	        	'document_post_graduation'		=> $this->validation('photo_null'),
-	        	'document_adhar_card'			=> $this->validation('photo_null'),
-	        	'document_other'				=> $this->validation('photo_null'),
+				'service_id'					=>$this->validation('name'),
+				'price_per_hour'				=>$this->validation('name'),
+				'price_per_children'			=>$this->validation('name'),
+				'experience_in_work'			=>$this->validation('name'),
+	        	'document_high_school'			=> $this->validation('photomimes'),
+	        	'document_graduation'			=> $this->validation('photomimes'),
+	        	'document_post_graduation'		=> $this->validation('photomimes'),
+	        	'document_adhar_card'			=> $this->validation('photomimes'),
+	        	'document_other'				=> $this->validation('photomimes'),
+	        	'document_other'				=> $this->validation('photomimes'),
+	        	'photo'							=> $this->validation('photomimes'),
+	        	'video'							=> $this->validation('video'),
 	        	'password' 						=> $this->validation('password'),
 	        	'confirm_password'				=> $this->validation('c_password'),
 	        	'term_condition'				=> $this->validation('name')
 
 	    	];
+
 		}
     	$validator = \Validator::make($this->data->all(), $validations,[]);
 		if(!empty($this->data->mobile)){

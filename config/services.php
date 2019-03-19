@@ -43,5 +43,16 @@ return [
             'tolerance' => env('STRIPE_WEBHOOK_TOLERANCE', 300),
         ],
     ],
+    'facebook' => [
+        'client_id' => '343113566560427',
+        'client_secret' => '3827c03bee62172954b92c67853e7fb2',
+        'redirect' => 'http://localhost/active_new/callback',
+    ],
+        'google' => [
+        'client_id' => 'your-github-app-id',
+        'client_secret' => 'your-github-app-secret',
+        'redirect' => 'http://your-callback-url',
+    ],
+
 
 ];

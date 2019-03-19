@@ -3,6 +3,9 @@ namespace App\Http\Controllers\API;
 use Illuminate\Http\Request; 
 use App\Http\Controllers\Controller; 
 use App\User; 
+use App\Models\State; 
+use App\Models\Country; 
+use App\Models\City; 
 use App\Models\ProviderUser; 
 use Illuminate\Support\Facades\Auth; 
 use Validator;
@@ -51,6 +54,47 @@ class UserController extends Controller
     
     public function login(Request $request)
     {
+        if(!empty($request->facebook_id)){
+            $CheckUser = User::where('facebook_id',$request->facebook_id)->first();
+            if($CheckUser){
+                $success['user_details']=$CheckUser;
+                $success['token'] =  $CheckUser->createToken('MyApp')->accessToken;
+                $this->status   = true;
+                $response = new Response($success);
+                $this->jsondata = $response->api_common_response();
+                $this->message = "Facebook login Successful";
+
+            }else{
+                $success['user_details']='';
+                $this->status   = true;
+                $response = new Response($success);
+                $this->jsondata = $response->api_common_response();
+                $this->message = "Facebook user not found";
+            }
+            return $this->populateresponse();
+
+        }
+
+        if(!empty($request->google_id)){
+            $CheckUser = User::where('google_id',$request->google_id)->first();
+            if($CheckUser){
+                $success['user_details']=$CheckUser;
+                $success['token'] =  $CheckUser->createToken('MyApp')->accessToken;
+                $this->status   = true;
+                $response = new Response($success);
+                $this->jsondata = $response->api_common_response();
+                $this->message = "Google login Successful";
+
+            }else{
+                $success['user_details']='';
+                $this->status   = true;
+                $response = new Response($success);
+                $this->jsondata = $response->api_common_response();
+                $this->message = "Google user not found";
+            }
+            return $this->populateresponse();
+
+        }
         $validation = new Validations($request);
         $validator = $validation->login();
         if ($validator->fails()){
@@ -193,7 +237,8 @@ class UserController extends Controller
         if ($validator->fails()){
             $this->message = $validator->errors();
         }else{
-            
+                $data['facebook_id']=$request->facebook_id;
+                $data['google_id']=$request->google_id;
                 $data['first_name']=$request->first_name;              
                 $data['last_name']=$request->last_name;                 
                 $data['date_of_birth']=$request->date_of_birth;             
@@ -215,7 +260,13 @@ class UserController extends Controller
                 $provider['service_start_time']=$request->service_start_time;        
                 $provider['service_end_time']=$request->service_end_time;          
                 $provider['distance_travel']=$request->distance_travel;           
-                $provider['long_distance_travel']=$request->long_distance_travel;      
+                $provider['long_distance_travel']=$request->long_distance_travel; 
+
+                $provider['service_id']=$request->service_id;
+                $provider['price_per_hour']=$request->price_per_hour;
+                $provider['price_per_children']=$request->price_per_children;
+                $provider['experience_in_work']=$request->experience_in_work;
+
                 $provider['term_condition']=$request->term_condition;  
 
                 if($request->file('document_high_school')){
@@ -274,6 +325,28 @@ class UserController extends Controller
                     $image = Image::make($image->getRealPath());              
                     $image->save('assets/images/document/' .$document_other);
                     $provider['document_other'] = $document_other;
+                }
+                if($request->file('video')){
+                    $path = url('/assets/images/video/');
+                    if(!File::exists($path)) {
+                        File::makeDirectory($path, $mode = 0777, true);
+                    }
+                    $image       = $request->file('video');
+                    $video    = time().$image->getClientOriginalName();
+                    $image = Image::make($image->getRealPath());              
+                    $image->save('assets/images/video/' .$video);
+                    $provider['video'] = $video;
+                }
+                if($request->file('photo')){
+                    $path = url('/assets/images/photo/');
+                    if(!File::exists($path)) {
+                        File::makeDirectory($path, $mode = 0777, true);
+                    }
+                    $image       = $request->file('photo');
+                    $photo    = time().$image->getClientOriginalName();
+                    $image = Image::make($image->getRealPath());              
+                    $image->save('assets/images/photo/' .$photo);
+                    $provider['photo'] = $photo;
                 }
 
                 $user = User::create($data);
@@ -362,9 +435,45 @@ class UserController extends Controller
             $this->message = "Verification OTP send Successfully. Please Check your email.";
             }
 
-            
-            
         }
         return $this->populateresponse();
     }
+
+    public function city(Request $request)
+    {
+
+        $city = City::where('state_id',$request->state_id)->get();
+        $success['city'] =  $city;
+        $this->status   = true;
+        $response = new Response($success);
+        $this->jsondata = $response->api_common_response();
+        $this->message = "Successfully.";
+                
+        return $this->populateresponse();
+    }
+    public function country(Request $request)
+    {
+
+        $country = Country::get();
+
+        $success['country'] =  $country;
+        $this->status   = true;
+        $response = new Response($success);
+        $this->jsondata = $response->api_common_response();
+        $this->message = "Successfully.";
+                
+        return $this->populateresponse();
+    }
+    public function state(Request $request)
+    {
+        $state = State::where('country_id',$request->country_id)->get();
+        $success['state'] =  $state;
+        $this->status   = true;
+        $response = new Response($success);
+        $this->jsondata = $response->api_common_response();
+        $this->message = "Successfully.";
+                
+        return $this->populateresponse();
+    }
+
 }

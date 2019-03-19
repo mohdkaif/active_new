@@ -26,6 +26,10 @@ Route::post('forgot_password', 'API\UserController@forgotPassword');
 Route::post('otp', 'API\UserController@otp');
 Route::post('change-password', 'API\UserController@ChangePassword');
 
+Route::post('country', 'API\UserController@country');
+Route::post('city', 'API\UserController@city');
+Route::post('state', 'API\UserController@state');
+
 Route::group(['middleware' => 'auth:api'], function(){
 Route::post('details', 'API\UserController@details');
 });

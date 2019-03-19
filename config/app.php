@@ -176,6 +176,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         Laravel\Passport\PassportServiceProvider::class,
+        Laravel\Socialite\SocialiteServiceProvider::class,
 
     ],
 
@@ -229,7 +230,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'TextLocal' => Illuminate\Support\Facades\TextLocal::class,
         'DataTables' => Yajra\DataTables\Facades\DataTables::class,
-
+        'Socialize' => Laravel\Socialite\Facades\Socialite::class,
     ],
 
 ];
