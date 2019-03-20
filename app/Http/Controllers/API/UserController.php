@@ -331,10 +331,21 @@ class UserController extends Controller
                     if(!File::exists($path)) {
                         File::makeDirectory($path, $mode = 0777, true);
                     }
-                    $image       = $request->file('video');
+                    //$image       = $request->file('video');
+                  //  $video    = time().$image->getClientOriginalName();
+                    /*$image       = $request->file('video');
                     $video    = time().$image->getClientOriginalName();
-                    $image = Image::make($image->getRealPath());              
-                    $image->save('assets/images/video/' .$video);
+                    $image = Image::make(base64_decode($request->file('video')));
+                   // $image = Image::make($image->getRealPath());  
+                    $image->storeAs('assets/images/video/', $video);    */     
+                    //$image->save('assets/images/video/' .$video);
+
+                //$png_url = "user-".time().".png";
+                   // dd($video);
+                $path = "assets/images/video/".$request['video'];
+                $base=base64_decode($request['video']);
+                Image::make($base)->save($path);
+
                     $provider['video'] = $video;
                 }
                 if($request->file('photo')){
