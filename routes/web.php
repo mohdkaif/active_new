@@ -41,7 +41,8 @@ Route::group(['prefix' => 'user', 'middleware' => ['userAuth']] ,function(){
 
 /*ROUTE FOR USER*/
 Route::group(['prefix' => 'provider', 'middleware' => ['providerAuth']] ,function(){
-	Route::get('profile', 'FrontController@providerDashboard');
+	Route::get('dashboard', 'FrontController@providerDashboard');
+	Route::get('profile', 'UserProfileController@profile');
 });
 
 /*ROUTE FOR ADMIN*/
@@ -57,4 +58,6 @@ Route::group(['namespace' => 'Admin','prefix' => 'admin', 'middleware' => ['admi
 	Route::post('states/drop-down','StateController@getStateAsDropDownOptions')->name('states.drop-down');
 	Route::patch('states/changestatus/{users}','StateController@changeStatus')->name('states.changestatus');
 	Route::resource('states','StateController');
+	Route::resource('provider','ProviderController');
+
 });
