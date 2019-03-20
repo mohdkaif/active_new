@@ -15,7 +15,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'token','lat','lng','device_id','user_type','first_name', 'last_name','email', 'password','is_email_verified','is_mobile_verified','mobile','otp','address','region','city','state','remember_token','status'
+        'token','lat','lng','device_id','user_type','first_name', 'last_name','email', 'password','is_email_verified','is_mobile_verified','mobile','otp','address','country','city','state','remember_token','status'
     ];
 
 
@@ -29,6 +29,14 @@ class User extends Authenticatable
 
      public function city_details(){
         return $this->hasOne('\App\Models\City','id','city');
+    } 
+
+    public function country_details(){
+        return $this->hasOne('\App\Models\Country','id','country');
+    } 
+
+    public function service(){
+        return $this->hasOne('\App\Models\Service','service_sub_category_id','service_id');
     } 
     
 
@@ -45,6 +53,14 @@ class User extends Authenticatable
                 
             },
             'city_details' => function($q) {
+                $q->select('*');
+                
+            },
+            'country_details' => function($q) {
+                $q->select('*');
+                
+            },
+            'service' => function($q) {
                 $q->select('*');
                 
             }

@@ -89,6 +89,29 @@ class FrontController extends Controller
         ]);
     }
 
+    public function stateList(Request $request){
+        $states = State::where('country_id','=',$request->country_id)
+                ->orderBy('id','ASC')
+                ->where('status','=','active')
+                ->get();
+
+
+        $html = '<option>Please Select State</option> ';
+        foreach ($states as $value) {
+            // //if($value['id'] == $request->state_id){
+            //     $html .= '<option value="'.$value['id'].'" selected="selected">'.$value['city_name'].'</option> ';
+            // } else {
+                $html .= '<option value="'.$value['id'].'">'.$value['state_name'].'</option> ';
+            //}
+        }
+       
+        return response()->json([
+            'html'      => $html,
+            'status'    => 1,
+            'message'   => ""
+        ]);
+    }
+
     public function SignUp(Request $request)
     {
         $validation = new Validations($request);
@@ -376,6 +399,9 @@ class FrontController extends Controller
     {
         $data['id']=$request->user;
         $data['view']='front.service_provider_dashboard';
+        $user = _arefy(User::provider_list('single','id = '.\Auth::user()->id));
+        $data['user'] = $user;
+        
         return view('front.index',$data);
     }
 }
