@@ -45,7 +45,7 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                <td class="text-center">{{\Auth::user()->first_name}}</td>
+                                <td class="text-center">{{\Auth::user()->first_name}} {{\Auth::user()->last_name}}</td>
                                 <td class="text-center">{{\Auth::user()->email}}</td>
                                 <td class="text-center">{{\Auth::user()->mobile}}</td>
                                 <td class="text-center">{{\Auth::user()->date_of_birth}}</td>
@@ -173,7 +173,7 @@
                         </table>
                     </div>
                     
-                    <form method="post" action="" id="contact-form" >
+                   {{--  <form method="post" action="" id="contact-form" >
                      	<table class="table contact-form">
                             <tr>
                                  <td class="sec-title"><h3><i class="fa fa-unlock-alt" aria-hidden="true"></i> Change your Password</h3></td>
@@ -199,7 +199,7 @@
                                  <label style="color: #fff;">Last Namerg</label>
                                  <button type="submit" name="chnage_password" value="" class="theme-btn btn-style-one pull-left">Change Now</button> 
                               </div>
-                          </form>
+                          </form> --}}
                 </div>
             </div>
                 

@@ -55,48 +55,87 @@
                  <br>
                 <div class="contact-formlogin">
                     <!--Contact Form-->
-                    <form method="post" action="#" id="contact-form" novalidate>
+                    <form role="update" method="post" action="{{url('provider/update-profile')}}" id="contact-form" novalidate>
+
                         <div class="row clearfix">
                             <div class="col-md-6 col-sm-6 col-xs-12 form-group">
                                 <label>
-                                  Full Name
+                                  First Name
+                                
+                                
                                 </label>
-                                <input type="text" name="username" placeholder="Full Name *" required="">
+                                <input type="text" name="first_name" placeholder="Full Name *" required="" value="{{!empty($user['first_name'])?$user['first_name']:''}}">
                             </div>
                             
                             <div class="col-md-6 col-sm-6 col-xs-12 form-group">
                               <label>
                                   Last Name
                                 </label>
-                                <input type="text" name="username" placeholder="Last Name *" required="">
+                                <input type="text" name="last_name" placeholder="Last Name *" required="" value="{{!empty($user['last_name'])?$user['last_name']:''}}">
                             </div>
 
                             <div class="col-md-6 col-sm-6 col-xs-12 form-group">
                                 <label>
                                  E-mail
                                 </label>
-                                <input type="text" name="username" placeholder="E-mail *" required="">
+                                <input type="text" name="email" placeholder="E-mail *" required="" readonly value="{{!empty($user['email'])?$user['email']:''}}">
                             </div>
                             
                             <div class="col-md-6 col-sm-6 col-xs-12 form-group">
                               <label>
                                  Phone
                                 </label>
-                                <input type="text" name="username" placeholder="Phone *" required="">
+                                <input type="text" name="mobile" placeholder="Phone *" required="" value="{{!empty($user['mobile'])?$user['mobile']:''}}">
                             </div>
 
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-group">
-                              <label>Public Info </label>
-                                <textarea name="message" placeholder="Public Info " style="border-bottom: 1px solid rgba(119,119,119,1);
-                                height: 100px"></textarea>
+                            <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+                              <label>
+                                  Date Of Birth
+                                </label>
+                                <input type="text" name="date_of_birth" placeholder="Date Of Birth" required="" value="{{!empty($user['date_of_birth'])?$user['date_of_birth']:''}}" class="date">
                             </div>
-                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-group">
+ 
+
+
+                            <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+                                <label>
+                                  Gender
+                                </label>
+                                <select class="form-control" name="gender">
+                                  <option value="">Select Gender</option>
+                                  <option value="male" @if(!empty($user['gender']) && $user['gender']=='male') selected @endif>Male</option>
+                                  <option value="female" @if(!empty($user['gender']) && $user['gender']=='female') selected @endif>Female</option>
+                                   <option value="other" @if(!empty($user['gender']) && $user['gender']=='other') selected @endif>Other</option>
+                                </select>
+                            </div>
+
+
+                             {{-- <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+                              <label>
+                                 Photo
+                                </label>
+                                @if(!empty($user['image']))
+                                <img src="{{url('')}}" width="100px" height="100px">
+                                @endif
+                                <input type="text" name="image" placeholder="Phone *" required="" value="{{!empty($user['mobile'])?$user['mobile']:''}}">
+                            </div> --}}
+
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-group">
+                              <label>Address </label>
+                                <textarea name="address" placeholder="Address " style="border-bottom: 1px solid rgba(119,119,119,1);
+                                height: 100px">
+                                  {{!empty($user['address'])?$user['address']:''}}
+
+                                </textarea>
+                            </div>
+                           {{--   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-group">
                               <label>Example file input</label>
                                <input type="file" name="username"  style="border: none;">
-                            </div>
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-group">
+                            </div> --}}
+                           {{--  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-group">
                                 <button type="submit" class="theme-btn btn-style">Send Message</button>
-                            </div>
+                            </div> --}}
+                            <button type="button" data-request="ajax-submit" data-target="[role='update']" class="theme-btn btn-style">Update</button>
                         </div>
                     </form>
                 </div>
@@ -108,24 +147,24 @@
                    <div class="table-responsive">
                     <table class="table table-bordered">
                       <tr>
-                        <th>Full Name</th>
+                        <th>First Name</th>
                         <th>Last Name</th>
                         <th>E-mail</th>
                         </tr>
                       <tr>
-                      <td>mukesh</td>
-                        <td>maurya</td>
-                        <td>mukeshmaurya@gamil.com</td>
+                      <td>{{!empty($user['first_name'])?$user['first_name']:''}}</td>
+                        <td>{{!empty($user['last_name'])?$user['last_name']:''}}</td>
+                        <td>{{!empty($user['email'])?$user['email']:''}}</td>
                       </tr>
                       <tr>
                         <th>Phone</th>
-                        <th>Public Info</th>
-                        <th>Example file input</th>
+                        <th>Address</th>
+                        {{-- <th>Example file input</th> --}}
                         </tr>
                       <tr>
-                      <td>00000000</td>
-                        <td>abc</td>
-                        <td>photo</td>
+                      <td>{{!empty($user['mobile'])?$user['mobile']:''}}</td>
+                        <td>{{!empty($user['address'])?$user['address']:''}}</td>
+                     {{--    <td>photo</td> --}}
                       </tr>
                     </table>
                      
@@ -135,30 +174,30 @@
                       <h2 style="text-align: center;background: #17697e;color: #fff;">Change Passward </h2>
                  <br>
                  <div class="contact-formlogin">
-                   <form method="post" action="#" id="contact-form" novalidate>
+                   <form role="change_password" method="post" action="{{url('provider/change-password')}}" id="contact-form" novalidate>
                         <div class="row clearfix">
                             <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                               <label>
                                  Old Password
                                 </label>
-                                <input type="password" name="password" placeholder=" Old Password *" required="">
+                                <input type="password" name="old_password" placeholder=" Old Password *" required="">
                             </div>
                             
                             <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                               <label>
                                  New Password
                                 </label>
-                                <input type="password" name="password" placeholder="New Password *" required="">
+                                <input type="password" name="new_password" placeholder="New Password *" required="">
                             </div>
                             <div class="col-md-12 col-sm-12 col-xs-12 form-group">
                               <label>
                                  Confirm Password
                                 </label>
-                                <input type="password" name="password" placeholder="Confirm Password *" required="">
+                                <input type="password" name="confirm_password" placeholder="Confirm Password *" required="">
                             </div>
 
                             <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6 form-group">
-                                <button type="submit" class="theme-btn btn-style">Login</button>
+                                 <button type="button" data-request="ajax-submit" data-target="[role='change_password']" class="theme-btn btn-style">Update</button>
                             </div>
                            
                         </div>
