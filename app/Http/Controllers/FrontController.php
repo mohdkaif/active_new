@@ -368,7 +368,7 @@ class FrontController extends Controller
 
     public function logout(Request $request)
     {
-        Auth::logout();
+        \Auth::logout();
         return redirect('/');
     }
 

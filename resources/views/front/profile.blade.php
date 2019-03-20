@@ -85,7 +85,7 @@
                               <label>
                                  Phone
                                 </label>
-                                <input type="text" name="mobile" placeholder="Phone *" required="" value="{{!empty($user['mobile'])?$user['mobile']:''}}">
+                                <input type="text" name="mobile" placeholder="Phone *" required="" readonly value="{{!empty($user['mobile'])?$user['mobile']:''}}">
                             </div>
 
                             <div class="col-md-6 col-sm-6 col-xs-12 form-group">
@@ -171,7 +171,7 @@
                    </div>
                  </div>
                  <div role="tabpanel" class="tab-pane fade" id="Section3">
-                      <h2 style="text-align: center;background: #17697e;color: #fff;">Change Passward </h2>
+                      <h2 style="text-align: center;background: #17697e;color: #fff;">Change Password </h2>
                  <br>
                  <div class="contact-formlogin">
                    <form role="change_password" method="post" action="{{url('provider/change-password')}}" id="contact-form" novalidate>

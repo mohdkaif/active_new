@@ -27,7 +27,6 @@ class UserProfileController extends Controller
             
                 $data['first_name'] = $request->first_name;
                 $data['last_name'] = $request->last_name;
-                $data['mobile'] = $request->mobile;
                 $data['address'] = $request->address;
                 $data['date_of_birth'] = $request->date_of_birth;
 				$data['gender'] = $request->gender;
