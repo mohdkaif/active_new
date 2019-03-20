@@ -28,8 +28,10 @@
             <div class="header-bottom">
                @if(\Auth::user()->user_type=='user')
                   <a href="{{url('user/profile')}}" class="btn btn-default btn-default1 center-block pull-left">Profile</a>
+                  <a href="{{url('user/dashboard')}}" class="btn btn-default btn-default1 center-block pull-left">Dashboard</a>
                @else
                   <a href="{{url('provider/profile')}}" class="btn btn-default btn-default1 center-block pull-left">Profile</a>
+                  <a href="{{url('provider/dashboard')}}" class="btn btn-default btn-default1 center-block pull-left">Dashboard</a>
                @endif
             </div>
         @endif

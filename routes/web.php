@@ -43,6 +43,9 @@ Route::group(['prefix' => 'user', 'middleware' => ['userAuth']] ,function(){
 Route::group(['prefix' => 'provider', 'middleware' => ['providerAuth']] ,function(){
 	Route::get('dashboard', 'FrontController@providerDashboard');
 	Route::get('profile', 'UserProfileController@profile');
+	Route::post('update-profile', 'UserProfileController@updateProfile');
+	Route::post('change-password', 'UserProfileController@changePassword');
+
 });
 
 /*ROUTE FOR ADMIN*/

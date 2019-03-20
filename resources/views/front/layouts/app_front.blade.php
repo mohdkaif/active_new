@@ -16,6 +16,7 @@
         <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
         <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet">
+         <link rel="stylesheet" href="{{asset('assets/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css')}}">
         <link href="{{url('assets/css/style.css')}}" rel="stylesheet">
         <link href="{{url('assets/css/responsive.css')}}" rel="stylesheet">
         <link rel="stylesheet" href="{{url('assets/select2.min.css')}}">
@@ -57,6 +58,8 @@
           $('body').toggleClass('overflow');
         });
 
+
+
         </script>
          {{-- end active --}}
       <script src="{{asset('assets/sweetalert2.min.js') }}"></script>
@@ -64,6 +67,8 @@
       <script src="{{asset('assets/select2.full.min.js')}}"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" type="text/javascript"></script>
       <script src="{{asset('assets/admin/plugins/datatables/jquery.dataTables.min.js')}}"></script>
+      <script src="{{asset('assets/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js')}}"></script>
+
       <script src="{{asset('assets/script.js')}}"></script>
 
       <script type="text/javascript">
@@ -84,6 +89,12 @@
             $('#cover').fadeOut(500);
           },500)
         });
+
+         $('.date').datepicker({  
+
+     format: 'yyyy-mm-dd'
+
+   });
       </script>
       @yield('requirejs')
     </body>

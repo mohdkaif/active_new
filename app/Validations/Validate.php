@@ -5,6 +5,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\MessageBag;
 Use App\User;
+use Hash;
 /**
 * 
 */
@@ -167,6 +168,75 @@ class Validate
     	}
 		return $validator;
 	}
+
+
+	public function updateProfile(){
+		$validations = [
+        	'first_name'					=> $this->validation('name'),
+	        'last_name' 					=> $this->validation('name'),
+	        'mobile'						=> $this->validation('mobile_number'),
+	        'address'						=> $this->validation('qualifications'),
+    	];
+    	$validator = \Validator::make($this->data->all(), $validations,[
+			'first_name'					=> $this->validation('name'),
+	        'last_name' 					=> $this->validation('name'),
+	        'mobile'						=> $this->validation('mobile_number'),
+	        'address'				=> $this->validation('address'),
+			
+		]);
+		
+		return $validator;
+	}
+
+	public function changeProviderPassword(){
+	        $validations = [
+	           
+	            'old_password'	=> $this->validation('id'),
+				'new_password'	=> $this->validation('id'),
+				 'confirm_password'  	=> $this->validation('id'),
+				
+	    	];
+	    	$validator = \Validator::make($this->data->all(), $validations,[
+    		'old_password.required' 		=>  'Current Password is Required',
+    		'new_password.required'     	=>  'New Password is Required',
+    		'confirm_password.required'		=>  'Confirm Password is Required',
+    		
+    	]); 
+
+	    	if(!empty($this->data->old_password)){
+
+	    		$user = User::findOrFail($this->data->id);
+	    		
+	    		
+	    		$validator->after(function ($validator) use($user) {
+
+						if (!(Hash::check($this->data->old_password, $user->password))){
+							
+						    $validator->errors()->add('old_password', 'Current Password Does not match');
+						  
+						}
+						
+				           
+		    	});
+    		}  
+
+    		if(!empty($this->data->new_password) && !empty($this->data->confirm_password)){
+
+	    		
+	    		
+	    		
+	    		$validator->after(function ($validator) {
+
+						if ($this->data->new_password != $this->data->confirm_password){
+						    $validator->errors()->add('confirm_password', 'Confirm Password Does not match');
+						}
+						
+				           
+		    	});
+    		}  
+	        return $validator;		
+	}
+
 
 	public function changePassword(){
 		if($this->data->web =='web'){
