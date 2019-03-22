@@ -876,4 +876,27 @@
     function _arefy($data){
         return json_decode(json_encode($data),true);
     }
+
+
+    /*  Created By Sudeep Singh */
+    function ___defaultimage($image,$path){
+        if(!empty($image)||$image!=NULL){
+            if(File::exists(public_path($path.$image))){
+                return asset($path.$image);
+                }else{
+                return asset('images/default.png');
+            }
+        }else{
+                return asset('images/default.png');
+        }
+    }
+
+    function _dd($data){
+        echo '<pre>';
+        print_r($data);
+        echo '<pre>';
+        die();
+    }
+
+
 ?>
