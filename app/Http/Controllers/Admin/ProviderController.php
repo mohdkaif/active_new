@@ -88,8 +88,13 @@ class ProviderController extends Controller
 
 
     public function updatestatus(Request $request){
-
-        $msg = $request->status;
-      return response()->json(array('msg'=> $msg), 200);
+        $data                   = ['status'=>$request->status,'updated_at'=>date('Y-m-d H:i:s')];
+        $isUpdated              = User::updateStatus($request->id,$data);
+        if($isUpdated){
+            $this->status       = true;
+            $this->redirect     = true;
+            $this->jsondata     = [];
+        }
+        return $this->populateresponse();
     }
 }

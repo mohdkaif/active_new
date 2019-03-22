@@ -100,6 +100,16 @@ class User extends Authenticatable
                 
         return (bool)$isUpdated;
     }
+
+
+    public static function updateStatus($id,$data){
+        $isUpdated = false;
+        if(!empty($data)){
+            $table_name=self::where('id',$id);
+            $isUpdated = $table_name->update($data); 
+        }       
+        return (bool)$isUpdated;
+    }
     
    
 }

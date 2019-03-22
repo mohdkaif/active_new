@@ -64,7 +64,6 @@
                   <td>{{$service_provider_res['email']}}</td>
                   <td>{{$service_provider_res['mobile']}}</td>
                    <td>{{$service_provider_res['gender']}}</td>
-
                  
                 <td>
                     <?php
@@ -72,10 +71,10 @@
                       if($status=='pending')
                       {
                       ?>
-                      <a class="btn  btn-success btn-flat" onclick="updatestatus(this);" href="#" id="Enable">
+                      <a class="btn  btn-success btn-flat"  href="javascript:void(0);"  data-url="{{url(sprintf('admin/provider/updatestatus/?id=%s&status=active',$service_provider_res['id']))}}" data-ask="Are you sure Un-approve service provider?"  data-ask_image="{{url('assets/default/warning.png')}}" data-request="ajax-confirm" title="Update Status">
                       <i class="fa fa-check-square-o"></i>Approved </a>
                       <?php }else{ ?>
-                      <a class="btn btn-warning btn-flat" href="#" onclick="updatestatus(this);" data-status="disabled" id="Disable">
+                      <a class="btn btn-warning btn-flat"  href="javascript:void(0);"  data-url="{{url(sprintf('admin/provider/updatestatus/?id=%s&status=pending',$service_provider_res['id']))}}" data-ask="Are you sure Approve service provider?"  data-ask_image="{{url('assets/default/warning.png')}}" data-request="ajax-confirm" title="Update Status">
                       <i class="icon-edit icon-white"></i>  
                       NotApproved                                        
                       </a>
@@ -121,10 +120,9 @@
   <!-- /.content-wrapper -->
   @push('scripts')
    <script type="text/javascript">
-         function updatestatus(element) {
-          v = element.data('data-status');
-          alert(v);
-         console.log(test);
+         /*function updatestatus(element) {
+          alert(element);
+         console.log(element);
             $.ajax({
                type:'POST',
                url: "{{url('admin/provider/updatestatus')}}",
@@ -136,6 +134,12 @@
                   $("#msg").html(data.msg);
                }
             });
-         }
+         }*/
+
+    $("#submit").click(function () {
+    var url = $(location).attr('href');
+    $('#spn_url').html('<strong>' + url + '</strong>');
+    });
+
    </script>
    @endpush
