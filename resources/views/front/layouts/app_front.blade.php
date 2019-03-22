@@ -72,7 +72,6 @@
       <script src="{{asset('assets/script.js')}}"></script>
 
       <script type="text/javascript">
-
         var base_url = "{{url('/')}}";
         var token    = $('meta[name="csrf-token"]').attr('content');
         
@@ -90,43 +89,13 @@
           },500)
         });
 
-         $('.date').datepicker({  
+        $('.date').datepicker({  
 
-     format: 'yyyy-mm-dd'
+          format: 'yyyy-mm-dd'
 
-   });
-         
-      $("#country").change(function () {
-        alert('csd');
-        $("#state").html('<option value="">Select State</option>');
-        $("#state").attr('disabled',true);
-        $("#city").html('<option value="">Select City</option>');
-        $("#city").attr('disabled',true);
-        var mainid = $(this).val();
-        $.get('{{url('/')}}/states/list/?country_id='+mainid, function(response){
-            $("#state").attr('disabled',false);
-            $.each(response, function(i, cart){
-                $.each(cart, function (index, data) {
-                    $("#state").append('<option value="'+data.id+'">'+data.state_name+'</option>');
-                    //console.log('index', data)
-                })
-            })
-        });
-    });
-    $("#state").change(function () {
-        $("#city").html('<option value="">Select City</option>');
-        $("#city").attr('disabled',true);
-        var mainid = $(this).val();
-        $.get('{{url('/')}}/cities/list/?state_id='+mainid, function(response){
-            $("#city").attr('disabled',false);
-            $.each(response, function(i, cart){
-                $.each(cart, function (index, data) {
-                    $("#city").append('<option value="'+data.id+'">'+data.city_name+'</option>');
-                    //console.log('index', data)
-                })
-            })
-        });
-    });
+         });
+               
+      
       </script>
       @yield('requirejs')
     </body>

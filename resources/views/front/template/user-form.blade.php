@@ -77,33 +77,42 @@
                   height: 100px"></textarea>
             </div>
             <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-               <label>
-               Region
-               </label>
-               <input type="text" name="region" placeholder=" Region *" >
+               <label for="email">Country:</label>
+       
+               <select class="form-control" name="country" id="country" style="height: 45px;" >
+                  <option value="">Select Country</option>
+                     @if(!empty($country))
+                        @foreach($country as $countries)
+                           <option value="{{$countries->id}}">{{$countries->country_name}}</option>
+                        @endforeach
+                     @endif
+               </select>
             </div>
              <div class="col-md-6 col-sm-6 col-xs-12 form-group">
                <label>
                State 
                </label>
-               <select id="state" name="state" class="form-group" onChange="get_city(this.value);">
-                  <option value="">-- State --</option>
-                  @if(!empty($state))
-                     @foreach($state as $states)
-                        <option value="{{$states->id}}">{{$states->state_name}}</option>
+               <select class="form-control" name="state" id="state" style="height: 45px;" >
+                  <option value="">Select State</option>
+                  {{--  @if(!empty($country))
+                     @foreach($country as $countries)
+                        <option value="{{$countries->id}}">{{$countries->country_name}}</option>
                      @endforeach
-                  @endif
-                 
+                  @endif --}}
                </select>
             </div>
             <div class="col-md-6 col-sm-6 col-xs-12 form-group">
                <label>
                City 
                </label>
-               <select id="city" name="city" class="form-group">
-                  <option value="">-- City --</option>
-                  <option value="">Delhi</option>
-               </select>
+               <select class="form-control" name="city" id="city" style="height: 45px;" >
+                  <option value="">Select City</option>
+                  {{-- @if(!empty($country))
+                     @foreach($country as $countries)
+                        <option value="{{$countries->id}}">{{$countries->country_name}}</option>
+                     @endforeach
+                  @endif --}}
+              </select>
             </div>
             <div class="col-md-6 col-sm-6 col-xs-12 form-group">
                <label>

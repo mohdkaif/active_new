@@ -54,6 +54,7 @@
 
 <script type="text/javascript">
 $("document").ready(function() {
+
   setTimeout(function() {
       $("#user").trigger('click');
   },10);
@@ -62,36 +63,37 @@ $(function () {
   $('.select2').select2()
 });
 
-/*function get_city(str) {
-   var dataString = 'state_id='+str;
-   
-   $.ajax({
-     type:'POST',
-     data:dataString,
-     url:base_url + '/cities/list',
-     success:function(data) {
-       console.log(data.html);
-       $("#city").html(data.html);
-    
-     }
-   });
-}
+$(document).on('change','#country',function(){
+    $("#state").html('<option value="">Select State</option>');
+        $("#state").attr('disabled',true);
+        $("#city").html('<option value="">Select City</option>');
+        $("#city").attr('disabled',true);
+        var mainid = $(this).val();
+        $.get('{{url('/')}}/states/list/?country_id='+mainid, function(response){
+            $("#state").attr('disabled',false);
+            $.each(response, function(i, cart){
+                $.each(cart, function (index, data) {
+                    $("#state").append('<option value="'+data.id+'">'+data.state_name+'</option>');
+                    //console.log('index', data)
+                })
+            })
+        });
+});
+$(document).on('change','#state',function(){
+    $("#city").html('<option value="">Select City</option>');
+        $("#city").attr('disabled',true);
+        var mainid = $(this).val();
+        $.get('{{url('/')}}/cities/list/?state_id='+mainid, function(response){
+            $("#city").attr('disabled',false);
+            $.each(response, function(i, cart){
+                $.each(cart, function (index, data) {
+                    $("#city").append('<option value="'+data.id+'">'+data.city_name+'</option>');
+                    //console.log('index', data)
+                })
+            })
+        });
+});
 
-function get_city1(str) {
-   var dataString = 'state_id='+str;
-   
-   $.ajax({
-     type:'POST',
-     data:dataString,
-     url:base_url + '/cities/list',
-     success:function(data) {
-       console.log(data.html);
-       $("#city1").html(data.html);
-    
-     }
-   });
-}*/
 
-   
 </script>
 @endsection

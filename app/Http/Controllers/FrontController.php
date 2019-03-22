@@ -155,7 +155,7 @@ class FrontController extends Controller
                 $data['otp'] = $request->otp;
                 $data['email'] = $request->email;
                 $data['address'] = $request->address;
-                $data['country'] = $request->region;
+                $data['country'] = $request->country;
                 $data['state'] = $request->state;
                 $data['city'] = $request->city;
                 $data['password'] = \Hash::make($request->password);
@@ -193,7 +193,7 @@ class FrontController extends Controller
                 $data['otp'] = $request->otp;
                 $data['email'] = $request->email;
                 $data['address'] = $request->permanent_address;
-                $data['country'] = $request->region;
+                $data['country'] = $request->country;
                 $data['state'] = $request->state;
                 $data['city'] = $request->city;
                 $data['password'] = \Hash::make($request->password);

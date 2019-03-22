@@ -29,6 +29,9 @@ Route::post('change-password', 'API\UserController@ChangePassword');
 Route::post('country', 'API\UserController@country');
 Route::post('city', 'API\UserController@city');
 Route::post('state', 'API\UserController@state');
+Route::post('profile', 'API\UserController@profile');
+Route::post('profile-update', 'API\UserController@updateProfile');
+
 
 Route::group(['middleware' => 'auth:api'], function(){
 Route::post('details', 'API\UserController@details');
