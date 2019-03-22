@@ -1,0 +1,2 @@
+ALTER TABLE `users` ADD `gender` VARCHAR(255) NULL AFTER `status`;
+20/03/2019
