@@ -72,31 +72,31 @@
                       if($status=='pending')
                       {
                       ?>
-                      <a class="btn  btn-success btn-flat" href="service_providers.php?id={{$service_provider_res['service_provider_id']}}&name=e" id="Enable">
+                      <a class="btn  btn-success btn-flat" onclick="updatestatus(this);" href="#" id="Enable">
                       <i class="fa fa-check-square-o"></i>Approved </a>
                       <?php }else{ ?>
-                      <a class="btn btn-warning btn-flat" href="service_providers.php?id={{$service_provider_res['service_provider_id']}}&name=d" id="Disable">
+                      <a class="btn btn-warning btn-flat" href="#" onclick="updatestatus(this);" data-status="disabled" id="Disable">
                       <i class="icon-edit icon-white"></i>  
                       NotApproved                                        
                       </a>
                     <?php } ?>
-                 <a href="editservice_providers.php?id={{base64_encode($service_provider_res['service_provider_id'])}}">
+                 <a href="editservice_providers.php?id={{base64_encode($service_provider_res['id'])}}">
                       <button class="btn btn-info btn-flat"><i class="fa fa-edit"></i> Edit</button>
                   </a>
-                <a href="viewservice_providers.php?id={{base64_encode($service_provider_res['service_provider_id'])}}">
+                <a href="viewservice_providers.php?id={{base64_encode($service_provider_res['id'])}}">
                 <button class="btn btn-info btn-flat"><i class="fa fa-eye"></i> View Details</button>
                 </a>
                
-                <a href="bank_details.php?bank_id={{base64_encode($service_provider_res['service_provider_id'])}}">
+                <a href="bank_details.php?bank_id={{base64_encode($service_provider_res['id'])}}">
                 <button class="btn btn-info btn-flat"><i class="fa fa-university"></i> Bank Details</button>
                 </a>
-                 <a href="qualification.php?qual_id={{base64_encode($service_provider_res['service_provider_id'])}}">
+                 <a href="qualification.php?qual_id={{base64_encode($service_provider_res['id'])}}">
                 <button class="btn btn-info btn-flat"><i class="fa fa-graduation-cap"></i> Qualification</button>
                 </a>
-                 <a href="upload_doc.php?upload_id={{base64_encode($service_provider_res['service_provider_id'])}}">
+                 <a href="upload_doc.php?upload_id={{base64_encode($service_provider_res['id'])}}">
                 <button class="btn btn-info btn-flat"><i class="fa fa-upload"></i> Upload Document</button>
                 </a>
-                <a href="javascript:void(o);" onClick="deleteservice_provider({{$service_provider_res['service_provider_id']}});">
+                <a href="javascript:void(o);" onClick="deleteservice_provider({{$service_provider_res['id']}});">
                   <button class="btn btn-danger btn-flat"><i class="fa fa-trash"></i> Delete</button>
                 </a>
                   </td>
@@ -119,4 +119,23 @@
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
-   
+  @push('scripts')
+   <script type="text/javascript">
+         function updatestatus(element) {
+          v = element.data('data-status');
+          alert(v);
+         console.log(test);
+            $.ajax({
+               type:'POST',
+               url: "{{url('admin/provider/updatestatus')}}",
+               data: {
+                  id : test.id,
+               } ,
+               success:function(data) {
+                alert(data.msg);
+                  $("#msg").html(data.msg);
+               }
+            });
+         }
+   </script>
+   @endpush

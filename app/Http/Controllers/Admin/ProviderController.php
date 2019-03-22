@@ -15,7 +15,8 @@ class ProviderController extends Controller
     public function index()
     {
         $data['view']='admin.service_providers';
-        $data['user']=User::where('user_type','provider')->get();
+        $data['user']=_arrayfy(User::where('user_type','provider')->get());
+       // dd($data['user']);
         return view('admin.index',$data);
     }
 
@@ -83,5 +84,12 @@ class ProviderController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+
+    public function updatestatus(Request $request){
+
+        $msg = $request->status;
+      return response()->json(array('msg'=> $msg), 200);
     }
 }

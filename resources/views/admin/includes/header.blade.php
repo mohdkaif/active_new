@@ -1,4 +1,4 @@
-<script>
+{{-- <script>
 
 window.setInterval(function(){  
 
@@ -6,7 +6,7 @@ $("#time").load("hh.php");
 
 }, 1000);
 
-</script>
+</script> --}}
 
 <style>
 
