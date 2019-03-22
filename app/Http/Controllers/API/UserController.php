@@ -489,7 +489,7 @@ class UserController extends Controller
 
     public function profile(Request $request)
     {
-        $user = Auth::user();
+        $user = _arefy(User::provider_list('single','id = '.$request->user_id));
         $success['user_datails'] =  $user;
         $this->status   = true;
         $response = new Response($success);
@@ -513,9 +513,10 @@ class UserController extends Controller
                 $data['date_of_birth'] = $request->date_of_birth;
                 $data['gender'] = $request->gender;
                
-                $update = User::change(\Auth::user()->id,$data);
+                $update = User::change($request->user_id,$data);
             
             $this->status   = true;
+            $success['success'] =  $update;
             $response = new Response($success);
             $this->jsondata = $response->api_common_response();
             $this->message = "Profile Updated Successful";
