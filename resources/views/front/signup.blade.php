@@ -30,8 +30,9 @@
                         </div>
                     </div>
                     <!--- user form Design ------------------>
-                    <div id="address" class="showhide">
-                    </div>
+                    
+                </div>
+                <div id="address" class="showhide">
                 </div>
             </div>
         </div>
@@ -61,7 +62,7 @@ $(function () {
   $('.select2').select2()
 });
 
-function get_city(str) {
+/*function get_city(str) {
    var dataString = 'state_id='+str;
    
    $.ajax({
@@ -89,7 +90,7 @@ function get_city1(str) {
     
      }
    });
-}
+}*/
 
    
 </script>

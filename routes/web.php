@@ -17,7 +17,10 @@
 Route::get('/', 'FrontController@index');
 Route::get('event', 'FrontController@event');
 Route::get('about', 'FrontController@about');
-Route::post('/cities/list','FrontController@cityList')->name('cities.list');
+Route::post('/cities/list','FrontController@getCities')->name('cities.list');
+Route::post('/states/list','FrontController@getStates')->name('states.list');
+/*Route::post('/cities/list','FrontController@cityList')->name('cities.list');
+Route::post('/states/list','FrontController@stateList')->name('states.list');*/
 Route::get('signup', 'FrontController@register');
 Route::get('login', 'FrontController@login');
 Route::post('login', 'FrontController@auth');

@@ -73,7 +73,7 @@
                             <tbody>
                                 <tr>
                                 <td class="text-left">
-                               sub category
+                               {{$user['service']['service_sub_category_name']}}
                                 </td>
                                 </tr>
                                  
@@ -95,17 +95,17 @@
                                     <td class="text-center"><b>State</b></td>
                                     <td class="text-center"><b>City</b></td>
                                     <td class="text-center"><b>Region </b></td>
-                                    <td class="text-center"><b>Pin-Code</b></td>
+                                    {{-- <td class="text-center"><b>Pin-Code</b></td> --}}
                                     <td class="text-center"><b>Address</b></td>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                <td class="text-center">{{\Auth::user()->state}}</td>
-                                <td class="text-center">{{\Auth::user()->city}}</td>
-                                <td class="text-center">{{\Auth::user()->country}}</td>
-                                <td class="text-center">{{\Auth::user()->state}}</td>
-                                <td class="text-center">{{\Auth::user()->address}}</td>
+                                <td class="text-center">{{$user['state_details']['state_name']}}</td>
+                                <td class="text-center">{{$user['city_details']['city_name']}}</td>
+                                <td class="text-center">{{$user['country_details']['country_name']}}</td>
+                                {{-- <td class="text-center">{{$user['']['state_name']}}</td> --}}
+                                <td class="text-center">{{$user['address']}}</td>
                                 </tr>
                                  
                             </tbody>
@@ -128,17 +128,17 @@
                                     <td class="text-center"><b>State</b></td>
                                     <td class="text-center"><b>City</b></td>
                                     <td class="text-center"><b>Region </b></td>
-                                    <td class="text-center"><b>Pin-Code</b></td>
+                                    <{{-- td class="text-center"><b>Pin-Code</b></td> --}}
                                     <td class="text-center"><b>Address</b></td>
                                 </tr>
                             </thead>
                             <tbody>
                                <tr>
-                                <td class="text-center">{{\Auth::user()->state}}</td>
-                                <td class="text-center">{{\Auth::user()->city}}</td>
-                                <td class="text-center">{{\Auth::user()->country}}</td>
-                                <td class="text-center">{{\Auth::user()->state}}</td>
-                                <td class="text-center">{{\Auth::user()->address}}</td>
+                                <td class="text-center">{{$user['state_details']['state_name']}}</td>
+                                <td class="text-center">{{$user['city_details']['city_name']}}</td>
+                                <td class="text-center">{{$user['country_details']['country_name']}}</td>
+                                {{-- <td class="text-center">{{$user['']['state_name']}}</td> --}}
+                                <td class="text-center">{{$user['address']}}</td>
                                 </tr>
                                  
                             </tbody>

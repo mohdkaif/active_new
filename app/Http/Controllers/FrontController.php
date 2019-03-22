@@ -6,6 +6,7 @@ use Validations\Validate as Validations;
 use Illuminate\Http\Request;
 use App\Models\State;
 use App\Models\City;
+use App\Models\Country;
 use App\User;
 use App\Models\UserChild;
 use Auth;
@@ -51,16 +52,17 @@ class FrontController extends Controller
     public function getUserFrom(Request $request)
     {
         $state = State::where('country_id','101')->get();
+        $country = Country::get();
         //$city = City::
         if($request->id=='provider'){
             return response()->json([
                 'status'    => true,
-                'html'      => view("front.template.provider-form",['state'=>$state])->render()
+                'html'      => view("front.template.provider-form",['state'=>$state,'country'=>$country])->render()
             ]);
         }else{
             return response()->json([
             'status'    => true,
-            'html'      => view("front.template.user-form",['state'=>$state])->render()
+            'html'      => view("front.template.user-form",['state'=>$state,'country'=>$country])->render()
             ]);
         }
         
@@ -86,6 +88,55 @@ class FrontController extends Controller
             'html'      => $html,
             'status'    => 1,
             'message'   => ""
+        ]);
+    }
+
+    public function stateList(Request $request){
+        $states = State::where('country_id','=',$request->country_id)
+                ->orderBy('id','ASC')
+                ->where('status','=','active')
+                ->get();
+
+
+        $html = '<option>Please Select State</option> ';
+        foreach ($states as $value) {
+            // //if($value['id'] == $request->state_id){
+            //     $html .= '<option value="'.$value['id'].'" selected="selected">'.$value['city_name'].'</option> ';
+            // } else {
+                $html .= '<option value="'.$value['id'].'">'.$value['state_name'].'</option> ';
+            //}
+        }
+       
+        return response()->json([
+            'html'      => $html,
+            'status'    => 1,
+            'message'   => ""
+        ]);
+    }
+
+    public function getCities(Request $request){
+        $cities = City::where('state_id','=',$request->state_id)
+                ->orderBy('id','ASC')
+                ->where('status','=','active')
+                ->get();
+
+
+        
+        return response()->json([
+            'response'      => $cities
+        ]);
+    }
+
+     public function getStates(Request $request){
+        $states = State::where('country_id','=',$request->country_id)
+                ->orderBy('id','ASC')
+                ->where('status','=','active')
+                ->get();
+
+
+        
+        return response()->json([
+            'response'      => $states
         ]);
     }
 
@@ -368,7 +419,7 @@ class FrontController extends Controller
 
     public function logout(Request $request)
     {
-        Auth::logout();
+        \Auth::logout();
         return redirect('/');
     }
 
@@ -376,6 +427,9 @@ class FrontController extends Controller
     {
         $data['id']=$request->user;
         $data['view']='front.service_provider_dashboard';
+        $user = _arefy(User::provider_list('single','id = '.\Auth::user()->id));
+        $data['user'] = $user;
+        
         return view('front.index',$data);
     }
 }

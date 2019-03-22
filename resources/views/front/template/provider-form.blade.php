@@ -43,20 +43,28 @@
          <label>
          Country
          </label>
-         <input type="text" name="country" placeholder=" country *" class="form-control" >
+        {{--  <input type="text" name="country" placeholder=" country *" class="form-control" > --}}
+         <select  name="country" class="form-control country" id="country">
+            <option value="">Select Country</option>
+            @if(!empty($country))
+               @foreach($country as $countries)
+                  <option value="{{$countries->id}}">{{$countries->country_name}}</option>
+               @endforeach
+            @endif
+         </select>
       </div>
       <div class="col-md-12 col-sm-12 col-xs-12 ">
        <div class="col-md-6 col-sm-6 col-xs-12 form-group">
          <label>
          State 
          </label>
-         <select  name="state" class="form-control" >
-            <option value="">-- State --</option>
-            @if(!empty($state))
+         <select  name="state" class="form-control" id="state">
+            <option value="">Select State</option>
+            {{-- @if(!empty($state))
                @foreach($state as $states)
                   <option value="{{$states->id}}">{{$states->state_name}}</option>
                @endforeach
-            @endif
+            @endif --}}
          </select>
        </div>
       <div class="col-md-6 col-sm-6 col-xs-12 form-group">
@@ -64,8 +72,8 @@
          City 
          </label>
          <select id="city" name="city" class="form-control">
-            <option value="">-- City --</option>
-            <option value="delhi">Delhi</option>
+            <option value="">Select City</option>
+           {{--  <option value="delhi">Delhi</option> --}}
          </select>
       </div>
     </div>
@@ -150,4 +158,38 @@
     </div>
     </div>
   </form>
-  
+  @section('requirejs')
+  <script>
+     $("#country").change(function () {
+        alert('csd');
+        $("#state").html('<option value="">Select State</option>');
+        $("#state").attr('disabled',true);
+        $("#city").html('<option value="">Select City</option>');
+        $("#city").attr('disabled',true);
+        var mainid = $(this).val();
+        $.get('{{url('/')}}/states/list/?country_id='+mainid, function(response){
+            $("#state").attr('disabled',false);
+            $.each(response, function(i, cart){
+                $.each(cart, function (index, data) {
+                    $("#state").append('<option value="'+data.id+'">'+data.state_name+'</option>');
+                    //console.log('index', data)
+                })
+            })
+        });
+    });
+    $("#state").change(function () {
+        $("#city").html('<option value="">Select City</option>');
+        $("#city").attr('disabled',true);
+        var mainid = $(this).val();
+        $.get('{{url('/')}}/cities/list/?state_id='+mainid, function(response){
+            $("#city").attr('disabled',false);
+            $.each(response, function(i, cart){
+                $.each(cart, function (index, data) {
+                    $("#city").append('<option value="'+data.id+'">'+data.city_name+'</option>');
+                    //console.log('index', data)
+                })
+            })
+        });
+    });
+  </script>
+  @endsection
