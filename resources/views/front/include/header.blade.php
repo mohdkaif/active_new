@@ -11,7 +11,7 @@
                <li><a href="{{url('/about')}}">About Us  </a></li>
                <li><a href="#">Help</a></li>
                <li><a href="#">Privacy Policy</a></li>
-               <li><a href="#">Tearm & Conditions</a></li>
+               <li><a href="#">Terms & Conditions</a></li>
                <li><a href="{{url('/contact')}}">Contact Us</a></li>
             </ul>
          <!-- before logib -->

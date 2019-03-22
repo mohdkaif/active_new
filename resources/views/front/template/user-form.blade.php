@@ -77,10 +77,10 @@
                   height: 100px"></textarea>
             </div>
             <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-               <label for="email">Country:</label>
+               <label for="email">Region:</label>
        
                <select class="form-control" name="country" id="country" style="height: 45px;" >
-                  <option value="">Select Country</option>
+                  <option value="">Select Region</option>
                      @if(!empty($country))
                         @foreach($country as $countries)
                            <option value="{{$countries->id}}">{{$countries->country_name}}</option>

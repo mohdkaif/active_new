@@ -6,6 +6,7 @@ use Validations\Validate as Validations;
 use Illuminate\Http\Request;
 use App\Models\State;
 use App\Models\City;
+use App\Models\Service;
 use App\Models\Country;
 use App\User;
 use App\Models\UserChild;
@@ -52,12 +53,13 @@ class FrontController extends Controller
     public function getUserFrom(Request $request)
     {
         $state = State::where('country_id','101')->get();
+        $services = Service::get(); 
         $country = Country::get();
         //$city = City::
         if($request->id=='provider'){
             return response()->json([
                 'status'    => true,
-                'html'      => view("front.template.provider-form",['state'=>$state,'country'=>$country])->render()
+                'html'      => view("front.template.provider-form",['state'=>$state,'country'=>$country,'services'=>$services])->render()
             ]);
         }else{
             return response()->json([
@@ -155,11 +157,12 @@ class FrontController extends Controller
                 $data['otp'] = $request->otp;
                 $data['email'] = $request->email;
                 $data['address'] = $request->address;
-                $data['country'] = $request->country;
+                $data['country'] = $request->region;
                 $data['state'] = $request->state;
                 $data['city'] = $request->city;
                 $data['password'] = \Hash::make($request->password);
                 $data['status'] = 'active';
+                $data['service_id'] = 2;
                 $data['email'] = isset($request->email)?$request->email:'';
                 $user = User::create($data);
                
@@ -198,6 +201,7 @@ class FrontController extends Controller
                 $data['city'] = $request->city;
                 $data['password'] = \Hash::make($request->password);
                 $data['status'] = 'active';
+                $data['date_of_birth'] = $request->date_of_birth;
                 $data['email'] = isset($request->email)?$request->email:'';
                 $data['otp'] = 'SHDJS';
                 $user = User::create($data);
@@ -357,11 +361,12 @@ class FrontController extends Controller
 
                 $emailData['custom_text'] = 'Your Enquiry has been submitted successfully';
                 $mailSuccess = ___mail_sender($emailData['email'],$user->name,"forgot_password",$emailData);
-               
+                $data['password']=\Hash::make($autopass);
+                $updated = User::where('email', '=', $request->username)->firstOrFail()->update($data);
        
                 $this->status   = true;
                 $this->alert    = true;
-                $this->message  = "Forgot OTP send  Successful";
+                $this->message  = "Forgot OTP sent Successful";
                 $this->modal    = true;
                 $this->redirect = url('change-password?user='.___encrypt($user->id));
             }else{

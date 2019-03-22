@@ -314,10 +314,12 @@ class Validate
 	        	'distance_travel'				=> $this->validation('name'),
 	        	'long_distance_travel'			=> $this->validation('name'),
 	        	'location_track_permission'		=> $this->validation('name'),*/
-				'service_id'					=>$this->validation('name'),
+
+	        	'service_id'					=>$this->validation('name'),
 				'price_per_hour'				=>$this->validation('name'),
 				'price_per_children'			=>$this->validation('name'),
 				'experience_in_work'			=>$this->validation('name'),
+				
 	        	'document_high_school'			=> $this->validation('photomimes'),
 	        	'document_graduation'			=> $this->validation('photomimes'),
 	        	'document_post_graduation'		=> $this->validation('photomimes'),
@@ -333,7 +335,9 @@ class Validate
 	    	];
 
 		}
-    	$validator = \Validator::make($this->data->all(), $validations,[]);
+    	$validator = \Validator::make($this->data->all(), $validations,[
+    		'country.required' 						=>  'Region is required.'
+    	]);
 		if(!empty($this->data->mobile)){
 			$userDetails = User::where('mobile',$this->data->mobile)->first();
 		    $validator->after(function ($validator) use($userDetails) {

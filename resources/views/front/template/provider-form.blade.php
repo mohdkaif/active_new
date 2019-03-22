@@ -29,10 +29,10 @@
           <textarea name="permanent_address" placeholder="Address" class="form-control"></textarea>
       </div>
       <div class="form-group col-md-6">
-        <label for="email">Country:</label>
+        <label for="email">Region:</label>
        
         <select class="form-control" name="country" id="country" style="height: 45px;" >
-          <option value="">Select Country</option>
+          <option value="">Select Region</option>
             @if(!empty($country))
                @foreach($country as $countries)
                   <option value="{{$countries->id}}">{{$countries->country_name}}</option>
@@ -44,11 +44,7 @@
         <label for="pwd">State:</label>
         <select class="form-control" name="state" id="state" style="height: 45px;" >
           <option value="">Select State</option>
-           {{--  @if(!empty($country))
-               @foreach($country as $countries)
-                  <option value="{{$countries->id}}">{{$countries->country_name}}</option>
-               @endforeach
-            @endif --}}
+       
         </select>
       </div>
       <div class="form-group col-md-6">
@@ -71,6 +67,34 @@
         <label for="pwd">Confirm Password:</label>
          <input type="password" name="confirm_password" placeholder=" Verify Password *" class="form-control">
       </div>
+
+      <div class="form-group col-md-6">
+        <label for="pwd">Price Per Hour:</label>
+         <input type="text" name="price_per_hour" placeholder=" Price Per Hour *" class="form-control">
+      </div>
+        <div class="form-group col-md-6">
+        <label for="pwd">Price Per Children:</label>
+         <input type="text" name="price_per_children" placeholder="Price Per Children *" class="form-control">
+      </div>
+
+      <div class="form-group col-md-6">
+        <label for="pwd">Experience In Work:</label>
+         <input type="text" name="experience_in_work" placeholder="Experience In Work *" class="form-control">
+      </div>
+
+       <div class="form-group col-md-6">
+        <label for="pwd">Service:</label>
+        <select class="form-control" name="service_id" id="service_id" style="height: 45px;" >
+          <option value="">Select Service</option>
+            @if(!empty($services))
+               @foreach($services as $service)
+                  <option value="{{$service->service_sub_category_id}}">{{$service->service_sub_category_name}}</option>
+               @endforeach
+            @endif
+        </select>
+      </div>
+
+
       <div class="form-group col-md-6">
         <label for="email">Bank Name:</label>
         <input type="text" name="bank_name" placeholder="Bank Name *" class="form-control">
@@ -105,6 +129,7 @@
         <label for="pwd">Other Document:</label>
          <input type="file" name="document_other"  class="form-control">
       </div>
+      <input type="hidden" name="type" value="provider">
       
     </div>
     <div class="checkbox">
