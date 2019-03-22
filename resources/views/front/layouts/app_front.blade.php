@@ -89,12 +89,12 @@
           },500)
         });
 
-         $('.date').datepicker({  
+        $('.date').datepicker({  
 
-     format: 'yyyy-mm-dd'
+          format: 'yyyy-mm-dd'
 
-   });
-         
+         });
+               
       
       </script>
       @yield('requirejs')

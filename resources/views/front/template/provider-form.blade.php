@@ -43,23 +43,23 @@
       <div class="form-group col-md-6">
         <label for="pwd">State:</label>
         <select class="form-control" name="state" id="state" style="height: 45px;" >
-          <option value="">Select Country</option>
-            @if(!empty($country))
+          <option value="">Select State</option>
+           {{--  @if(!empty($country))
                @foreach($country as $countries)
                   <option value="{{$countries->id}}">{{$countries->country_name}}</option>
                @endforeach
-            @endif
+            @endif --}}
         </select>
       </div>
       <div class="form-group col-md-6">
         <label for="pwd">City:</label>
         <select class="form-control" name="city" id="city" style="height: 45px;" >
-          <option value="">Select Country</option>
-            @if(!empty($country))
+          <option value="">Select City</option>
+            {{-- @if(!empty($country))
                @foreach($country as $countries)
                   <option value="{{$countries->id}}">{{$countries->country_name}}</option>
                @endforeach
-            @endif
+            @endif --}}
         </select>
       </div>
 

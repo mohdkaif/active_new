@@ -63,9 +63,8 @@ $(function () {
   $('.select2').select2()
 });
 
-$("#country").change(function () {
-        alert('csd');
-        $("#state").html('<option value="">Select State</option>');
+$(document).on('change','#country',function(){
+    $("#state").html('<option value="">Select State</option>');
         $("#state").attr('disabled',true);
         $("#city").html('<option value="">Select City</option>');
         $("#city").attr('disabled',true);
@@ -79,9 +78,9 @@ $("#country").change(function () {
                 })
             })
         });
-    });
-    $("#state").change(function () {
-        $("#city").html('<option value="">Select City</option>');
+});
+$(document).on('change','#state',function(){
+    $("#city").html('<option value="">Select City</option>');
         $("#city").attr('disabled',true);
         var mainid = $(this).val();
         $.get('{{url('/')}}/cities/list/?state_id='+mainid, function(response){
@@ -93,7 +92,8 @@ $("#country").change(function () {
                 })
             })
         });
-    });
-   
+});
+
+
 </script>
 @endsection
