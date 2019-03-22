@@ -227,17 +227,6 @@ $(document).on('click','[data-request="address-form"]',function(){
     });
 });
 
-function readURL(input,$attribute) {
-    if (input.files && input.files[0]) {
-        var reader = new FileReader();
-
-        reader.onload = function (e) {
-            $($attribute).attr('src', e.target.result);
-        };
-
-        reader.readAsDataURL(input.files[0]);
-    }
-}
 
 /*var selectStyle = function(){
     var $select2 = $('.selectType').select2({
@@ -375,3 +364,17 @@ Object.size = function(obj) {
 $('.navbar-custom.navbar-fixed-top .navbar-toggle').on('click', function(){
   $('#sidebar-collapse').slideToggle('slow');
 });
+
+/* Sudeep Singh */
+function imagePreview(inputFile,previewLocation) {
+    if (inputFile.files && inputFile.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            $(previewLocation).attr('src', e.target.result);
+        };
+
+        reader.readAsDataURL(inputFile.files[0]);
+    }
+
+}
+

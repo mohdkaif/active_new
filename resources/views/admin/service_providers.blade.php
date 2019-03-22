@@ -29,7 +29,7 @@
           <div class="card">
             <div class="card-header">
               <h3 class="card-title">All Details
-               <a href="addservice_providers.php" class="btn btn-success btn-flat pull-right">
+               <a href="{{url('admin/provider/create')}}" class="btn btn-success btn-flat pull-right">
                   Add Service Providers
                 </a>
               </h3>
@@ -55,7 +55,7 @@
                 @foreach($user as $service_provider_res)
                 <tr id="sessiondiv{{$service_provider_res['image']}}">
                   <?php if($service_provider_res['image']){ ?>
-                  <td><img style="height:120px;" src="{{url('assets/images/photo/'.$service_provider_res['service_providers_image'])}}"></td>
+                  <td><img style="height:120px;" src="{{url('assets/images/photo/'.$service_provider_res['image'])}}"></td>
                   <?php }else{?>
                     <td><img style="height:120px;" src="images/profile.jpg"></td>
                   <?php } ?>

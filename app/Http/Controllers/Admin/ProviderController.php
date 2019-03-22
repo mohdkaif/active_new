@@ -27,7 +27,10 @@ class ProviderController extends Controller
      */
     public function create()
     {
-        //
+        $data['view']='admin.provider.add';
+        $data['user']=_arrayfy(User::where('user_type','provider')->get());
+       // dd($data['user']);
+        return view('admin.index',$data);
     }
 
     /**
@@ -39,6 +42,8 @@ class ProviderController extends Controller
     public function store(Request $request)
     {
         //
+        print_r('dcfghbjkm,');
+        dd('wqdefrt');
     }
 
     /**
