@@ -6,3 +6,6 @@ provider dashboard
 -remove service
 -remove extra,chat details
 22/03/2019
+
+ALTER TABLE `users` CHANGE `address` `address` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL;
+23-03-19

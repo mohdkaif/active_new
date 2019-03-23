@@ -169,6 +169,18 @@ class Validate
 		return $validator;
 	}
 
+	public function updateService(){
+		$validations = [
+        	'service_id' 						=> $this->validation('name')
+    	];
+    	$validator = \Validator::make($this->data->all(), $validations,[
+		
+			
+		]);
+		
+		return $validator;
+	}
+
 
 	public function updateProfile(){
 		$validations = [

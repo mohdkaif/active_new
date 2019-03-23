@@ -8,7 +8,11 @@
             </div>
          </section>
          <section class="user">
+                  @if(!empty($user['image']))
+                    <img src="{{url('assets/images/providers/'.$user['image'])}}" class="img-circle center-block" >
+                  @else
                     <img src="{{url('assets/images/user.png')}}" class="img-circle center-block" >
+                  @endif
          </section>
       {!!view('front.dashboard-slider')!!}
      <section class="gallery-full-width style-two" style="background: #f4f4f4">
@@ -28,7 +32,7 @@
                     <div class="table-responsive ">
                         <table class="table contact-form">
                             <tr>
-                                 <td class="sec-title"><h3><i class="fa fa-user" aria-hidden="true"></i> Profile</h3></td>
+                                 <td class="sec-title"><h3><i class="fa fa-user" aria-hidden="true"></i>My Profile</h3></td>
                                
                                 
                             </tr>

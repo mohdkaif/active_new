@@ -204,6 +204,12 @@ class FrontController extends Controller
                 $data['date_of_birth'] = $request->date_of_birth;
                 $data['email'] = isset($request->email)?$request->email:'';
                 $data['otp'] = 'SHDJS';
+                if ($file = $request->file('image')){
+                    $photo_name = time().$request->file('image')->getClientOriginalName();
+                    $file->move('assets/images/providers',$photo_name);
+                    $data['image'] = $photo_name;
+                   
+                }
                 $user = User::create($data);
 
                 $provider['bank_name']=$request->bank_name;                 
@@ -215,7 +221,7 @@ class FrontController extends Controller
                 $provider['distance_travel']=$request->distance_travel;           
                 $provider['long_distance_travel']=$request->long_distance_travel;      
                 $provider['term_condition']=$request->term_condition;  
-
+                $provider['service_id']=$request->service_id;  
                 if($request->file('document_high_school')){
                     $path = url('/assets/images/document/');
                     if(!File::exists($path)) {
@@ -436,5 +442,37 @@ class FrontController extends Controller
         $data['user'] = $user;
         
         return view('front.index',$data);
+    }
+
+     public function service(Request $request)
+    {
+       
+        $data['view']='front.service';
+        $user = _arefy(User::provider_list('single','id = '.\Auth::user()->id));
+        $data['service'] = _arefy(Service::where('service_sub_category_id',$user['provider_user']['service_id'])->get()->first());
+        $data['services'] = _arefy(Service::get());
+       
+        $data['user'] = $user;
+        
+        return view('front.index',$data);
+    }
+
+    public function updateService(Request $request)
+    {
+        $validation = new Validations($request);
+        $validator = $validation->updateService();
+        if ($validator->fails()){
+            $this->message = $validator->errors();
+        }else{
+           
+            $data['service_id'] = $request->service_id;
+            $user = ProviderUser::where('user_id', '=', \Auth::user()->id)->update($data);
+            $this->status   = true;
+            $this->alert    = true;
+            $this->message  = "Service Updated Successfully.";
+            $this->modal    = true;
+            $this->redirect = url('provider/dashboard');
+        }
+        return $this->populateresponse();
     }
 }

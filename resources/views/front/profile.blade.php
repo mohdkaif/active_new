@@ -36,7 +36,12 @@
            <div class="tab" role="tabpanel">
               <!-- Nav tabs -->
               <div class="col-md-3">
-                <img src="{{url('assets/images/user.png')}}">
+                @if(!empty($user['image']))
+                    <img src="{{url('assets/images/providers/'.$user['image'])}}">
+                  @else
+                    <img src="{{url('assets/images/user.png')}}">
+                  @endif
+                
               <ul class="nav nav-tabs" role="tablist">
                  <li role="presentation" class="active"><a href="#Section1" aria-controls="home" role="tab" data-toggle="tab"><i class="fa fa-user"></i><br>PROFILE </a></li>
                  <li role="presentation"><a href="#Section2" aria-controls="profile" role="tab" data-toggle="tab"><i class="fa fa-clock-o"></i><br>HISTORY </a></li>

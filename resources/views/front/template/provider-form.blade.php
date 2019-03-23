@@ -3,6 +3,7 @@
   <h2>Personal Information</h2>
   <form role="provider-signup" method="post" action="{{url('/signup')}}" >
     <div class="row">
+      
       <div class="form-group col-md-6">
         <label for="email">First Name:</label>
         <input type="text" name="first_name" placeholder="First Name *" class="form-control">
@@ -18,6 +19,16 @@
       <div class="form-group col-md-6">
         <label for="pwd">Email:</label>
         <input type="text" name="email" placeholder="Email *" class="form-control" >
+      </div>
+      <div class="form-group col-md-12">
+        <label for="email">Profile Picture:</label>
+       
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <input onchange="readURL(this)" id="uploadFile" accept="image/*" name="image" type="file" class="form-control">
+        </div>
+         <div class="col-md-6 col-sm-6 col-xs-12">
+           <img style="max-width: 250px;" src="{{asset('assets/images/avatar.png')}}" id="adminimg" alt="No Featured Image Added">
+        </div>
       </div>
 
       <div class="form-group col-md-6">
