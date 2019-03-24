@@ -9,3 +9,7 @@ provider dashboard
 
 ALTER TABLE `users` CHANGE `address` `address` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL;
 23-03-19
+
+ALTER TABLE `users` ADD `permanent_address` LONGTEXT NULL AFTER `state`, ADD `permanent_country` VARCHAR(255) NULL AFTER `permanent_address`, ADD `permanent_city` VARCHAR(255) NULL AFTER `permanent_country`;
+ALTER TABLE `users` ADD `permanent_state` VARCHAR(255) NULL AFTER `permanent_city`;
+24-03-19

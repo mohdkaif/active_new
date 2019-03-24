@@ -48,6 +48,7 @@ class Validate
 			'password'          	=> ['required','string','max:50'],
 			'c_password'          	=> ['required','same:password'],
 			'price'					=> ['required','numeric'],
+			'country'					=> ['nullable','numeric'],
 			'start_from'			=> ['required'],
 			'photo'					=> ['required','mimes:jpg,jpeg,png','max:2408'],
 			'photomimes'			=> ['mimes:jpg,jpeg,png','max:2408'],
@@ -59,6 +60,7 @@ class Validate
 			'slug_no_space'		    => ['required','alpha_dash','max:255'],
 			'password_check'	    => ['required'],
 			'file'					=> ['required','mimes:pdf'],
+			'document_file'		    => ['nullable','mimes:doc,docx,pdf,jpg,jpeg,png','max:5120'],
 			'newpassword'		    => ['required','max:10'],	
 			'child'		    		=> ['required','array','min:1'],	
 			'child_details'		    => ['required','string','distinct','min:1'],	
@@ -366,6 +368,67 @@ class Validate
 		    	}        
 		    });
 		}
+		
+		return $validator;
+	}
+	public function bankDetail()
+	{
+		
+			$validations = [
+				'user_id'						=> $this->validation('id'),
+	        	'bank_name'						=> $this->validation('name'),
+	        	'bank_account_number'			=> $this->validation('name'),
+	        	'bank_holder_name'				=> $this->validation('name'),
+	        	'bank_ifsc_code'				=> $this->validation('name'),
+	        
+	    	];
+
+		
+    	$validator = \Validator::make($this->data->all(), $validations,[
+    	]);
+		
+		return $validator;
+	}
+
+	public function updateAddress()
+	{
+		
+			$validations = [
+				'user_id'						=> $this->validation('id'),
+	        	'current_address'				=> $this->validation('address'),
+	        	'current_country'				=> $this->validation('name'),
+	        	'current_state'				    => $this->validation('name'),
+	        	'current_city'				    => $this->validation('name'),
+	        	'permanent_address'				=> $this->validation('last_name'),
+	        	'permanent_country'			    => $this->validation('country'),
+	        	'permanent_state'				=> $this->validation('country'),
+	        	'permanent_city'				=> $this->validation('country'),
+	        
+	    	];
+
+		
+    	$validator = \Validator::make($this->data->all(), $validations,[
+    	]);
+		
+		return $validator;
+	}
+
+	public function addDocuments()
+	{
+		
+			$validations = [
+				'user_id'						=> $this->validation('id'),
+	        	'document_high_school'			=> $this->validation('document_file'),
+	        	'document_graduation'			=> $this->validation('document_file'),
+	        	'document_post_graduation'		=> $this->validation('document_file'),
+	        	'document_adhar_card'			=> $this->validation('document_file'),
+	        	'document_other'				=> $this->validation('document_file'),
+	        
+	    	];
+
+		
+    	$validator = \Validator::make($this->data->all(), $validations,[
+    	]);
 		
 		return $validator;
 	}
