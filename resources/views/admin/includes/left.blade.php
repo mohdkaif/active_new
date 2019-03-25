@@ -59,6 +59,12 @@
                           </a>
                           <ul class="nav nav-treeview">
                               <li class="nav-item">
+                                <a href="{{url('admin/category')}}" class="nav-link active">
+                                  <i class="fa fa-circle-o nav-icon"></i>
+                                  <p>Service Category</p>
+                                </a>
+                              </li>
+                              <li class="nav-item">
                                 <a href="service_sub_category.php" class="nav-link active">
                                   <i class="fa fa-circle-o nav-icon"></i>
                                   <p>Service Sub Category</p>

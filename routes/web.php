@@ -70,4 +70,7 @@ Route::group(['namespace' => 'Admin','prefix' => 'admin', 'middleware' => ['admi
 	Route::post('provider/updatestatus','ProviderController@updatestatus');
 	Route::resource('provider','ProviderController');
 
+	//Category Controller
+	Route::resource('category','CategoryController');
+
 });

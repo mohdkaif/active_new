@@ -8,4 +8,5 @@ provider dashboard
 22/03/2019
 
 ALTER TABLE `users` CHANGE `address` `address` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL;
-23-03-19
+24-03-19
+ALTER TABLE `service_category` ADD `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `service_category_name`, ADD `updated_at` TIMESTAMP on update CURRENT_TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `created_at`;

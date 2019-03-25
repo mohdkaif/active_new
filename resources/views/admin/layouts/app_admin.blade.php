@@ -3,11 +3,12 @@
     <head>
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-        <meta http-equiv="Content-type" content="text/html;" charset=utf-8">
+        <meta http-equiv="Content-type" content="text/html;" charset="utf-8">
         <meta content="" name="description"/>
         <meta content="" name="author"/>
         <meta name="_token" content="{{ csrf_token() }}">
         <title>ACTIVE BACCHA ADMIN</title>
+
       <link rel="stylesheet" href="{{url('plugins/font-awesome/css/font-awesome.min.css')}}">
   <!-- Ionicons -->
       <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
@@ -30,6 +31,7 @@
       <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
      <link rel="stylesheet" type="text/css" href="{{asset('assets/css/select2.min.css') }}">
       <link rel="stylesheet" type="text/css" href="{{asset('assets/css/sweetalert2.css') }}" rel="stylesheet">
+      <link rel="stylesheet" href="{{url('assets/admin/custom.css')}}">
     @yield('css')
     </head>
     <body class="hold-transition sidebar-mini"> 
