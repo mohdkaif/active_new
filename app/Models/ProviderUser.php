@@ -28,4 +28,16 @@ class ProviderUser extends Authenticatable
                 
         return (bool)$isUpdated;
     }
+
+     public static function changeUserDetails($userID,$data){
+        $isUpdated = false;
+        $table_course = \DB::table('provider_user');
+        if(!empty($data)){
+            $table_course->where('user_id','=',$userID);
+            $isUpdated = $table_course->update($data); 
+        }
+                
+        return (bool)$isUpdated;
+    }
+    
 }

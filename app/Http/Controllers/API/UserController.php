@@ -523,4 +523,192 @@ class UserController extends Controller
         }
         return $this->populateresponse();
     }
+
+     public function addBankDetail(Request $request)
+    {
+        $validation = new Validations($request);
+        $validator = $validation->bankDetail();
+        if ($validator->fails()){
+            $this->message = $validator->errors();
+        }else{
+                
+                $provider['bank_name']=$request->bank_name;                 
+                $provider['bank_account_number']=$request->bank_account_number;              
+                $provider['bank_holder_name']=$request->bank_holder_name;          
+                $provider['bank_ifsc_code']=$request->bank_ifsc_code;            
+                $user_id = $request->user_id;
+                
+                $user = ProviderUser::changeUserDetails($user_id,$provider);
+               
+/*
+                $subject = "Reset Password Request";
+                $msg = "Your OTP is : ".$autopass;
+                $emailData               = ___email_settings();
+                $emailData['name']       = $user->name; //!empty($request->name)?$request->name:'';
+                $emailData['email']      = !empty($request->email)?$request->email:'';
+                $emailData['subject']    = 'Reset Password Request';
+                $emailData['password']    = !empty($autopass)?$autopass:'';
+                $emailData['date']       = date('Y-m-d H:i:s');
+
+                $emailData['custom_text'] = 'Your Enquiry has been submitted successfully';
+                $mailSuccess = ___mail_sender($emailData['email'],$request->name,"forgot_password",$emailData);
+               
+       
+               */
+                $success['success'] =  'success';
+                $this->status   = true;
+                $response = new Response($success);
+                $this->jsondata = $response->api_common_response();
+                $this->message = "Provider's Bank Details Added Successfully.";
+               
+            
+        }
+        return $this->populateresponse();
+    }
+
+    public function addDocuments(Request $request)
+    {
+        $validation = new Validations($request);
+        $validator = $validation->addDocuments();
+        if ($validator->fails()){
+            $this->message = $validator->errors();
+        }else{
+                
+                if($request->file('document_high_school')){
+                    $path = url('/assets/images/document/');
+                    if(!File::exists($path)) {
+                        File::makeDirectory($path, $mode = 0777, true);
+                    }
+                    $image       = $request->file('document_high_school');
+                    $document_high_school    = time().$image->getClientOriginalName();
+                    $image = Image::make($image->getRealPath());              
+                    $image->save('assets/images/document/' .$document_high_school);
+                    $provider['document_high_school'] = $document_high_school;
+                }   
+
+                if($request->file('document_graduation')){
+                    $path = url('/assets/images/document/');
+                    if(!File::exists($path)) {
+                        File::makeDirectory($path, $mode = 0777, true);
+                    }
+                    $image       = $request->file('document_graduation');
+                    $document_graduation    = time().$image->getClientOriginalName();
+                    $image = Image::make($image->getRealPath());              
+                    $image->save('assets/images/document/' .$document_graduation);
+                    $provider['document_graduation'] = $document_graduation;
+                }       
+                if($request->file('document_post_graduation')){
+                    $path = url('/assets/images/document/');
+                    if(!File::exists($path)) {
+                        File::makeDirectory($path, $mode = 0777, true);
+                    }
+                    $image       = $request->file('document_post_graduation');
+                    $document_post_graduation    = time().$image->getClientOriginalName();
+                    $image = Image::make($image->getRealPath());              
+                    $image->save('assets/images/document/' .$document_post_graduation);
+                    $provider['document_post_graduation'] = $document_post_graduation;
+                } 
+                if($request->file('document_adhar_card')){
+                    $path = url('/assets/images/document/');
+                    if(!File::exists($path)) {
+                        File::makeDirectory($path, $mode = 0777, true);
+                    }
+                    $image       = $request->file('document_adhar_card');
+                    $document_adhar_card    = time().$image->getClientOriginalName();
+                    $image = Image::make($image->getRealPath());              
+                    $image->save('assets/images/document/' .$document_adhar_card);
+                    $provider['document_adhar_card'] = $document_adhar_card;
+                }
+
+                if($request->file('document_other')){
+                    $path = url('/assets/images/document/');
+                    if(!File::exists($path)) {
+                        File::makeDirectory($path, $mode = 0777, true);
+                    }
+                    $image       = $request->file('document_other');
+                    $document_other    = time().$image->getClientOriginalName();
+                    $image = Image::make($image->getRealPath());              
+                    $image->save('assets/images/document/' .$document_other);
+                    $provider['document_other'] = $document_other;
+                }            
+                $user_id = $request->user_id;
+                if(!empty($provider)){
+
+                    $user = ProviderUser::changeUserDetails($user_id,$provider);
+                }
+               
+/*
+                $subject = "Reset Password Request";
+                $msg = "Your OTP is : ".$autopass;
+                $emailData               = ___email_settings();
+                $emailData['name']       = $user->name; //!empty($request->name)?$request->name:'';
+                $emailData['email']      = !empty($request->email)?$request->email:'';
+                $emailData['subject']    = 'Reset Password Request';
+                $emailData['password']    = !empty($autopass)?$autopass:'';
+                $emailData['date']       = date('Y-m-d H:i:s');
+
+                $emailData['custom_text'] = 'Your Enquiry has been submitted successfully';
+                $mailSuccess = ___mail_sender($emailData['email'],$request->name,"forgot_password",$emailData);
+               
+       
+               */
+                $success['success'] =  'success';
+                $this->status   = true;
+                $response = new Response($success);
+                $this->jsondata = $response->api_common_response();
+                $this->message = "Provider's Documents Added Successfully.";
+               
+            
+        }
+        return $this->populateresponse();
+    }
+
+     public function updateAddress(Request $request)
+    {
+        $validation = new Validations($request);
+        $validator = $validation->updateAddress();
+        if ($validator->fails()){
+            $this->message = $validator->errors();
+        }else{
+                
+                $data['address']=$request->current_address;         
+                $data['country']=$request->current_country;                   
+                $data['state']=$request->current_state;                     
+                $data['city']=$request->current_city;
+                $data['permanent_address']=$request->permanent_address;         
+                $data['permanent_country']=$request->permanent_country;                   
+                $data['permanent_state']=$request->permanent_state;                     
+                $data['permanent_city']=$request->permanent_city;
+                $user_id = $request->user_id;
+                if(!empty($data)){
+
+                    $user = User::change($user_id,$data);
+                }
+               
+/*
+                $subject = "Reset Password Request";
+                $msg = "Your OTP is : ".$autopass;
+                $emailData               = ___email_settings();
+                $emailData['name']       = $user->name; //!empty($request->name)?$request->name:'';
+                $emailData['email']      = !empty($request->email)?$request->email:'';
+                $emailData['subject']    = 'Reset Password Request';
+                $emailData['password']    = !empty($autopass)?$autopass:'';
+                $emailData['date']       = date('Y-m-d H:i:s');
+
+                $emailData['custom_text'] = 'Your Enquiry has been submitted successfully';
+                $mailSuccess = ___mail_sender($emailData['email'],$request->name,"forgot_password",$emailData);
+               
+       
+               */
+                $success['success'] =  'success';
+                $this->status   = true;
+                $response = new Response($success);
+                $this->jsondata = $response->api_common_response();
+                $this->message = "Address Details Updated Successfully.";
+               
+            
+        }
+        return $this->populateresponse();
+    }
+
 }
