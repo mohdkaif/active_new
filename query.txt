@@ -16,4 +16,5 @@ ALTER TABLE `users` ADD `permanent_state` VARCHAR(255) NULL AFTER `permanent_cit
 24-03-19
 
 ALTER TABLE `service_category` ADD `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `service_category_name`, ADD `updated_at` TIMESTAMP on update CURRENT_TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `created_at`;
-
+ALTER TABLE `service_category` ADD `status` ENUM('active','inactive') NOT NULL DEFAULT 'active' AFTER `service_category_name`;
+ALTER TABLE `service_category` ADD `deleted_at` TIMESTAMP NULL AFTER `updated_at`;

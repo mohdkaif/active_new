@@ -34,26 +34,26 @@ class CategoryController extends Controller
                     $html    = '<div class="edit_details_box">';
                     $html   .= '<a href="'.url(sprintf('admin/category/%s/edit',___encrypt($item['service_category_id']))).'" title="Edit Category"><i class="fa  fa-edit"></i></a>|';
                      $html   .= '<a href="javascript:void(0);" 
-                  data-url="'.url(sprintf('admin/category/status/?id=%s&status=trashed',$item['service_category_id'])).'"
+                  data-url="'.url(sprintf('admin/category/deleterecord/?id=%s&status=trashed',$item['service_category_id'])).'"
                   data-ask="'.sprintf('Are You Sure to delete %s category?',$item['service_category_name']).'" data-ask_image="'.url('images/delete-user.png').'"data-request="ajax-confirm" title="Delete Category"><i class="fa fa-trash fa-lg" aria-hidden="true" style="color:red;"></i></a> | ';
                     $html   .= '</div>';
                     return $html;
                 })
 
-/*                ->editColumn('status',function($item){
+                ->editColumn('status',function($item){
                 $spanhtml   = __showSpan($item['status']);
                  if($item['status']=='active'){
                   $html   = '<a href="javascript:void(0);" 
-                  data-url="'.url(sprintf('admin/category/status/?id=%s&status=inactive',$item['id'])).'"
-                  data-ask="'.sprintf(INACTIVE_MSG,$item['category_name'] ).'" data-ask_image="'.url('images/inactive-user.png').'"data-request="ajax-confirm" title="Update Status">'.$spanhtml.'</a>';  
+                  data-url="'.url(sprintf('admin/category/status/?id=%s&status=inactive',$item['service_category_id'])).'"
+                  data-ask="'.sprintf(INACTIVE_MSG,$item['service_category_name'] ).'" data-ask_image="'.url('images/inactive-user.png').'"data-request="ajax-confirm" title="Update Status">'.$spanhtml.'</a>';  
                 }elseif($item['status']=='inactive'){
                   $html   = '<a href="javascript:void(0);" 
-                  data-url="'.url(sprintf('admin/category/status/?id=%s&status=active',$item['id'])).'"
-                  data-ask="'.sprintf(ACTIVE_MSG,$item['category_name']).'" data-ask_image="'.url('images/active-user.png').'"data-request="ajax-confirm" title="Update Status">'.$spanhtml.'</a>';  
+                  data-url="'.url(sprintf('admin/category/status/?id=%s&status=active',$item['service_category_id'])).'"
+                  data-ask="'.sprintf(ACTIVE_MSG,$item['service_category_name']).'" data-ask_image="'.url('images/active-user.png').'"data-request="ajax-confirm" title="Update Status">'.$spanhtml.'</a>';  
 
                 }
             return $html;
-                })*/
+                })
                 ->rawColumns(['action','image','status'])
                 ->make(true);
         }
@@ -62,6 +62,7 @@ class CategoryController extends Controller
                 "dom" => "<'row' <'col-md-6 col-sm-12 col-xs-4'l><'col-md-6 col-sm-12 col-xs-4'f>><'row filter'><'row white_box_wrapper database_table table-responsive'rt><'row' <'col-md-6'i><'col-md-6'p>>",
             ])
             ->addColumn(['data' => 'service_category_name', 'name' => 'service_category_name','title' => 'Category Name','orderable' => true, 'width' => 120])
+            ->addColumn(['data'=>'status','name'=>'status','title'=>'Status','orderable'=> true,'width'=> 120])
             ->addColumn(['data'=>'created_at','name'=>'created_at','title'=>'Created At','orderable'=> true,'width'=> 120])
             ->addAction(['title'=>'Action','orderable'=>false,'width'=>120]);
         return view('admin.index')->with($data);
@@ -75,7 +76,6 @@ class CategoryController extends Controller
     public function create()
     {
         $data['view']='admin.category.add';
-        $data['user']=_arrayfy(User::where('user_type','provider')->get());
         return view('admin.index',$data);
     }
 
@@ -113,7 +113,7 @@ class CategoryController extends Controller
      */
     public function show($id)
     {
-        //
+
     }
 
     /**
@@ -124,7 +124,10 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        //
+        $service_category_id          = ___decrypt($id);
+        $data['details']              = _arefy(ServiceCategory::listing('single','*',"service_category_id=$service_category_id"));
+        $data['view']                 ='admin.category.edit';
+        return view('admin.index',$data);
     }
 
     /**
@@ -153,7 +156,7 @@ class CategoryController extends Controller
 
     public function updatestatus(Request $request){
         $data                   = ['status'=>$request->status,'updated_at'=>date('Y-m-d H:i:s')];
-        $isUpdated              = User::updateStatus($request->id,$data);
+        $isUpdated              = ServiceCategory::updateStatus($request->id,$data);
         if($isUpdated){
             $this->status       = true;
             $this->redirect     = true;
@@ -161,4 +164,16 @@ class CategoryController extends Controller
         }
         return $this->populateresponse();
     }
+
+    public function deleterecord(Request $request){
+        $isDeleted = ServiceCategory::find($request->id)->delete();
+        if($isDeleted){
+            $this->status       = true;
+            $this->redirect     = true;
+            $this->jsondata     = [];
+        }
+        return $this->populateresponse();
+    
+    }
+
 }

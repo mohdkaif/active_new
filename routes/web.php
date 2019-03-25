@@ -71,6 +71,8 @@ Route::group(['namespace' => 'Admin','prefix' => 'admin', 'middleware' => ['admi
 	Route::resource('provider','ProviderController');
 
 	//Category Controller
+	Route::post('category/deleterecord','CategoryController@deleterecord');
+	Route::post('category/status','CategoryController@updatestatus');
 	Route::resource('category','CategoryController');
 
 });

@@ -898,5 +898,30 @@
         die();
     }
 
+    function ___case($text,$type=''){
+        if($type=='l'){
+            return strtolower($text);
+        }elseif($type=='u'){
+            return strtoupper($text);
+        }elseif ($type=='uw'){
+            return ucwords($text);
+        }else{
+            return ucfirst($text);
+        }
+    }
+
+    function __showSpan($status){
+        $html = '<span class="label %s">%s</span>';
+        if(ucfirst($status)=='Active'){
+            $label = "label-success";
+        }elseif (ucfirst($status)=='Inactive'){
+            $label = "label-danger";
+        }else{
+            $label = "label-default";
+        }
+        $html = sprintf($html, $label,___case($status));
+        return $html;
+    }
+
 
 ?>

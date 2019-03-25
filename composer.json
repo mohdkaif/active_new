@@ -46,7 +46,8 @@
             "Helper\\":"app/Helper"
         },
         "files": [
-      "app/Helper/apphelper.php"
+      "app/Helper/apphelper.php",
+      "app/Helper/constant.php"
         ],
   
         "classmap": [
