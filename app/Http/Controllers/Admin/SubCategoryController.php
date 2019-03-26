@@ -6,10 +6,11 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
 use Models\ServiceCategory;
+use Models\ServiceSubCategory;
 use Yajra\DataTables\DataTables;
 use Yajra\DataTables\Html\Builder;
-use Validations\CategoryValidation as Validations;
-class CategoryController extends Controller
+use Validations\SubCategoryValidation as Validations;
+class SubCategoryController extends Controller
 {
 
     public function __construct(Request $request)
@@ -23,11 +24,13 @@ class CategoryController extends Controller
      */
     public function index(Request $request, Builder $builder)
     {
-        $data['site_title'] = $data['page_title'] = 'Category List';
-        $data['menu']       = 'category-list';
-        $data['breadcrumb'] = '<ul class="page-breadcrumb breadcrumb"><li><a href="'.url('/').'"><i class="fa fa-home" style="font-size:12px;"></i> Home</a><i class="fa fa-circle"></i></li><li> &nbsp;<a href="">Category</a></li></ul>';
-        $data['view']       = 'admin.category.list';
-        $category           = _arefy(ServiceCategory::all());
+        $data['site_title'] = $data['page_title'] = 'Sub Category';
+        $data['breadcrumb'] = '<ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="'.url('admin/dashboard').'">Home</a></li>
+              <li class="breadcrumb-item active">Sub Category</li></ol>';
+        $data['view']       = 'admin.subcategory.list';
+        $category           = _arefy(ServiceSubCategory::listing('array','*'));
+        _dd($category);
         if ($request->ajax()) {
             return DataTables::of($category)
                 ->editColumn('action',function($item){
@@ -76,7 +79,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        $data['view']='admin.category.add';
+        $data['view']='admin.subcategory.add';
         return view('admin.index',$data);
     }
 
@@ -88,7 +91,7 @@ class CategoryController extends Controller
      */
     public function store(Request $request){
         $validation = new Validations($request);
-        $validator   = $validation->createCategory();
+        $validator   = $validation->createSubCategory();
         if($validator->fails()){
             $this->message = $validator->errors();
         }else{
@@ -127,7 +130,7 @@ class CategoryController extends Controller
     {
         $service_category_id          = ___decrypt($id);
         $data['details']              = _arefy(ServiceCategory::listing('single','*',"service_category_id=$service_category_id"));
-        $data['view']                 ='admin.category.edit';
+        $data['view']                 ='admin.subcategory.edit';
         return view('admin.index',$data);
     }
 
@@ -143,7 +146,7 @@ class CategoryController extends Controller
         $id          = ___decrypt($id);
         $request->id = $id;
         $validation  = new Validations($request);
-        $validator   = $validation->updateCategory();
+        $validator   = $validation->updateSubCategory();
         if($validator->fails()){
             $this->message = $validator->errors();
         }else{
@@ -154,7 +157,7 @@ class CategoryController extends Controller
                 $this->modal    = true;
                 $this->alert    = true;
                 $this->message  = "Category updated successfully.";
-                $this->redirect = url('admin/category');
+                $this->redirect = url('admin/subcategory');
             }
         }
         return $this->populateresponse();

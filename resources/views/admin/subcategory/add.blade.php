@@ -6,7 +6,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Edit Service Category</h1>
+            <h1>Add Service Category</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -25,7 +25,7 @@
           <div class="card card-info card-outline">
             <div class="card-header">
               <h3 class="card-title">
-               Edit
+               Add 
                 <small></small>
               </h3>
               <!-- tools box -->
@@ -48,13 +48,12 @@
             <!-- /.card-header -->
              
             <div class="card-body">
-                <form  method="post" role="update" action="{{url('admin/category/'.___encrypt($details['service_category_id']))}}">
-                  <input type="hidden" name="_method" value="PUT">
+                <form  method="post" role="add" action="{{url('admin/category')}}">
                   
                       <div class="form-group">
                         <label class="col-sm-2 control-label">Category Name</label>
                         <div class="col-sm-10">
-                           <input type="text" name="service_category_name"  class="form-control" value="{{$details['service_category_name']}}">
+                           <input type="text" name="service_category_name"  class="form-control">
                         </div>
                       </div>
                      
@@ -62,7 +61,7 @@
                      
                       <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
-                          <button type="button"  data-request="ajax-submit" data-target='[role="update"]'  class="btn btn-success btn-flat">Submit</button>
+                          <button type="button"  data-request="ajax-submit" data-target='[role="add"]'  class="btn btn-success btn-flat">Submit</button>
                           <a href="{{url('admin/category')}}">
                             <input type="button" class="btn btn-info btn-flat" value="Back" style="margin-left:10px;">
                           </a>

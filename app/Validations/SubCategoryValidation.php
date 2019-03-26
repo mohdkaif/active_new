@@ -4,7 +4,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\MessageBag;
 
-class CategoryValidation{
+class SubCategoryValidation{
 	protected $data;
 	public function __construct($data){
 		$this->data = $data;
