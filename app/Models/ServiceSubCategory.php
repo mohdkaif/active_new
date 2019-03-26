@@ -11,8 +11,8 @@ class ServiceSubCategory extends Model
 
     use SoftDeletes;
 
-    protected $table = 'service_sub_category';
-    protected $primaryKey = 'service_category_id';
+    protected $table      = 'service_sub_category';
+    protected $primaryKey = 'service_sub_category_id';
 
     public function category(){
         return $this->hasOne('Models\ServiceCategory', 'service_category_id', 'service_category_id');

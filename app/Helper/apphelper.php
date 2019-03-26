@@ -898,7 +898,7 @@
         die();
     }
 
-    function ___case($text,$type=''){
+    function _case($text,$type=''){
         if($type=='l'){
             return strtolower($text);
         }elseif($type=='u'){
@@ -910,7 +910,7 @@
         }
     }
 
-    function __showSpan($status){
+    function _showSpan($status){
         $html = '<span class="label %s">%s</span>';
         if(ucfirst($status)=='Active'){
             $label = "label-success";
@@ -919,9 +919,11 @@
         }else{
             $label = "label-default";
         }
-        $html = sprintf($html, $label,___case($status));
+        $html = sprintf($html, $label,_case($status));
         return $html;
     }
+
+
 
 
 ?>

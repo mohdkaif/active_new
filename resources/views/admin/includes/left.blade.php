@@ -21,22 +21,21 @@
           <!-- Add icons to the links using the .nav-icon class
 
                with font-awesome or any other icon font library -->
-        
                          <li class="nav-item">
-                          <a href="index.php" class="nav-link active">
+                          <a href="{{ route('dashboard') }}" class="nav-link  @if (in_array(Request::segment(2),['dashboard'])) active @endif">
                             <i class="fa fa-dashboard nav-icon"></i>
                             <p>Dashboard</p>
                           </a>
                         </li>
                         
                        <li class="nav-item">
-                        <a href="{{ route('states.index') }}" class="nav-link">
+                        <a href="{{ route('states.index') }}" class="nav-link  @if (in_array(Request::segment(2),['states'])) active @endif">
                         <i class="fa fa-globe nav-icon"></i>
                         <p>State</p>
                         </a>
                       </li>
                          <li class="nav-item">
-                            <a href="city.php" class="nav-link active">
+                            <a href="city.php" class="nav-link">
                             <i class="fa fa-globe nav-icon"></i>
                             <p>City</p>
                             </a>
@@ -50,7 +49,7 @@
                         </li> --}}
 
                         <li class="nav-item has-treeview ">
-                          <a href="#" class="nav-link">
+                          <a href="#" class="nav-link @if (in_array(Request::segment(2),['category','subcategory'])) active @endif">
                             <i class="nav-icon fa fa-tags"></i>
                             <p>
                               Category
@@ -59,13 +58,13 @@
                           </a>
                           <ul class="nav nav-treeview">
                               <li class="nav-item">
-                                <a href="{{url('admin/category')}}" class="nav-link active">
+                                <a href="{{url('admin/category')}}" class="nav-link @if (in_array(Request::segment(2),['category'])) active @endif">
                                   <i class="fa fa-circle-o nav-icon"></i>
                                   <p>Service Category</p>
                                 </a>
                               </li>
                               <li class="nav-item">
-                                <a href="{{url('admin/subcategory')}}" class="nav-link active">
+                                <a href="{{url('admin/subcategory')}}" class="nav-link @if (in_array(Request::segment(2),['subcategory'])) active @endif">
                                   <i class="fa fa-circle-o nav-icon"></i>
                                   <p>Service Sub Category</p>
                                 </a>

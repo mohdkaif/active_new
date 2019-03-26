@@ -29,33 +29,41 @@ class SubCategoryController extends Controller
               <li class="breadcrumb-item"><a href="'.url('admin/dashboard').'">Home</a></li>
               <li class="breadcrumb-item active">Sub Category</li></ol>';
         $data['view']       = 'admin.subcategory.list';
-        $category           = _arefy(ServiceSubCategory::listing('array','*'));
-        _dd($category);
+        $subcategory        = _arefy(ServiceSubCategory::listing('array','*'));
+        /*_dd($category);*/
         if ($request->ajax()) {
-            return DataTables::of($category)
+            return DataTables::of($subcategory)
                 ->editColumn('action',function($item){
                     $html    = '<div class="edit_details_box">';
-                    $html   .= '<a href="'.url(sprintf('admin/category/%s/edit',___encrypt($item['service_category_id']))).'" title="Edit Category"><i class="fa  fa-edit"></i></a>|';
+                    $html   .= '<a href="'.url(sprintf('admin/subcategory/%s/edit',___encrypt($item['service_sub_category_id']))).'" title="Edit Category"><i class="fa  fa-edit"></i></a>|';
                      $html   .= '<a href="javascript:void(0);" 
-                  data-url="'.url(sprintf('admin/category/deleterecord/?id=%s&status=trashed',$item['service_category_id'])).'"
-                  data-ask="'.sprintf('Are You Sure to delete %s category?',$item['service_category_name']).'" data-ask_image="'.url('images/delete-user.png').'"data-request="ajax-confirm" title="Delete Category"><i class="fa fa-trash fa-lg" aria-hidden="true" style="color:red;"></i></a> | ';
+                  data-url="'.url(sprintf('admin/subcategory/deleterecord/?id=%s&status=trashed',$item['service_sub_category_id'])).'"
+                  data-ask="'.sprintf('Are You Sure to delete %s subcategory?',$item['service_sub_category_name']).'" data-ask_image="'.url('images/delete-user.png').'"data-request="ajax-confirm" title="Delete Category"><i class="fa fa-trash fa-lg" aria-hidden="true" style="color:red;"></i></a> | ';
                     $html   .= '</div>';
                     return $html;
                 })
 
                 ->editColumn('status',function($item){
-                $spanhtml   = __showSpan($item['status']);
+                $spanhtml   = _showSpan($item['status']);
                  if($item['status']=='active'){
                   $html   = '<a href="javascript:void(0);" 
-                  data-url="'.url(sprintf('admin/category/status/?id=%s&status=inactive',$item['service_category_id'])).'"
-                  data-ask="'.sprintf(INACTIVE_MSG,$item['service_category_name'] ).'" data-ask_image="'.url('images/inactive-user.png').'"data-request="ajax-confirm" title="Update Status">'.$spanhtml.'</a>';  
+                  data-url="'.url(sprintf('admin/subcategory/status/?id=%s&status=inactive',$item['service_sub_category_id'])).'"
+                  data-ask="'.sprintf(INACTIVE_MSG,$item['service_sub_category_name'] ).'" data-ask_image="'.url('images/inactive-user.png').'"data-request="ajax-confirm" title="Update Status">'.$spanhtml.'</a>';  
                 }elseif($item['status']=='inactive'){
                   $html   = '<a href="javascript:void(0);" 
-                  data-url="'.url(sprintf('admin/category/status/?id=%s&status=active',$item['service_category_id'])).'"
-                  data-ask="'.sprintf(ACTIVE_MSG,$item['service_category_name']).'" data-ask_image="'.url('images/active-user.png').'"data-request="ajax-confirm" title="Update Status">'.$spanhtml.'</a>';  
+                  data-url="'.url(sprintf('admin/subcategory/status/?id=%s&status=active',$item['service_sub_category_id'])).'"
+                  data-ask="'.sprintf(ACTIVE_MSG,$item['service_sub_category_name']).'" data-ask_image="'.url('images/active-user.png').'"data-request="ajax-confirm" title="Update Status">'.$spanhtml.'</a>';  
 
                 }
             return $html;
+                })
+                ->editColumn('subcategory',function($item){
+                  return _case($item['service_sub_category_name'],'u');
+
+                })
+                ->editColumn('category',function($item){
+                  return _case($item['category']['service_category_name'],'u');
+
                 })
                 ->rawColumns(['action','image','status'])
                 ->make(true);
@@ -64,7 +72,8 @@ class SubCategoryController extends Controller
             ->parameters([
                 "dom" => "<'row' <'col-md-6 col-sm-12 col-xs-4'l><'col-md-6 col-sm-12 col-xs-4'f>><'row filter'><'row white_box_wrapper database_table table-responsive'rt><'row' <'col-md-6'i><'col-md-6'p>>",
             ])
-            ->addColumn(['data' => 'service_category_name', 'name' => 'service_category_name','title' => 'Category Name','orderable' => true, 'width' => 120])
+            ->addColumn(['data' => 'subcategory', 'name' => 'subcategory','title' => 'Sub Category Name','orderable' => true, 'width' => 120])
+            ->addColumn(['data'=>'category','name'=>'category','title'=>'Category','orderable'=> true,'width'=> 120])
             ->addColumn(['data'=>'status','name'=>'status','title'=>'Status','orderable'=> true,'width'=> 120])
             ->addColumn(['data'=>'created_at','name'=>'created_at','title'=>'Created At','orderable'=> true,'width'=> 120])
             ->addColumn(['data'=>'updated_at','name'=>'updated_at','title'=>'Updated At','orderable'=> true,'width'=> 120])
@@ -79,7 +88,8 @@ class SubCategoryController extends Controller
      */
     public function create()
     {
-        $data['view']='admin.subcategory.add';
+        $data['view']     ='admin.subcategory.add';
+        $data['category'] = ServiceCategory::listing('array','*',"status='active'");
         return view('admin.index',$data);
     }
 
@@ -95,14 +105,15 @@ class SubCategoryController extends Controller
         if($validator->fails()){
             $this->message = $validator->errors();
         }else{
-            $data['service_category_name'] = $request->service_category_name;
-            $isadded                       = ServiceCategory::add($data);
+            $data['service_category_id']       = $request->service_category_name;
+            $data['service_sub_category_name'] = $request->service_sub_category_name;
+            $isadded                           = ServiceSubCategory::add($data);
             if($isadded){
                 $this->status   = true;
                 $this->modal    = true;
                 $this->alert    = true;
-                $this->message  = "Category  has been added successfully.";
-                $this->redirect = url('admin/category');
+                $this->message  = "Sub Category added successfully.";
+                $this->redirect = url('admin/subcategory');
             }
         }
         return $this->populateresponse();
@@ -128,8 +139,9 @@ class SubCategoryController extends Controller
      */
     public function edit($id)
     {
-        $service_category_id          = ___decrypt($id);
-        $data['details']              = _arefy(ServiceCategory::listing('single','*',"service_category_id=$service_category_id"));
+        $service_sub_category_id      = ___decrypt($id);
+        $data['details']              = _arefy(ServiceSubCategory::listing('single','*',"service_sub_category_id=$service_sub_category_id"));
+        $data['category']             = ServiceCategory::all();
         $data['view']                 ='admin.subcategory.edit';
         return view('admin.index',$data);
     }
@@ -150,13 +162,14 @@ class SubCategoryController extends Controller
         if($validator->fails()){
             $this->message = $validator->errors();
         }else{
-            $data['service_category_name'] = $request->service_category_name;
-            $isadded                       = ServiceCategory::change($id,$data);
+            $data['service_category_id']       = $request->service_category_name;
+            $data['service_sub_category_name'] = $request->service_sub_category_name;
+            $isadded                           = ServiceSubCategory::change($id,$data);
             if($isadded){
                 $this->status   = true;
                 $this->modal    = true;
                 $this->alert    = true;
-                $this->message  = "Category updated successfully.";
+                $this->message  = "Sub Category updated successfully.";
                 $this->redirect = url('admin/subcategory');
             }
         }
@@ -177,7 +190,7 @@ class SubCategoryController extends Controller
 
     public function updatestatus(Request $request){
         $data                   = ['status'=>$request->status,'updated_at'=>date('Y-m-d H:i:s')];
-        $isUpdated              = ServiceCategory::updateStatus($request->id,$data);
+        $isUpdated              = ServiceSubCategory::updateStatus($request->id,$data);
         if($isUpdated){
             $this->status       = true;
             $this->redirect     = true;
@@ -187,7 +200,7 @@ class SubCategoryController extends Controller
     }
 
     public function deleterecord(Request $request){
-        $isDeleted = ServiceCategory::find($request->id)->delete();
+        $isDeleted = ServiceSubCategory::find($request->id)->delete();
         if($isDeleted){
             $this->status       = true;
             $this->redirect     = true;

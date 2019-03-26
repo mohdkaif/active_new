@@ -11,14 +11,16 @@ class SubCategoryValidation{
 	}
 
 
-	public function createCategory(){
+	public function createSubCategory(){
 		$validations = [
-            'service_category_name'  => ['required','unique:service_category'],
+            'service_category_name'      => ['required'],
+            'service_sub_category_name'  => ['required','unique:service_sub_category'],
     	];
     	
         $validator = \Validator::make($this->data->all(), $validations,[
-            'service_category_name.required'   => 'Please Enter Category Name.',
-            'service_category_name.unique'     => 'Category Already Exist.'
+            'service_category_name.required'       => 'Please Select Service Category.' ,
+            'service_sub_category_name.required'   => 'Please Enter Sub Category Name.',
+            'service_sub_category_name.unique'     => 'Sub Category Already Exist.'
 
 
 
@@ -26,14 +28,16 @@ class SubCategoryValidation{
         return $validator;	
 	}
 
-	public function updateCategory(){
+	public function updateSubCategory(){
 		$validations = [
-            'service_category_name'  => ['required',Rule::unique('service_category')->ignore($this->data->id, 'service_category_id')],
+            'service_category_name'      => ['required'],
+            'service_sub_category_name'  => ['required',Rule::unique('service_sub_category')->ignore($this->data->id,'service_sub_category_id')],
     	];
     	
         $validator = \Validator::make($this->data->all(), $validations,[
-            'service_category_name.required'   => 'Please Enter Category Name.',
-            'service_category_name.unique'     => 'Category Already Exist.'
+            'service_category_name.required'       => 'Please Select Service Category.' ,
+            'service_sub_category_name.required'   => 'Please Enter Sub Category Name.',
+            'service_sub_category_name.unique'     => 'Sub Category Already Exist.'
 
 
         ]);

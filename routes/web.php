@@ -60,7 +60,7 @@ Route::post('admin/authenticate','Admin\LoginController@validateLogin')->name('a
 Route::get('admin/logout','Admin\LoginController@logout')->name('admin.logout');
 
 Route::group(['namespace' => 'Admin','prefix' => 'admin', 'middleware' => ['adminAuth']] ,function(){
-	Route::get('dashboard', 'LoginController@dashboard');
+	Route::get('dashboard', 'LoginController@dashboard')->name('dashboard');
 
 	//state	
 	Route::get('states/table/','StateController@datatableView')->name('states.table');

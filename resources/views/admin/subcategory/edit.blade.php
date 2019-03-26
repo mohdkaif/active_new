@@ -6,12 +6,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Edit Service Category</h1>
+            <h1>Edit Service Sub Category</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="index.php">Home</a></li>
-              <li class="breadcrumb-item active">Category</li>
+              <li class="breadcrumb-item active">Sub Category</li>
             </ol>
           </div>
         </div>
@@ -48,15 +48,28 @@
             <!-- /.card-header -->
              
             <div class="card-body">
-                <form  method="post" role="update" action="{{url('admin/category/'.___encrypt($details['service_category_id']))}}">
+                <form  method="post" role="update" action="{{url('admin/subcategory/'.___encrypt($details['service_sub_category_id']))}}">
                   <input type="hidden" name="_method" value="PUT">
                   
-                      <div class="form-group">
-                        <label class="col-sm-2 control-label">Category Name</label>
-                        <div class="col-sm-10">
-                           <input type="text" name="service_category_name"  class="form-control" value="{{$details['service_category_name']}}">
+                  <div class="row" class="col-sm-12">
+                      <div class="form-group col-sm-6">
+                        <label class="col-sm-4 control-label">Select Category </label>
+                        <div class="col-sm-12">
+                           <select class="form-control" name="service_category_name">
+                             <option  value="">Select Category</option>
+                             @foreach($category as $value)
+                              <option value="{{$value['service_category_id']}}" @if($value['service_category_id']==$details['service_category_id']) selected="selected"  @endif>{{$value['service_category_name']}}</option>
+                             @endforeach
+                           </select>
                         </div>
                       </div>
+                       <div class="form-group col-sm-6">
+                        <label class="col-sm-4 control-label">Sub Category Name</label>
+                        <div class="col-sm-12">
+                           <input type="text" name="service_sub_category_name" value="{{$details['service_sub_category_name']}}"  class="form-control">
+                        </div>
+                      </div>
+                    </div>
                      
 
                      

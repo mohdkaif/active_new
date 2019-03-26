@@ -41,7 +41,7 @@ class CategoryController extends Controller
                 })
 
                 ->editColumn('status',function($item){
-                $spanhtml   = __showSpan($item['status']);
+                $spanhtml   = _showSpan($item['status']);
                  if($item['status']=='active'){
                   $html   = '<a href="javascript:void(0);" 
                   data-url="'.url(sprintf('admin/category/status/?id=%s&status=inactive',$item['service_category_id'])).'"
