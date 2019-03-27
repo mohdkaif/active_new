@@ -41,7 +41,7 @@ class Validate
 			'pin_code' 				=> ['nullable','max:6','min:4'],
 			'appointment_date'  	=> ['required','string'],
 			'type' 	            	=> ['required','string'],
-			'phone' 	        	=> ['required','string','numeric'],
+			'phone' 	        	=> ['required','numeric'],
 			'course' 	        	=> ['required','string'],
 			'location' 	        	=> ['required','string'],
 			'comments' 	        	=> ['required','string'],
@@ -63,7 +63,9 @@ class Validate
 			'document_file'		    => ['nullable','mimes:doc,docx,pdf,jpg,jpeg,png','max:5120'],
 			'newpassword'		    => ['required','max:10'],	
 			'child'		    		=> ['required','array','min:1'],	
-			'child_details'		    => ['required','string','distinct','min:1'],	
+			'child_details'		    => ['required','string','distinct','min:1'],
+			'video_null'			=> ['nullable','mimes:mp4,mov,ogg,qt','max:51200'],
+			'photo_null'			=> ['nullable','mimes:jpg,jpeg,png','max:2048']
 
 		];
 		return $validation[$key];
@@ -170,6 +172,67 @@ class Validate
     	}
 		return $validator;
 	}
+
+	public function addServiceCategory($action='add'){
+		$validations = [
+        	'service_category_name' 						=> $this->validation('name'),
+    	];
+    	if($action=='edit'){
+    		
+    			$validations['id'] = $this->validation('id');
+    		
+    	}
+    	$validator = \Validator::make($this->data->all(), $validations,[]);
+		return $validator;
+	}
+
+	public function addServiceSubCategory($action='add'){
+		$validations = [
+			'service_category_id'		  => $this->validation('id'),
+        	'service_sub_category_name'   => $this->validation('name'),
+    	];
+    	if($action=='edit'){
+    		
+    			$validations['id'] = $this->validation('id');
+    		
+    	}
+    	$validator = \Validator::make($this->data->all(), $validations,[
+			'service_category_id.required' 						=>  'Service Category is required.',
+			
+		]);
+		return $validator;
+	}
+
+	public function addService($action='add'){
+		$validations = [
+			'service_category_id'		  => $this->validation('id'),
+        	'service_sub_category_id'   => $this->validation('country'),
+        	'provider_id'   => $this->validation('phone'),
+        	'name'   => $this->validation('name'),
+        	'description'   => $this->validation('address'),
+        	'days_for_service'   => $this->validation('address'),
+        	'service_start_time'		  => $this->validation('name'),
+        	'service_end_time'   => $this->validation('name'),
+        	'special_day'   => $this->validation('last_name'),
+        	'price_per_hour'   => $this->validation('name'),
+        	'price_per_children'		  => $this->validation('name'),
+        	'experience_in_work'   => $this->validation('name'),
+        	'photo'   => $this->validation('photo_null'),
+        	'video'		  => $this->validation('video_null'),
+        
+    	];
+    	if($action=='edit'){
+    		
+    			$validations['id'] = $this->validation('id');
+    		
+    	}
+    	$validator = \Validator::make($this->data->all(), $validations,[
+			'service_category_id.required' 						=>  'Service Category is required.',
+
+		]);
+		return $validator;
+	}
+
 
 	public function updateService(){
 		$validations = [
@@ -389,7 +452,25 @@ class Validate
 		
 		return $validator;
 	}
+	public function qualificationDetail()
+	{
+		
+			$validations = [
+				'user_id'						=> $this->validation('id'),
+	        	'highschool_year'				=> $this->validation('name'),
+	        	'intermediate_year'				=> $this->validation('name'),
+	        	'graduation_year'				=> $this->validation('name'),
+	        	'post_graduation_year'			=> $this->validation('name'),
+	        
+	    	];
 
+		
+    	$validator = \Validator::make($this->data->all(), $validations,[
+    	]);
+		
+		return $validator;
+	}
+	
 	public function updateAddress()
 	{
 		
@@ -427,6 +508,18 @@ class Validate
 	    	];
 
 		
+    	$validator = \Validator::make($this->data->all(), $validations,[
+    	]);
+		
+		return $validator;
+	}
+
+	public function addQualification()
+	{
+		$validations = [
+			'user_id'						=> $this->validation('id'),
+    	];
+    	
     	$validator = \Validator::make($this->data->all(), $validations,[
     	]);
 		
