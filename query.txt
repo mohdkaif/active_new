@@ -24,3 +24,7 @@ ALTER TABLE `service_sub_category` ADD `status` ENUM('active','inactive') NOT NU
 
 27/3/2019
 ALTER TABLE `provider_user` ADD `bank_branch_name` VARCHAR(255) NULL AFTER `bank_ifsc_code`;
+
+27/3/2019 by kaif
+
+ALTER TABLE `provider_user` ADD `graduation_year` VARCHAR(100) NULL DEFAULT NULL AFTER `updated_at`, ADD `post_graduation_year` VARCHAR(100) NULL DEFAULT NULL AFTER `graduation_year`, ADD `highschool_year` VARCHAR(100) NULL DEFAULT NULL AFTER `post_graduation_year`, ADD `intermediate_year` VARCHAR(100) NULL DEFAULT NULL AFTER `highschool_year`;
