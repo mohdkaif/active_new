@@ -21,3 +21,6 @@ ALTER TABLE `service_category` ADD `deleted_at` TIMESTAMP NULL AFTER `updated_at
 
 25/3/2019
 ALTER TABLE `service_sub_category` ADD `status` ENUM('active','inactive') NOT NULL DEFAULT 'active' AFTER `service_sub_category_name`, ADD `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `status`, ADD `updated_at` TIMESTAMP on update CURRENT_TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `created_at`, ADD `deleted_at` TIMESTAMP NULL AFTER `updated_at`;
+
+27/3/2019
+ALTER TABLE `provider_user` ADD `bank_branch_name` VARCHAR(255) NULL AFTER `bank_ifsc_code`;

@@ -86,7 +86,7 @@
                 <button class="btn btn-info btn-flat"><i class="fa fa-eye"></i> View Details</button>
                 </a>
                
-                <a href="bank_details.php?bank_id={{base64_encode($service_provider_res['id'])}}">
+                <a href="{{url('admin/provider/edit-bank/'.base64_encode($service_provider_res['id']))}}">
                 <button class="btn btn-info btn-flat"><i class="fa fa-university"></i> Bank Details</button>
                 </a>
                  <a href="qualification.php?qual_id={{base64_encode($service_provider_res['id'])}}">

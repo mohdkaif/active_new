@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
+use App\Models\ProviderUser;
+
 class ProviderController extends Controller
 {
     /**
@@ -101,5 +103,15 @@ class ProviderController extends Controller
             $this->jsondata     = [];
         }
         return $this->populateresponse();
+    }
+
+
+    public function editbank($id){
+        $id          = base64_decode($id);
+        $data['view']='admin.provider.editbank';
+        $data['bank']=_arrayfy(ProviderUser::where('user_id',$id)->firstOrFail());
+        /*_dd($data['bank']);*/
+        return view('admin.index',$data);
+
     }
 }

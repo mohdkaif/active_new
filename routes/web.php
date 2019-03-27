@@ -67,6 +67,9 @@ Route::group(['namespace' => 'Admin','prefix' => 'admin', 'middleware' => ['admi
 	Route::post('states/drop-down','StateController@getStateAsDropDownOptions')->name('states.drop-down');
 	Route::patch('states/changestatus/{users}','StateController@changeStatus')->name('states.changestatus');
 	Route::resource('states','StateController');
+
+	//Provider Controller
+	Route::get('provider/edit-bank/{id}','ProviderController@editbank');
 	Route::post('provider/updatestatus','ProviderController@updatestatus');
 	Route::resource('provider','ProviderController');
 
