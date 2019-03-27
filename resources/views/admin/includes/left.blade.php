@@ -72,7 +72,7 @@
                           </ul>
                         </li>
                         <li class="nav-item">
-                              <a href="{{url('admin/provider')}}" class="nav-link">
+                              <a href="{{url('admin/provider')}}" class="nav-link  @if(in_array(Request::segment(2),['provider'])) active @endif">
                                 <i class="fa fa-user-secret nav-icon"></i>
                                 <p>Service Provider</p>
                               </a>
