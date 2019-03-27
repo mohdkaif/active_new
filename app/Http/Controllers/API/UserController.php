@@ -575,11 +575,10 @@ class UserController extends Controller
             $this->message = $validator->errors();
         }else{
                 
-                $provider['bank_name']=$request->bank_name;    
-                $provider['bank_branch_name']=$request->bank_branch_name;              
-                $provider['bank_account_number']=$request->bank_account_number;              
-                $provider['bank_holder_name']=$request->bank_holder_name;          
-                $provider['bank_ifsc_code']=$request->bank_ifsc_code;            
+                $provider['highschool_year']=$request->highschool_year; 
+                $provider['intermediate_year']=$request->intermediate_year;                
+                $provider['graduation_year']=$request->graduation_year;              
+                $provider['post_graduation_year']=$request->post_graduation_year;            
                 $user_id = $request->user_id;
                 
                 $user = ProviderUser::changeUserDetails($user_id,$provider);
