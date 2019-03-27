@@ -110,7 +110,14 @@ class ProviderController extends Controller
         $id          = base64_decode($id);
         $data['view']='admin.provider.editbank';
         $data['bank']=_arrayfy(ProviderUser::where('user_id',$id)->firstOrFail());
-        /*_dd($data['bank']);*/
+        return view('admin.index',$data);
+
+    }
+
+    public function updatebank($id){
+        $id          = base64_decode($id);
+        $data['view']='admin.provider.editbank';
+        $data['bank']=_arrayfy(ProviderUser::where('user_id',$id)->firstOrFail());
         return view('admin.index',$data);
 
     }
