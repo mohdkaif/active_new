@@ -452,7 +452,25 @@ class Validate
 		
 		return $validator;
 	}
+	public function qualificationDetail()
+	{
+		
+			$validations = [
+				'user_id'						=> $this->validation('id'),
+	        	'highschool_year'				=> $this->validation('name'),
+	        	'intermediate_year'				=> $this->validation('name'),
+	        	'graduation_year'				=> $this->validation('name'),
+	        	'post_graduation_year'			=> $this->validation('name'),
+	        
+	    	];
 
+		
+    	$validator = \Validator::make($this->data->all(), $validations,[
+    	]);
+		
+		return $validator;
+	}
+	
 	public function updateAddress()
 	{
 		

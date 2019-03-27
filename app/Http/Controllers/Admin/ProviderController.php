@@ -133,10 +133,10 @@ class ProviderController extends Controller
 
             if($isUpdated){
                 $this->status       = true;
-                $this->redirect     = true;
                 $this->modal        =true;
                 $this->alert        =true;
                 $this->message      ="Bank details updated Successful.";
+                $this->redirect     = url('admin/provider');;
             }
         }
         return $this->populateresponse(); 
@@ -157,22 +157,19 @@ class ProviderController extends Controller
         if ($validator->fails()){
             $this->message = $validator->errors();
         }else{
-            $provider['bank_name']=$request->bank_name; 
-            $provider['bank_branch_name']=$request->bank_branch_name;                
-            $provider['bank_account_number']=$request->bank_account_number;              
-            $provider['bank_holder_name']=$request->bank_holder_name;          
-            $provider['bank_ifsc_code']=$request->bank_ifsc_code;            
+            $provider['highschool_year']=$request->highschool_year; 
+            $provider['intermediate_year']=$request->intermediate_year;                
+            $provider['graduation_year']=$request->graduation_year;              
+            $provider['post_graduation_year']=$request->post_graduation_year;          
             $user_id = base64_decode($request->user_id);
             
             $isUpdated = ProviderUser::changeUserDetails($user_id,$provider);
 
-            if($isUpdated){
                 $this->status       = true;
-                $this->redirect     = true;
                 $this->modal        =true;
                 $this->alert        =true;
-                $this->message      ="Bank details updated Successful.";
-            }
+                $this->message      ="Qualification details updated Successful.";
+                $this->redirect     = url('admin/provider');
         }
         return $this->populateresponse(); 
     }
