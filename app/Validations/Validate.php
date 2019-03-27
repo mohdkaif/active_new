@@ -496,6 +496,18 @@ class Validate
 		return $validator;
 	}
 
+	public function addQualification()
+	{
+		$validations = [
+			'user_id'						=> $this->validation('id'),
+    	];
+    	
+    	$validator = \Validator::make($this->data->all(), $validations,[
+    	]);
+		
+		return $validator;
+	}
+
 	public function verifyEmailPhone(){
 		if(is_numeric($this->data->username)){
 			$validations = [

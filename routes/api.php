@@ -20,6 +20,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::post('signup', 'API\UserController@signup');
 Route::post('bank-details', 'API\UserController@addBankDetail');
+Route::post('add-qualification', 'API\UserController@addQualification');
 Route::post('update-documents', 'API\UserController@addDocuments');
 Route::post('update-address', 'API\UserController@updateAddress');
 

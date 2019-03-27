@@ -567,6 +567,33 @@ class UserController extends Controller
         return $this->populateresponse();
     }
 
+    public function addQualification(Request $request)
+    {
+        $validation = new Validations($request);
+        $validator = $validation->addQualification();
+        if ($validator->fails()){
+            $this->message = $validator->errors();
+        }else{
+                
+                $provider['bank_name']=$request->bank_name;    
+                $provider['bank_branch_name']=$request->bank_branch_name;              
+                $provider['bank_account_number']=$request->bank_account_number;              
+                $provider['bank_holder_name']=$request->bank_holder_name;          
+                $provider['bank_ifsc_code']=$request->bank_ifsc_code;            
+                $user_id = $request->user_id;
+                
+                $user = ProviderUser::changeUserDetails($user_id,$provider);
+                $success['success'] =  'success';
+                $this->status   = true;
+                $response = new Response($success);
+                $this->jsondata = $response->api_common_response();
+                $this->message = "Provider's Qualification details updated Successfully.";
+               
+            
+        }
+        return $this->populateresponse();
+    }
+
     public function addDocuments(Request $request)
     {
         $validation = new Validations($request);
