@@ -47,13 +47,14 @@
             <!-- /.card-header -->
              
            <div class="card-body">
-                <form  method="post" enctype="multipart/form-data">
+                <form  role="bank" method="post" action="{{url('admin/provider/edit-bank/'.base64_encode($bank['id']))}}" enctype="multipart/form-data">
+                  <input type="hidden" name="user_id" value="{{base64_encode($bank['id'])}}">
                     <div class="row">
                       <div class="col-sm-6">
                         <div class="form-group">
                           <label class="col-sm-8 control-label">Bank Account Holder Name</label>
                           <div class="col-sm-12">
-                             <input type="text" name="account_holder_name" value="{{$bank['bank_holder_name']}}" class="form-control" required>
+                             <input type="text" name="bank_holder_name" value="{{$bank['bank_holder_name']}}" class="form-control" required>
                           </div>
                         </div>
                       </div>
@@ -79,7 +80,7 @@
                             <div class="form-group">
                               <label class="col-sm-8 control-label">IFC Code</label>
                               <div class="col-sm-12">
-                                 <input type="text" name="ifsc_code" value="{{$bank['bank_ifsc_code']}}" class="form-control" required>
+                                 <input type="text" name="bank_ifsc_code" value="{{$bank['bank_ifsc_code']}}" class="form-control" required>
                               </div>
                             </div>
                         </div>
@@ -96,8 +97,8 @@
                     </div>     
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
-                          <button type="button" name="submit" class="btn btn-success btn-flat">Submit</button>
-                          <a href="bank_details.php">
+                          <button type="button" data-target='[role="bank"]' data-request="ajax-submit" name="submit" class="btn btn-success btn-flat">Submit</button>
+                          <a href="{{url('admin/provider')}}">
                             <input type="button" class="btn btn-info btn-flat" value="Back" style="margin-left:10px;">
                           </a>
                         </div>

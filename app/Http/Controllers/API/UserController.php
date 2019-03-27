@@ -532,7 +532,8 @@ class UserController extends Controller
             $this->message = $validator->errors();
         }else{
                 
-                $provider['bank_name']=$request->bank_name;                 
+                $provider['bank_name']=$request->bank_name;    
+                $provider['bank_branch_name']=$request->bank_branch_name;              
                 $provider['bank_account_number']=$request->bank_account_number;              
                 $provider['bank_holder_name']=$request->bank_holder_name;          
                 $provider['bank_ifsc_code']=$request->bank_ifsc_code;            

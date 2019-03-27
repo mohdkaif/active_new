@@ -25,6 +25,7 @@ ALTER TABLE `service_sub_category` ADD `status` ENUM('active','inactive') NOT NU
 27/3/2019
 ALTER TABLE `provider_user` ADD `bank_branch_name` VARCHAR(255) NULL AFTER `bank_ifsc_code`;
 
+
 27/3/2019 - SADIYA
 CREATE TABLE `services` (
  `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -51,4 +52,9 @@ ALTER TABLE `services` ADD `description` LONGTEXT NULL AFTER `name`;
 
 ALTER TABLE `provider_user` DROP `day_for_service`, DROP `service_start_time`, DROP `service_end_time`, DROP `service_id`, DROP `price_per_hour`, DROP `price_per_children`, DROP `experience_in_work`, DROP `photo`, DROP `video`, DROP `another_service`;
 
+
+
+27/3/2019 by kaif
+
+ALTER TABLE `provider_user` ADD `graduation_year` VARCHAR(100) NULL DEFAULT NULL AFTER `updated_at`, ADD `post_graduation_year` VARCHAR(100) NULL DEFAULT NULL AFTER `graduation_year`, ADD `highschool_year` VARCHAR(100) NULL DEFAULT NULL AFTER `post_graduation_year`, ADD `intermediate_year` VARCHAR(100) NULL DEFAULT NULL AFTER `highschool_year`;
 

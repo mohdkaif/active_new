@@ -70,6 +70,11 @@ Route::group(['namespace' => 'Admin','prefix' => 'admin', 'middleware' => ['admi
 
 	//Provider Controller
 	Route::get('provider/edit-bank/{id}','ProviderController@editbank');
+	Route::post('provider/edit-bank/{id}','ProviderController@updateBank');
+
+	Route::get('provider/edit-qualification/{id}','ProviderController@editqualification');
+	Route::post('provider/edit-qualification/{id}','ProviderController@updatequalification');
+
 	Route::post('provider/updatestatus','ProviderController@updatestatus');
 	Route::resource('provider','ProviderController');
 

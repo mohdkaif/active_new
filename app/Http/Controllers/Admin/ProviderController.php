@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
 use App\Models\ProviderUser;
-
+use Validator;
+use Validations\Validate as Validations;
 class ProviderController extends Controller
 {
     /**
@@ -113,5 +114,66 @@ class ProviderController extends Controller
         /*_dd($data['bank']);*/
         return view('admin.index',$data);
 
+    }
+    public function updateBank(Request $request,$id)
+    {
+        $validation = new Validations($request);
+        $validator = $validation->bankDetail();
+        if ($validator->fails()){
+            $this->message = $validator->errors();
+        }else{
+            $provider['bank_name']=$request->bank_name; 
+            $provider['bank_branch_name']=$request->bank_branch_name;                
+            $provider['bank_account_number']=$request->bank_account_number;              
+            $provider['bank_holder_name']=$request->bank_holder_name;          
+            $provider['bank_ifsc_code']=$request->bank_ifsc_code;            
+            $user_id = base64_decode($request->user_id);
+            
+            $isUpdated = ProviderUser::changeUserDetails($user_id,$provider);
+
+            if($isUpdated){
+                $this->status       = true;
+                $this->redirect     = true;
+                $this->modal        =true;
+                $this->alert        =true;
+                $this->message      ="Bank details updated Successful.";
+            }
+        }
+        return $this->populateresponse(); 
+    }
+
+    public function editqualification($id){
+        $id          = base64_decode($id);
+        $data['view']='admin.provider.editqualification';
+        $data['qualification']=_arrayfy(ProviderUser::where('user_id',$id)->firstOrFail());
+        /*_dd($data['qualification']);*/
+        return view('admin.index',$data);
+
+    }
+    public function updatequalification(Request $request,$id)
+    {
+        $validation = new Validations($request);
+        $validator = $validation->qualificationDetail();
+        if ($validator->fails()){
+            $this->message = $validator->errors();
+        }else{
+            $provider['bank_name']=$request->bank_name; 
+            $provider['bank_branch_name']=$request->bank_branch_name;                
+            $provider['bank_account_number']=$request->bank_account_number;              
+            $provider['bank_holder_name']=$request->bank_holder_name;          
+            $provider['bank_ifsc_code']=$request->bank_ifsc_code;            
+            $user_id = base64_decode($request->user_id);
+            
+            $isUpdated = ProviderUser::changeUserDetails($user_id,$provider);
+
+            if($isUpdated){
+                $this->status       = true;
+                $this->redirect     = true;
+                $this->modal        =true;
+                $this->alert        =true;
+                $this->message      ="Bank details updated Successful.";
+            }
+        }
+        return $this->populateresponse(); 
     }
 }
