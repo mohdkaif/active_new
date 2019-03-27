@@ -75,6 +75,9 @@ Route::group(['namespace' => 'Admin','prefix' => 'admin', 'middleware' => ['admi
 	Route::get('provider/edit-qualification/{id}','ProviderController@editqualification');
 	Route::post('provider/edit-qualification/{id}','ProviderController@updatequalification');
 
+	Route::get('provider/edit-document/{id}','ProviderController@editDocument');
+	Route::post('provider/edit-document/{id}','ProviderController@updateDocument');
+
 	Route::post('provider/updatestatus','ProviderController@updatestatus');
 	Route::resource('provider','ProviderController');
 

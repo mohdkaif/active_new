@@ -92,7 +92,7 @@
                  <a href="{{url('admin/provider/edit-qualification/'.base64_encode($service_provider_res['id']))}}">
                 <button class="btn btn-info btn-flat"><i class="fa fa-graduation-cap"></i> Qualification</button>
                 </a>
-                 <a href="upload_doc.php?upload_id={{base64_encode($service_provider_res['id'])}}">
+                 <a href="{{url('admin/provider/edit-document/'.base64_encode($service_provider_res['id']))}}">
                 <button class="btn btn-info btn-flat"><i class="fa fa-upload"></i> Upload Document</button>
                 </a>
                 <a href="javascript:void(o);" onClick="deleteservice_provider({{$service_provider_res['id']}});">
