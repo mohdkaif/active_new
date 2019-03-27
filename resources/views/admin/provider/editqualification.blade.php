@@ -48,9 +48,8 @@
             <!-- /.card-header -->
              
             <div class="card-body">
-                <form  method="post" enctype="multipart/form-data">
-
-                      
+                <form  role="qualification" action="{{url('admin/provider/edit-qualification/'.base64_encode($qualification['id']))}}" method="post" enctype="multipart/form-data">
+                  <input type="hidden" name="user_id" value="{{base64_encode($qualification['id'])}}">
                      <div class="form-group">
                         <label class="col-sm-6 control-label">Highschool Year</label>
                         <div class="col-sm-6">
@@ -66,21 +65,21 @@
                     <div class="form-group">
                         <label class="col-sm-6 control-label">Graducation Year</label>
                         <div class="col-sm-6">
-                          <input type="text" name="graducation_year" value="{{$qualification['graducation_year']}}" class="form-control">
+                          <input type="text" name="graduation_year" value="{{$qualification['graduation_year']}}" class="form-control">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-6 control-label">Post Graducation Year</label>
                         <div class="col-sm-6">
-                          <input type="text" name="post_graducation_year" value="{{$qualification['post_graducation_year']}}" class="form-control">
+                          <input type="text" name="post_graduation_year" value="{{$qualification['post_graduation_year']}}" class="form-control">
                         </div>
                     </div>
 
                       <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
-                          <button type="submit" name="submit" class="btn btn-success btn-flat">Submit</button>
-                          <a href="qualification.php">
-                            <input type="button" class="btn btn-info btn-flat" value="Back" style="margin-left:10px;">
+                          <button type="button" data-request="ajax-submit"  data-target='[role="qualification"]' class="btn btn-success btn-flat">Submit</button>
+                          <a href="{{url('admin/provider')}}">
+                            <input type="button"  class="btn btn-info btn-flat" value="Back" style="margin-left:10px;">
                           </a>
                         </div>
                       </div>
