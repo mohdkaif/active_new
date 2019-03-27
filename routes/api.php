@@ -29,6 +29,14 @@ Route::post('register', 'API\UserController@register');
 Route::post('forgot_password', 'API\UserController@forgotPassword');
 Route::post('otp', 'API\UserController@otp');
 Route::post('change-password', 'API\UserController@ChangePassword');
+Route::post('add-service-category', 'API\ServiceController@addServiceCategory');
+Route::post('edit-service-category', 'API\ServiceController@editServiceCategory');
+
+Route::post('add-service-subcategory', 'API\ServiceController@addServiceSubCategory');
+Route::post('edit-service-subcategory', 'API\ServiceController@editServiceSubCategory');
+
+Route::post('add-service', 'API\ServiceController@addService');
+Route::post('edit-service', 'API\ServiceController@editService');
 
 Route::post('country', 'API\UserController@country');
 Route::post('city', 'API\UserController@city');
