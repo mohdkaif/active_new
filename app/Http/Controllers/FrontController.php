@@ -215,13 +215,17 @@ class FrontController extends Controller
                 $provider['bank_name']=$request->bank_name;                 
                 $provider['bank_account_number']=$request->bank_account;              
                 $provider['bank_holder_name']=$request->bank_holder_name;          
-                $provider['bank_ifsc_code']=$request->bank_ifsc_code;            
-                $provider['service_start_time']=$request->service_start_time;        
-                $provider['service_end_time']=$request->service_end_time;          
+                $provider['bank_ifsc_code']=$request->bank_ifsc_code;  
+                $provider['bank_branch_name']=$request->bank_branch_name; 
+          
+              /*  $provider['service_start_time']=$request->service_start_time;        
+                $provider['service_end_time']=$request->service_end_time; */         
                 $provider['distance_travel']=$request->distance_travel;           
-                $provider['long_distance_travel']=$request->long_distance_travel;      
+                $provider['long_distance_travel']=$request->long_distance_travel;
+                $provider['location_track_permission']=$request->location_track_permission;
+                      
                 $provider['term_condition']=$request->term_condition;  
-                $provider['service_id']=$request->service_id;  
+                /*$provider['service_id']=$request->service_id;  */
                 if($request->file('document_high_school')){
                     $path = url('/assets/images/document/');
                     if(!File::exists($path)) {

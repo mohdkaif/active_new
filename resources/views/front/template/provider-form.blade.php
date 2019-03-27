@@ -79,7 +79,7 @@
          <input type="password" name="confirm_password" placeholder=" Verify Password *" class="form-control">
       </div>
 
-      <div class="form-group col-md-6">
+      {{-- div class="form-group col-md-6">
         <label for="pwd">Price Per Hour:</label>
          <input type="text" name="price_per_hour" placeholder=" Price Per Hour *" class="form-control">
       </div>
@@ -92,8 +92,8 @@
         <label for="pwd">Experience In Work:</label>
          <input type="text" name="experience_in_work" placeholder="Experience In Work *" class="form-control">
       </div>
-
-       <div class="form-group col-md-6">
+ --}}
+      {{--  <div class="form-group col-md-6">
         <label for="pwd">Service:</label>
         <select class="form-control" name="service_id" id="service_id" style="height: 45px;" >
           <option value="">Select Service</option>
@@ -105,23 +105,39 @@
         </select>
       </div>
 
+ --}}  <div class="form-group col-md-6">
+        <label for="pwd">Distance Travel:</label>
+         <input type="text" name="distance_travel" placeholder="Distance Travel" class="form-control">
+      </div>
 
+       <div class="form-group col-md-6">
+        <label for="pwd">Long Distance Travel:</label>
+         <input type="text" name="long_distance_travel" placeholder="Long Distance Travel" class="form-control">
+      </div>
+       <div class="form-group col-md-6">
+        <label for="pwd">Location Track Permission:</label>
+         <input type="text" name="location_track_permission" placeholder="Location Track Permission" class="form-control">
+      </div>
       <div class="form-group col-md-6">
         <label for="email">Bank Name:</label>
         <input type="text" name="bank_name" placeholder="Bank Name *" class="form-control">
       </div>
       <div class="form-group col-md-6">
         <label for="pwd">Bank Account Number:</label>
-        <input type="text" name="bank_account_number" placeholder="Bank account Number *" >
+        <input type="text" name="bank_account_number" placeholder="Bank account Number " >
       </div>
 
       <div class="form-group col-md-6">
         <label for="email">Bank Holder name:</label>
-         <input type="text" name="bank_holder_name" placeholder=" Bank Holder Name *" >
+         <input type="text" name="bank_holder_name" placeholder=" Bank Holder Name " >
       </div>
       <div class="form-group col-md-6">
         <label for="pwd">Bank IFSC Code:</label>
-         <input type="text" name="bank_ifsc_code" placeholder=" Bank IFSC Code *" >
+         <input type="text" name="bank_ifsc_code" placeholder=" Bank IFSC Code " >
+      </div>
+      <div class="form-group col-md-6">
+        <label for="pwd">Bank Branch Name:</label>
+         <input type="text" name="bank_branch_name" placeholder="Bank Branch Name" >
       </div>
       <div class="form-group col-md-6">
         <label for="email">Graduation Document:</label>
