@@ -57,4 +57,6 @@ ALTER TABLE `provider_user` DROP `day_for_service`, DROP `service_start_time`, D
 27/3/2019 by kaif
 
 ALTER TABLE `provider_user` ADD `graduation_year` VARCHAR(100) NULL DEFAULT NULL AFTER `updated_at`, ADD `post_graduation_year` VARCHAR(100) NULL DEFAULT NULL AFTER `graduation_year`, ADD `highschool_year` VARCHAR(100) NULL DEFAULT NULL AFTER `post_graduation_year`, ADD `intermediate_year` VARCHAR(100) NULL DEFAULT NULL AFTER `highschool_year`;
+ALTER TABLE `provider_user` ADD `document_intermediate` VARCHAR(100) NULL DEFAULT NULL AFTER `document_high_school`;
+
 

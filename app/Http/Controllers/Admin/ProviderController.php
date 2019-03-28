@@ -176,7 +176,7 @@ class ProviderController extends Controller
 
     public function editDocument($id){
         $id          = base64_decode($id);
-        $data['view']='admin.provider.editupload';
+        $data['view']='admin.provider.editupload_doc';
         $data['qualification']=_arrayfy(ProviderUser::where('user_id',$id)->firstOrFail());
         /*_dd($data['qualification']);*/
         return view('admin.index',$data);
