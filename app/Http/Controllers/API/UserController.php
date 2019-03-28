@@ -256,16 +256,24 @@ class UserController extends Controller
                 $provider['bank_name']=$request->bank_name;                 
                 $provider['bank_account_number']=$request->bank_account;              
                 $provider['bank_holder_name']=$request->bank_holder_name;          
-                $provider['bank_ifsc_code']=$request->bank_ifsc_code;            
-                $provider['service_start_time']=$request->service_start_time;        
-                $provider['service_end_time']=$request->service_end_time;          
+                $provider['bank_ifsc_code']=$request->bank_ifsc_code; 
+                $provider['bank_branch_name']=$request->bank_branch_name; 
+
+                /*$provider['service_start_time']=$request->service_start_time;        
+                $provider['service_end_time']=$request->service_end_time;*/          
                 $provider['distance_travel']=$request->distance_travel;           
                 $provider['long_distance_travel']=$request->long_distance_travel; 
-
-                $provider['service_id']=$request->service_id;
-                $provider['price_per_hour']=$request->price_per_hour;
+               $provider['location_track_permission']=(!empty($request->location_track_permission) && $request->location_track_permission=='yes')?$request->location_track_permission:'no';
+                if ($file = $request->file('image')){
+                    $photo_name = time().$request->file('image')->getClientOriginalName();
+                    $file->move('assets/images/providers',$photo_name);
+                    $data['image'] = $photo_name;
+                   
+                }
+                /*$provider['service_id']=$request->service_id;*/
+               /* $provider['price_per_hour']=$request->price_per_hour;
                 $provider['price_per_children']=$request->price_per_children;
-                $provider['experience_in_work']=$request->experience_in_work;
+                $provider['experience_in_work']=$request->experience_in_work;*/
 
                 $provider['term_condition']=$request->term_condition;  
 
@@ -326,22 +334,12 @@ class UserController extends Controller
                     $image->save('assets/images/document/' .$document_other);
                     $provider['document_other'] = $document_other;
                 }
-                if($request->file('video')){
+                /*if($request->file('video')){
                     $path = url('/assets/images/video/');
                     if(!File::exists($path)) {
                         File::makeDirectory($path, $mode = 0777, true);
                     }
-                    //$image       = $request->file('video');
-                  //  $video    = time().$image->getClientOriginalName();
-                    /*$image       = $request->file('video');
-                    $video    = time().$image->getClientOriginalName();
-                    $image = Image::make(base64_decode($request->file('video')));
-                   // $image = Image::make($image->getRealPath());  
-                    $image->storeAs('assets/images/video/', $video);    */     
-                    //$image->save('assets/images/video/' .$video);
-
-                //$png_url = "user-".time().".png";
-                   // dd($video);
+               
                 $path = "assets/images/video/".$request['video'];
                 $base=base64_decode($request['video']);
                 Image::make($base)->save($path);
@@ -358,7 +356,7 @@ class UserController extends Controller
                     $image = Image::make($image->getRealPath());              
                     $image->save('assets/images/photo/' .$photo);
                     $provider['photo'] = $photo;
-                }
+                }*/
 
                 $user = User::create($data);
                 $provider['user_id']=$user->id;

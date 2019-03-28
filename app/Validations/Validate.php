@@ -210,9 +210,9 @@ class Validate
         	'provider_id'   => $this->validation('phone'),
         	'name'   => $this->validation('name'),
         	'description'   => $this->validation('address'),
-        	'days_for_service'   => $this->validation('address'),
+        	/*'days_for_service'   => $this->validation('address'),
         	'service_start_time'		  => $this->validation('name'),
-        	'service_end_time'   => $this->validation('name'),
+        	'service_end_time'   => $this->validation('name'),*/
         	'special_day'   => $this->validation('last_name'),
         	'price_per_hour'   => $this->validation('name'),
         	'price_per_children'		  => $this->validation('name'),
@@ -380,10 +380,11 @@ class Validate
 	        	'country'						=> $this->validation('name'),
 	        	'state'							=> $this->validation('name'),
 	        	'city'							=> $this->validation('name'),
-	        	'bank_name'						=> $this->validation('name'),
+	        	/*'bank_name'						=> $this->validation('name'),
 	        	'bank_account_number'			=> $this->validation('name'),
 	        	'bank_holder_name'				=> $this->validation('name'),
 	        	'bank_ifsc_code'				=> $this->validation('name'),
+	        	'bank_branch_name'				=> $this->validation('name'),*/
 	        	/*'day_of_service'				=> $this->validation('name'),
 	        	'service_start_time'			=> $this->validation('name'),
 	        	'service_end_time'				=> $this->validation('name'),
@@ -392,19 +393,18 @@ class Validate
 	        	'long_distance_travel'			=> $this->validation('name'),
 	        	'location_track_permission'		=> $this->validation('name'),*/
 
-	        	'service_id'					=>$this->validation('name'),
+	        	/*'service_id'					=>$this->validation('name'),
 				'price_per_hour'				=>$this->validation('name'),
 				'price_per_children'			=>$this->validation('name'),
-				'experience_in_work'			=>$this->validation('name'),
+				'experience_in_work'			=>$this->validation('name'),*/
 				
 	        	'document_high_school'			=> $this->validation('photomimes'),
 	        	'document_graduation'			=> $this->validation('photomimes'),
 	        	'document_post_graduation'		=> $this->validation('photomimes'),
 	        	'document_adhar_card'			=> $this->validation('photomimes'),
 	        	'document_other'				=> $this->validation('photomimes'),
-	        	'document_other'				=> $this->validation('photomimes'),
-	        	'photo'							=> $this->validation('photomimes'),
-	        	'video'							=> $this->validation('video'),
+	        /*	'photo'							=> $this->validation('photomimes'),
+	        	'video'							=> $this->validation('video'),*/
 	        	'password' 						=> $this->validation('password'),
 	        	'confirm_password'				=> $this->validation('c_password'),
 	        	'term_condition'				=> $this->validation('name')
@@ -452,6 +452,27 @@ class Validate
 		
 		return $validator;
 	}
+
+	public function addServiceDays()
+	{
+		
+			$validations = [
+				'service_id'						=> $this->validation('id'),
+	        	'provider_id'						=> $this->validation('id'),
+	        	'day'			=> $this->validation('mobile_number'),
+	        	'start_time'				=> $this->validation('name'),
+	        	'end_time'				=> $this->validation('name'),
+	        
+	    	];
+
+		
+    	$validator = \Validator::make($this->data->all(), $validations,[
+    	]);
+		
+		return $validator;
+	}
+
+	
 	public function qualificationDetail()
 	{
 		

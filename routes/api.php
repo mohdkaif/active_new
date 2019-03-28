@@ -39,6 +39,9 @@ Route::post('edit-service-subcategory', 'API\ServiceController@editServiceSubCat
 Route::post('add-service', 'API\ServiceController@addService');
 Route::post('edit-service', 'API\ServiceController@editService');
 
+Route::post('add-service-days', 'API\ServiceController@addServiceDays');
+Route::post('edit-service-days', 'API\ServiceController@editServiceDays');
+
 Route::post('country', 'API\UserController@country');
 Route::post('city', 'API\UserController@city');
 Route::post('state', 'API\UserController@state');
