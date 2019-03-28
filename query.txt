@@ -58,3 +58,9 @@ ALTER TABLE `provider_user` DROP `day_for_service`, DROP `service_start_time`, D
 
 ALTER TABLE `provider_user` ADD `graduation_year` VARCHAR(100) NULL DEFAULT NULL AFTER `updated_at`, ADD `post_graduation_year` VARCHAR(100) NULL DEFAULT NULL AFTER `graduation_year`, ADD `highschool_year` VARCHAR(100) NULL DEFAULT NULL AFTER `post_graduation_year`, ADD `intermediate_year` VARCHAR(100) NULL DEFAULT NULL AFTER `highschool_year`;
 
+
+28/03/2019
+
+CREATE TABLE `active_bachha`.`service_days` ( `id` INT NOT NULL AUTO_INCREMENT , `provider_id` INT(11) NOT NULL , `service_id` INT(11) NOT NULL , `day` VARCHAR(255) NOT NULL , `start_time` VARCHAR(255) NOT NULL , `end_time` VARCHAR(255) NOT NULL , `created_at` DATETIME NOT NULL , `updated_at` DATETIME NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
+ALTER TABLE `services` DROP `days_for_service`, DROP `service_start_time`, DROP `service_end_time`;

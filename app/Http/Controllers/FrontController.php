@@ -222,8 +222,8 @@ class FrontController extends Controller
                 $provider['service_end_time']=$request->service_end_time; */         
                 $provider['distance_travel']=$request->distance_travel;           
                 $provider['long_distance_travel']=$request->long_distance_travel;
-                $provider['location_track_permission']=$request->location_track_permission;
-                      
+                $provider['location_track_permission']=(!empty($request->location_track_permission) && $request->location_track_permission=='yes')?$request->location_track_permission:'no';
+
                 $provider['term_condition']=$request->term_condition;  
                 /*$provider['service_id']=$request->service_id;  */
                 if($request->file('document_high_school')){

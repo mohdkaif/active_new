@@ -10,6 +10,7 @@ use App\Models\ProviderUser;
 use App\Models\ServiceCategory;  
 use App\Models\ServiceSubCategory;
 use App\Models\Service;
+use App\Models\ServiceDays;
 use Illuminate\Support\Facades\Auth; 
 use Validator;
 use Validations\Validate as Validations;
@@ -161,9 +162,9 @@ class ServiceController extends Controller
             $data['provider_id'] = $request->provider_id;
             $data['name'] = $request->name;
             $data['description'] = $request->description;
-            $data['days_for_service'] = $request->days_for_service;
+          /*  $data['days_for_service'] = $request->days_for_service;
             $data['service_start_time'] = $request->service_start_time;
-            $data['service_end_time'] = $request->service_end_time;
+            $data['service_end_time'] = $request->service_end_time;*/
             $data['special_day'] = $request->special_day;
             $data['price_per_hour'] = $request->price_per_hour;
             $data['price_per_children'] = $request->price_per_children;
@@ -224,9 +225,9 @@ class ServiceController extends Controller
             $data['provider_id'] = $request->provider_id;
             $data['name'] = $request->name;
             $data['description'] = $request->description;
-            $data['days_for_service'] = $request->days_for_service;
+            /*$data['days_for_service'] = $request->days_for_service;
             $data['service_start_time'] = $request->service_start_time;
-            $data['service_end_time'] = $request->service_end_time;
+            $data['service_end_time'] = $request->service_end_time;*/
             $data['special_day'] = $request->special_day;
             $data['price_per_hour'] = $request->price_per_hour;
             $data['price_per_children'] = $request->price_per_children;
@@ -798,6 +799,43 @@ class ServiceController extends Controller
                 $this->jsondata = $response->api_common_response();
                 $this->message = "Address Details Updated Successfully.";
                
+            
+        }
+        return $this->populateresponse();
+    }
+
+     public function addServiceDays(Request $request)
+    {
+        $validation = new Validations($request);
+        $validator = $validation->addServiceDays();
+        if ($validator->fails()){
+            $this->message = $validator->errors();
+        }else{
+            $data['service_id'] = $request->service_id;
+            $data['provider_id'] = $request->provider_id;
+            $data['day'] = $request->day;
+            $data['start_time'] = $request->start_time;
+            $data['end_time'] = $request->end_time;
+          /*  $data['days_for_service'] = $request->days_for_service;
+            $data['service_start_time'] = $request->service_start_time;
+            $data['service_end_time'] = $request->service_end_time;*/
+            $data['created_at'] =date('Y-m-d H:i:s');
+            $data['updated_at'] = date('Y-m-d H:i:s');
+            $inserId = ServiceDays::updateOrCreate([
+                        'provider_id'=>$data['provider_id'] ,
+                        'service_id'=>$data['service_id'] ,
+                        'day' => $data['day']
+                        ],$data
+                    );
+
+           
+           /* $service = ServiceDays::add($data);*/
+            $success['success'] =  'success';
+           /* $success['service'] =  $service;*/
+            $this->status   = true;
+            $response = new Response($success);
+            $this->jsondata = $response->api_common_response();
+            $this->message = "Service Days created successfully";
             
         }
         return $this->populateresponse();

@@ -41,7 +41,8 @@ class ServiceSubCategory extends Model
 
 
     public static function listing($type='array',$keys='*',$where='',$order_by='service_sub_category_id-desc',$limit=10){
-        $table_name = self::select($keys)->with(['category' => function($q){
+        $table_name = self::select($keys)
+        ->with(['category' => function($q){
             $q->select('*');
         }]);
         if($where){
