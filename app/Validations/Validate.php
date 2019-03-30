@@ -282,6 +282,12 @@ class Validate
 						
 				           
 		    	});
+    		}else{
+    			$validator->after(function ($validator) use($user) {
+
+					$validator->errors()->add('user_id', 'User Id is required');
+			         
+		    	});
     		}  
 		
 		return $validator;

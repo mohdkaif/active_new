@@ -29,6 +29,7 @@ Route::post('verify_email_phone', 'API\UserController@verifyEmailPhone');
 Route::post('register', 'API\UserController@register');
 Route::post('forgot_password', 'API\UserController@forgotPassword');
 Route::post('otp', 'API\UserController@otp');
+Route::post('verify-otp', 'API\UserController@verifyOtp');
 Route::post('change-password', 'API\UserController@ChangePassword');
 Route::post('add-service-category', 'API\ServiceController@addServiceCategory');
 Route::post('edit-service-category', 'API\ServiceController@editServiceCategory');

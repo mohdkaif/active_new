@@ -188,24 +188,60 @@ class UserController extends Controller
 
     public function otp(Request $request)
     {
+        
+        $user = User::where('id', '=', $request->user_id)->firstOrFail();
+        if($user){
+            $success['user_details']=$user;
+            $autopass = strtoupper(str_random(6));
+            $input['otp'] = $autopass;
+            $upd = $user->update($input);
+
+            $apiKey = urlencode('Af8JoCyMRKc-3KCSW0EBcsbim6Y7FVTtg6SD1bOvfC');
+            // Message details
+            $phone_code=91;
+            $numbers = array($phone_code.$user->mobile);
+            $sender = urlencode('TXTLCL');
+            $message = rawurlencode('Active Bachha Mobile verification OTP is '.$autopass);
+            $numbers = implode(',', $numbers);
+            $data = array('apikey' => $apiKey, 'numbers' => $numbers, "sender" => $sender, "message" => $message);
+            $ch = curl_init('https://api.textlocal.in/send/');
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            $response = curl_exec($ch);
+            curl_close($ch);
+
+            $this->status   = true;
+            $response = new Response($success);
+            $this->jsondata = $response->api_common_response();
+            $this->message = "OTP Sent Successfully.";
+        
+                
+        }
+        return $this->populateresponse();
+    }
+
+    public function verifyOtp(Request $request)
+    {   
+        
         $validation = new Validations($request);
-        $validator = $validation->otp();
+        $validator = $validation->verifyOtp();
         if ($validator->fails()){
             $this->message = $validator->errors();
         }else{
-                $user = User::where('otp', '=', $request->otp)->firstOrFail();
-                if($user){
-                    $success['user_details']=$user;
-                    $autopass = strtoupper(str_random(4));
-                    $input['otp'] = $autopass;
-                    $upd = $user->update($input);
+            
+            $user = User::where('id', '=', $request->user_id)->firstOrFail();
+            if($request->otp==$user->otp){
+                $input['is_mobile_verified'] = 'yes';
+                $upd = $user->update($input);
 
-                    $this->status   = true;
-                    $response = new Response($success);
-                    $this->jsondata = $response->api_common_response();
-                    $this->message = "Success.";
-                }
+                $success['success'] = 'success';
+                $this->status   = true;
+                $response = new Response($success);
+                $this->jsondata = $response->api_common_response();
+                $this->message = "Mobile Verification Successful";
                 
+            }
         }
         return $this->populateresponse();
     }
@@ -377,6 +413,7 @@ class UserController extends Controller
        
                */
                 $success['success'] =  'success';
+                $success['user_details'] =  $user;
                 $this->status   = true;
                 $response = new Response($success);
                 $this->jsondata = $response->api_common_response();
