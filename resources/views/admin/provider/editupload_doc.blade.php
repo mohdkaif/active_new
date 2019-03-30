@@ -48,7 +48,7 @@
             <!-- /.card-header -->
              
             <div class="card-body">
-                <form  role="qualification" action="{{url('admin/provider/edit-qualification/'.base64_encode($qualification['id']))}}" method="post" enctype="multipart/form-data">
+                <form  role="qualification" action="{{url('admin/provider/edit-document/'.base64_encode($qualification['id']))}}" method="post" enctype="multipart/form-data">
                   <input type="hidden" name="user_id" value="{{base64_encode($qualification['id'])}}">
                      <div class="form-group">
                         <label class="col-sm-6 control-label">Highschool Document</label>
@@ -83,7 +83,7 @@
                     <div class="form-group">
                         <label class="col-sm-6 control-label">Other Document</label>
                         <div class="col-sm-6">
-                          <input type="file" name="other_document" value="{{$qualification['other_document']}}" class="form-control">
+                          <input type="file" name="document_other" value="{{$qualification['document_other']}}" class="form-control">
                         </div>
                     </div>
                       <div class="form-group">
