@@ -62,12 +62,12 @@
          </label>
          <input type="text" name="mobile" placeholder=" Mobile number *" >
       </div>
-      <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+     {{--  <div class="col-md-6 col-sm-6 col-xs-12 form-group">
          <label>
          OTP
          </label>
          <input type="password" name="otp" placeholder=" OTP *" >
-      </div>
+      </div> --}}
       <div class="col-md-12 col-sm-12 col-xs-12 form-group">
          <h2>Verify mail id</h2>
          <div class="container1 row">

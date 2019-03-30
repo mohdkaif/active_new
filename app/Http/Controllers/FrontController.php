@@ -154,7 +154,7 @@ class FrontController extends Controller
                 $data['first_name'] = $request->first_name;
                 $data['last_name'] = $request->last_name;
                 $data['mobile'] = $request->mobile;
-                $data['otp'] = $request->otp;
+                /*$data['otp'] = $request->otp;*/
                 $data['email'] = $request->email;
                 $data['address'] = $request->address;
                 $data['country'] = $request->region;
@@ -164,7 +164,7 @@ class FrontController extends Controller
                 $data['status'] = 'active';
                 $data['service_id'] = 2;
                 $data['email'] = isset($request->email)?$request->email:'';
-                $user = User::create($data);
+                $user_details = User::create($data);
                
                 foreach ($request->child_name as $key => $name) {  
                     $child[$key]['name'] = $name;
@@ -178,7 +178,7 @@ class FrontController extends Controller
                 }
 
                 foreach ($child as $child_details) {
-                    $childData['user_id'] = $user->id;
+                    $childData['user_id'] = $user_details->id;
                     $childData['name'] = $child_details['name'];
                     $childData['age'] = $child_details['age'];
                     $childData['gender'] = $child_details['gender'];
@@ -290,7 +290,13 @@ class FrontController extends Controller
             $this->alert    = true;
             $this->message = "SignUp Successful";
             $this->modal = true;
-            $this->redirect = url('login');
+            
+            if($request->type == 'user'){
+                $this->redirect = url('verify-otp/'.___encrypt($user_details->id));
+            }else{
+                $this->redirect = url('verify-otp/'.___encrypt($user->id));
+            }
+           /* $this->redirect = url('login');*/
         }
         return $this->populateresponse();
     }
@@ -327,7 +333,7 @@ class FrontController extends Controller
                 $this->message  = "Login Successful";
                 $this->modal    = true;
                 if(\Auth::user()->user_type=='user'){
-                    $this->redirect = url('user/dashboard');
+                    $this->redirect = url('user/profile');
                 }else{
                     $this->redirect = url('provider/dashboard');
                 }
@@ -342,6 +348,55 @@ class FrontController extends Controller
     {
         $data['view']='front.forgotpass';
         return view('front.index',$data);
+    }
+    public function sendOtp(Request $request,$user_id)
+    {
+        
+        $autopass = strtoupper(str_random(6));
+        
+        $user = User::where('id', '=', ___decrypt($user_id))->firstOrFail();
+        $input['otp'] = $autopass;
+        $upd = $user->update($input);
+        $apiKey = urlencode('Af8JoCyMRKc-3KCSW0EBcsbim6Y7FVTtg6SD1bOvfC');
+        // Message details
+        $phone_code=91;
+        $numbers = array($phone_code.$user->mobile);
+        $sender = urlencode('TXTLCL');
+        $message = rawurlencode('Active Bachha Mobile verification OTP is '.$autopass);
+        $numbers = implode(',', $numbers);
+        $data = array('apikey' => $apiKey, 'numbers' => $numbers, "sender" => $sender, "message" => $message);
+        $ch = curl_init('https://api.textlocal.in/send/');
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($ch);
+        curl_close($ch);
+        $data['user_id'] = $user_id;
+        $data['view']='front.otp';
+        return view('front.index',$data);
+    }
+    public function verifyOtp(Request $request,$user_id)
+    {   
+        $request->request->add(['user_id'=>___decrypt($user_id)]);
+        $validation = new Validations($request);
+        $validator = $validation->verifyOtp();
+        if ($validator->fails()){
+            $this->message = $validator->errors();
+        }else{
+            
+            $user = User::where('id', '=', ___decrypt($user_id))->firstOrFail();
+            if($request->otp==$user->otp){
+                $input['is_mobile_verified'] = 'yes';
+                $upd = $user->update($input);
+                $this->status   = true;
+                $this->alert    = true;
+                $this->message  = "Mobile Verification Successful";
+                $this->modal    = true;
+                $this->redirect = url('login');
+                
+            }
+        }
+        return $this->populateresponse();
     }
 
     public function sendForgotOTp(Request $request)

@@ -38,6 +38,8 @@ Route::post('edit-service-subcategory', 'API\ServiceController@editServiceSubCat
 
 Route::post('add-service', 'API\ServiceController@addService');
 Route::post('edit-service', 'API\ServiceController@editService');
+Route::post('delete-service', 'API\ServiceController@deleteService');
+
 
 Route::post('add-service-days', 'API\ServiceController@addServiceDays');
 Route::post('edit-service-days', 'API\ServiceController@editServiceDays');

@@ -186,6 +186,16 @@ class Validate
 		return $validator;
 	}
 
+	public function deleteService($action='add'){
+		$validations = [
+        	'service_id' 						=> $this->validation('id'),
+        /*	'provider_id' 						=> $this->validation('id'),*/
+    	];
+    
+    	$validator = \Validator::make($this->data->all(), $validations,[]);
+		return $validator;
+	}
+
 	public function addServiceSubCategory($action='add'){
 		$validations = [
 			'service_category_id'		  => $this->validation('id'),
@@ -245,6 +255,36 @@ class Validate
 		
 		return $validator;
 	}
+
+	public function verifyOtp(){
+		$validations = [
+        	'otp' 						=> $this->validation('name')
+    	];
+    	$validator = \Validator::make($this->data->all(), $validations,[
+		
+			
+		]);
+
+		if(!empty($this->data->user_id)){
+
+	    		$user = User::findOrFail($this->data->user_id);
+	    		
+	    		
+	    		$validator->after(function ($validator) use($user) {
+
+						if ($this->data->otp!=$user->otp){
+							
+						    $validator->errors()->add('otp', 'Incorrect OTP');
+						  
+						}
+						
+				           
+		    	});
+    		}  
+		
+		return $validator;
+	}
+
 
 
 	public function updateProfile(){
@@ -361,13 +401,14 @@ class Validate
 	        	'child_gender'					=> $this->validation('child'),
 	        	'child_gender.*'				=> $this->validation('child_details'),
 	        	'mobile'						=> $this->validation('mobile_number'),
-	        	'otp'							=> $this->validation('name'),
+	        	/*'otp'							=> $this->validation('name'),*/
 	        	'address'						=> $this->validation('address'),
-	        	'region'						=> $this->validation('name'),
+	        	'country'						=> $this->validation('name'),
 	        	'state'							=> $this->validation('name'),
 	        	'city'							=> $this->validation('name'),
 	        	'password' 						=> $this->validation('password'),
-	        	'confirm_password'				=> $this->validation('c_password')
+	        	'confirm_password'				=> $this->validation('c_password'),
+	        	/*'term_condition'				=> $this->validation('name')*/
 	    	];
 		}else{
 			$validations = [
