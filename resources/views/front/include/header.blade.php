@@ -29,7 +29,7 @@
 
                @if(\Auth::user()->user_type=='user')
                   <a href="{{url('user/profile')}}" class="btn btn-default btn-default1 center-block pull-left">Profile</a>
-                  <a href="{{url('user/dashboard')}}" class="btn btn-default btn-default1 center-block pull-left">Dashboard</a>
+                 {{--  <a href="{{url('user/dashboard')}}" class="btn btn-default btn-default1 center-block pull-left">Dashboard</a> --}}
                   
                @else
                   <a href="{{url('provider/profile')}}" class="btn btn-default btn-default1 center-block pull-left">Profile</a>

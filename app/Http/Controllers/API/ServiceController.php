@@ -88,7 +88,7 @@ class ServiceController extends Controller
         if ($validator->fails()){
             $this->message = $validator->errors();
         }else{
-            $id = $request->id;
+            $id = $request->service_id;
             $data['service_category_name'] = $request->service_category_name;
 
             $data['updated_at'] = date('Y-m-d H:i:s');
@@ -102,6 +102,8 @@ class ServiceController extends Controller
         }
         return $this->populateresponse();
     }
+
+
 
     public function addServiceSubCategory(Request $request)
     {
@@ -277,6 +279,31 @@ class ServiceController extends Controller
         }
         return $this->populateresponse();
     }
+
+     public function deleteService(Request $request)
+    {
+        $validation = new Validations($request);
+        $validator = $validation->deleteService('edit');
+        if ($validator->fails()){
+            $this->message = $validator->errors();
+        }else{
+            $id = $request->service_id;
+            /////Delete service days
+            $service_days = ServiceDays::where(['service_id'=>$id])->delete();
+            $service = Service::where('id',$id)->delete();
+            $success['success'] =  'success';
+           /* $success['service'] =  $service;*/
+            $this->status   = true;
+            $response = new Response($success);
+            $this->jsondata = $response->api_common_response();
+            $this->message = "Service deleted successfully";
+            
+            
+            
+        }
+        return $this->populateresponse();
+    }
+
 
 
     public function otp(Request $request)
@@ -840,5 +867,6 @@ class ServiceController extends Controller
         }
         return $this->populateresponse();
     }
+    //////id status expiry date expiry time title price months desc
 
 }

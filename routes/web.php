@@ -33,7 +33,8 @@ Route::get('get-user-form', 'FrontController@getUserFrom');
 Route::post('add-more-child', 'FrontController@addMoreChild');
 Route::get('logout', 'FrontController@logout');
 Route::get('contact', 'FrontController@contact');
-
+Route::get('verify-otp/{id}', 'FrontController@sendOtp');
+Route::post('verify-otp/{id}', 'FrontController@verifyOtp');
 Route::get('/redirect', 'SocialAuthFacebookController@redirect');
 Route::get('/callback', 'SocialAuthFacebookController@callback');
 
