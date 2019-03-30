@@ -33,6 +33,46 @@
                <!-- end of container -->
             </section>
             <!-- end of fullscreenSlider -->
+            
+           {{--  <section class="intro-section hidden-xs">
+               <div class="auto-container">
+                  <div class="row clearfix">
+                     <div class="image-column col-md-5 col-sm-12 col-xs-12">
+                        <div class="inner-column">
+                           <img src="{{url('assets/images/about_left.jpg')}}">
+                        </div>
+                     </div>
+                     <div class="text-column col-md-7 col-sm-12 col-xs-12">
+                        <div class="inner-column">
+                           <div class="sec-title">
+                              <div class="sec-title">
+                                 <h2>WELCOME TO<br> THE ACTIVE BACCHA </h2>
+                              </div>
+                           </div>
+                           <p>ACTIVE BACCHA is kids online portal. We aim at full utilisation of your child’s free time through various learning and entertaining activities at home.  </p>
+                           <p>We at ACTIVE BACCHA , customise programs to help your child attain his full potential.</p>
+                        </div><br>
+                        <a class="theme-btn btn-style-one pull-left"  style="font-family: 'Roboto';">Read More </a>
+                     </div>
+                  </div>
+               </div>
+            </section> --}}
+            <section class="call-to-action action" style="background: url(assets/images/back.jpg) no-repeat;">
+               <div class="auto-container">
+                  <div class="inner-container">
+                     <div class="row">
+                        <div class="col-md-9">
+                           <h2 >HOW TO ENROLL YOUR CHILD TO A CLASS? </h2>
+                           <p style="color:#fff;">JENNIFER LAWRENCE REGINA SPEKTOR Active Learning Teacher Preschool Teach </p>
+                        </div>
+                        <div class="col-md-3">
+                           <br>
+                           <a href="#" class="theme-btn btn-style-two">FIND OUT MORE  </a>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </section>
             <section class="info-section no-pd-top Modal" >
                <div class="auto-container">
                   <div class="row clearfix">
@@ -66,45 +106,6 @@
                      </div>
                   
                    
-                     </div>
-                  </div>
-               </div>
-            </section>
-            <section class="intro-section hidden-xs">
-               <div class="auto-container">
-                  <div class="row clearfix">
-                     <div class="image-column col-md-5 col-sm-12 col-xs-12">
-                        <div class="inner-column">
-                           <img src="{{url('assets/images/about_left.jpg')}}">
-                        </div>
-                     </div>
-                     <div class="text-column col-md-7 col-sm-12 col-xs-12">
-                        <div class="inner-column">
-                           <div class="sec-title">
-                              <div class="sec-title">
-                                 <h2>WELCOME TO<br> THE ACTIVE BACCHA </h2>
-                              </div>
-                           </div>
-                           <p>ACTIVE BACCHA is kids online portal. We aim at full utilisation of your child’s free time through various learning and entertaining activities at home.  </p>
-                           <p>We at ACTIVE BACCHA , customise programs to help your child attain his full potential.</p>
-                        </div><br>
-                        <a class="theme-btn btn-style-one pull-left"  style="font-family: 'Roboto';">Read More </a>
-                     </div>
-                  </div>
-               </div>
-            </section>
-            <section class="call-to-action action" style="background: url(assets/images/back.jpg) no-repeat;">
-               <div class="auto-container">
-                  <div class="inner-container">
-                     <div class="row">
-                        <div class="col-md-9">
-                           <h2 >HOW TO ENROLL YOUR CHILD TO A CLASS? </h2>
-                           <p style="color:#fff;">JENNIFER LAWRENCE REGINA SPEKTOR Active Learning Teacher Preschool Teach </p>
-                        </div>
-                        <div class="col-md-3">
-                           <br>
-                           <a href="#" class="theme-btn btn-style-two">FIND OUT MORE  </a>
-                        </div>
                      </div>
                   </div>
                </div>
