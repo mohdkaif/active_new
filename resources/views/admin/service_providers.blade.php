@@ -71,12 +71,12 @@
                       if($status=='pending')
                       {
                       ?>
-                      <a class="btn  btn-success btn-flat"  href="javascript:void(0);"  data-url="{{url(sprintf('admin/provider/updatestatus/?id=%s&status=active',$service_provider_res['id']))}}" data-ask="Are you sure Un-approve service provider?"  data-ask_image="{{url('assets/default/warning.png')}}" data-request="ajax-confirm" title="Update Status">
-                      <i class="fa fa-check-square-o"></i>Approved </a>
+                      <a class="btn  btn-success btn-flat"  href="javascript:void(0);"  data-url="{{url(sprintf('admin/provider/updatestatus/?id=%s&status=active',$service_provider_res['id']))}}" data-ask="Are you sure you want to approve service provider?"  data-ask_image="{{url('assets/default/warning.png')}}" data-request="ajax-confirm" title="Update Status">
+                      <i class="fa fa-check-square-o"></i>Approve </a>
                       <?php }else{ ?>
-                      <a class="btn btn-warning btn-flat"  href="javascript:void(0);"  data-url="{{url(sprintf('admin/provider/updatestatus/?id=%s&status=pending',$service_provider_res['id']))}}" data-ask="Are you sure Approve service provider?"  data-ask_image="{{url('assets/default/warning.png')}}" data-request="ajax-confirm" title="Update Status">
+                      <a class="btn btn-warning btn-flat"  href="javascript:void(0);"  data-url="{{url(sprintf('admin/provider/updatestatus/?id=%s&status=pending',$service_provider_res['id']))}}" data-ask="Are you sure you want to UnApprove service provider?"  data-ask_image="{{url('assets/default/warning.png')}}" data-request="ajax-confirm" title="Update Status">
                       <i class="icon-edit icon-white"></i>  
-                      NotApproved                                        
+                      UnApprove                                       
                       </a>
                     <?php } ?>
                  <a href="editservice_providers.php?id={{base64_encode($service_provider_res['id'])}}">

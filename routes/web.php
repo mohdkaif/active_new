@@ -50,6 +50,7 @@ Route::group(['prefix' => 'provider', 'middleware' => ['providerAuth']] ,functio
 	Route::post('update-profile', 'UserProfileController@updateProfile');
 	
 	Route::get('service', 'FrontController@service');
+	Route::get('service/{id}', 'FrontController@serviceDetails');
 	Route::post('update-service', 'FrontController@updateService');
 	Route::post('change-password', 'UserProfileController@changePassword');
 

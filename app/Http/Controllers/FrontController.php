@@ -497,6 +497,7 @@ class FrontController extends Controller
     {
         $data['id']=$request->user;
         $data['view']='front.service_provider_dashboard';
+
         $user = _arefy(User::provider_list('single','id = '.\Auth::user()->id));
         $data['user'] = $user;
         
@@ -508,8 +509,25 @@ class FrontController extends Controller
        
         $data['view']='front.service';
         $user = _arefy(User::provider_list('single','id = '.\Auth::user()->id));
-        $data['service'] = _arefy(Service::where('service_sub_category_id',$user['provider_user']['service_id'])->get()->first());
-        $data['services'] = _arefy(Service::get());
+        /////Get services
+       /* $data['service_categories'] = _arefy(ServiceCategory::list('array','provider_id = '.$user['provider_user']['id']));*/
+        $data['services'] = _arefy(Service::list('array','provider_id = '.$user['provider_user']['id']));
+        /*$data['services'] = _arefy(Service::get());*/
+       
+        $data['user'] = $user;
+        
+        return view('front.index',$data);
+    }
+
+     public function serviceDetails(Request $request,$service_id)
+    {
+         
+        $data['view']='front.service_view';
+        $user = _arefy(User::provider_list('single','id = '.\Auth::user()->id));
+        /////Get services
+       /* $data['service_categories'] = _arefy(ServiceCategory::list('array','provider_id = '.$user['provider_user']['id']));*/
+        $data['service_details'] = _arefy(Service::list('single','id = '.$service_id));
+        /*$data['services'] = _arefy(Service::get());*/
        
         $data['user'] = $user;
         
