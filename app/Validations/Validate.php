@@ -60,7 +60,7 @@ class Validate
 			'slug_no_space'		    => ['required','alpha_dash','max:255'],
 			'password_check'	    => ['required'],
 			'file'					=> ['required','mimes:pdf'],
-			'document_file'		    => ['nullable','mimes:doc,docx,pdf,jpg,jpeg,png','max:5120'],
+			'document_file'		    => ['nullable','mimes:jpg,jpeg,png','max:5120'],
 			'newpassword'		    => ['required','max:10'],	
 			'child'		    		=> ['required','array','min:1'],	
 			'child_details'		    => ['required','string','distinct','min:1'],

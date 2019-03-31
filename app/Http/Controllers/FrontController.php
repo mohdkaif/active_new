@@ -154,7 +154,7 @@ class FrontController extends Controller
                 $data['first_name'] = $request->first_name;
                 $data['last_name'] = $request->last_name;
                 $data['mobile'] = $request->mobile;
-                /*$data['otp'] = $request->otp;*/
+                $data['otp'] = '2343';
                 $data['email'] = $request->email;
                 $data['address'] = $request->address;
                 $data['country'] = $request->region;

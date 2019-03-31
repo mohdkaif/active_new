@@ -96,7 +96,7 @@ class UserController extends Controller
             return $this->populateresponse();
 
         }
-        
+
         $validation = new Validations($request);
         $validator = $validation->login();
         if ($validator->fails()){
@@ -281,7 +281,7 @@ class UserController extends Controller
                 $data['first_name'] = $request->first_name;
                 $data['last_name'] = $request->last_name;
                 $data['mobile'] = $request->mobile;
-                /*$data['otp'] = $request->otp;*/
+                $data['otp'] = '11331';
                 $data['email'] = $request->email;
                 $data['address'] = $request->address;
                 $data['country'] = $request->region;

@@ -116,7 +116,7 @@
          <input type="text" name="long_distance_travel" placeholder="Long Distance Travel" class="form-control">
         
       </div>
-      <div class="checkbox form-group col-md-6">
+      <div class="checkbox">
       <label></label><input type="checkbox" value="yes" name="location_track_permission">Location Track Permission
     </div>
      
