@@ -200,7 +200,7 @@ class FrontController extends Controller
                 $data['state'] = $request->state;
                 $data['city'] = $request->city;
                 $data['password'] = \Hash::make($request->password);
-                $data['status'] = 'active';
+                $data['status'] = 'pending';
                 $data['date_of_birth'] = $request->date_of_birth;
                 $data['email'] = isset($request->email)?$request->email:'';
                 $data['otp'] = 'SHDJS';
@@ -316,7 +316,7 @@ class FrontController extends Controller
         return view('front.index',$data);
     }
     public function auth(Request $request)
-    {
+    { 
         $validation = new Validations($request);
         $validator = $validation->login();
         if ($validator->fails()){

@@ -18,7 +18,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });*/
 
 
-Route::post('signup', 'API\UserController@signup');
+Route::post('user-signup', 'API\UserController@SignUp2');
+Route::post('provider-signup', 'API\UserController@SignUp2');
 Route::post('bank-details', 'API\UserController@addBankDetail');
 Route::post('add-qualification', 'API\UserController@addQualification');
 Route::post('update-documents', 'API\UserController@addDocuments');
