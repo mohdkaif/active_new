@@ -432,7 +432,7 @@ class Validate
 	        	'mobile'						=> $this->validation('mobile_number'),
 	        	'email'							=> $this->validation('email'),
 	        	'date_of_birth' 				=> $this->validation('name'),
-	        	'permanent_address'				=> $this->validation('address'),
+	        	'address'				        => $this->validation('address'),
 	        	'country'						=> $this->validation('name'),
 	        	'state'							=> $this->validation('name'),
 	        	'city'							=> $this->validation('name'),
