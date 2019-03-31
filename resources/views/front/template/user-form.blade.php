@@ -14,14 +14,16 @@
       </div>
       <div class="col-md-12 col-sm-12 col-xs-12 form-group">
          <h2> Child details</h2>
+
          <div class="container1 row">
+            <input type="hidden" name="child_name">
             <div  class="col-md-6 form-group">
                <label>Name</label>
-               <input type="text" name="child_name[]" placeholder="Name *">
+               <input type="text" name="child_name[0]" placeholder="Name *">
             </div>
             <div  class="col-md-6 form-group">
                <label> Age</label>
-               <select  name="child_age[]" class="sele">
+               <select  name="child_age[0]" class="sele">
                   <option value="">--Age--</option>
                   <option value="1">1</option>
                   <option value="2">2</option>
@@ -30,19 +32,20 @@
             
             <div  class="col-md-6 form-group">
                <label> Gender</label>
+               <input type="hidden" name="child_gender">
                <ul class="list-inline">
                   <li><label class="radio">Male
-                     <input type="radio" name="child_gender[]" value="male" checked="">
+                     <input type="radio" name="child_gender[0]" value="male" checked="">
                      <span class="checkround"></span>
                      </label>
                   </li>
                   <li><label class="radio">Female
-                     <input type="radio" name="child_gender[]" value="female">
+                     <input type="radio" name="child_gender[0]" value="female">
                      <span class="checkround"></span>
                      </label></a>
                   </li>
                   <li><label class="radio">Other
-                     <input type="radio" name="child_gender[]" value="other">
+                     <input type="radio" name="child_gender[0]" value="other">
                      <span class="checkround"></span>
                      </label>
                   </li>

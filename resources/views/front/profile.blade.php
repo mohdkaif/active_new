@@ -115,6 +115,23 @@
                             </div>
 
 
+                            <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                              <label>
+                                Update Profile Picture
+                              </label>
+                              <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                  <input onchange="readURL(this)" id="uploadFile" accept="image/*" name="image" type="file" class="form-control">
+                                </div>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                  <img style="max-width: 100px;" src="{{asset('assets/images/avatar.png')}}" id="adminimg" alt="No Featured Image Added">
+                                </div>
+                              </div>
+                            </div>
+
+                            
+
+
                              {{-- <div class="col-md-6 col-sm-6 col-xs-12 form-group">
                               <label>
                                  Photo
@@ -289,4 +306,19 @@
 </section>
  
 @section('requirejs')
+<script type="text/javascript">
+   
+    function readURL(input) {
+
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#adminimg').attr('src', e.target.result);
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }   
+    }
+</script>
 @endsection

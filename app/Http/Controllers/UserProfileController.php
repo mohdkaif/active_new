@@ -30,6 +30,12 @@ class UserProfileController extends Controller
                 $data['address'] = $request->address;
                 $data['date_of_birth'] = $request->date_of_birth;
 				$data['gender'] = $request->gender;
+                if ($file = $request->file('image')){
+                    $photo_name = time().$request->file('image')->getClientOriginalName();
+                    $file->move('assets/images/providers',$photo_name);
+                    $data['image'] = $photo_name;
+                   
+                }
                
                 $update = User::change(\Auth::user()->id,$data);
             

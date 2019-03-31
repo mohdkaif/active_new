@@ -408,6 +408,7 @@ class Validate
 			$validations = [
 				'first_name'					=> $this->validation('name'),
 	        	'last_name' 					=> $this->validation('name'),
+	        	'child_name'					=> $this->validation('id'),
 	        	'child_name.*'					=> $this->validation('child'),
 	        	'child_name.*'					=> $this->validation('child_details'),
 	        	'child_age'						=> $this->validation('child'),

@@ -299,7 +299,7 @@ class UserController extends Controller
                 $provider['service_end_time']=$request->service_end_time;*/          
                 $provider['distance_travel']=$request->distance_travel;           
                 $provider['long_distance_travel']=$request->long_distance_travel; 
-               $provider['location_track_permission']=(!empty($request->location_track_permission) && $request->location_track_permission=='yes')?$request->location_track_permission:'no';
+                $provider['location_track_permission']=(!empty($request->location_track_permission) && $request->location_track_permission=='yes')?$request->location_track_permission:'no';
                 if ($file = $request->file('image')){
                     $photo_name = time().$request->file('image')->getClientOriginalName();
                     $file->move('assets/images/providers',$photo_name);
