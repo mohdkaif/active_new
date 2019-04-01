@@ -188,7 +188,7 @@ class FrontController extends Controller
                 if(!empty($child)){
 
                     foreach ($child as $child_details) {
-                        $childData['user_id'] = $user->id;
+                        $childData['user_id'] = $user_details->id;
                         $childData['name'] = $child_details['name'];
                         $childData['age'] = $child_details['age'];
                         $childData['gender'] = $child_details['gender'];
