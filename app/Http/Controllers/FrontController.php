@@ -149,6 +149,7 @@ class FrontController extends Controller
         if ($validator->fails()){
             $this->message = $validator->errors();
         }else{
+            pp('cvsdz');
             if($request->type == 'user'){
                 $data['user_type'] = $request->type;
                 $data['first_name'] = $request->first_name;

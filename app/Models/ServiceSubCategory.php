@@ -15,7 +15,7 @@ class ServiceSubCategory extends Model
     protected $primaryKey = 'service_sub_category_id';
 
     public function category(){
-        return $this->hasOne('Models\ServiceCategory', 'service_category_id', 'service_category_id');
+        return $this->hasOne('App\Models\ServiceCategory', 'service_category_id', 'service_category_id');
     }
 
     public static function add($data){

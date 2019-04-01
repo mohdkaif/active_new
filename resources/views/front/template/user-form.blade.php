@@ -1,29 +1,41 @@
-<form role="user-signup" method="post" action="{{url('/signup')}}" >
+<form role="user-signup" method="post" action="{{url('/signup')}}" class="contact-form">
    <input type="hidden" name="type" value="user">
       <div class="col-md-6 col-sm-6 col-xs-12 form-group">
          <label>
          First Name
          </label>
-         <input type="text" name="first_name" placeholder="First Name *" >
+         <input type="text" name="first_name" placeholder="First Name *" class="form-control">
       </div>
       <div class="col-md-6 col-sm-6 col-xs-12 form-group">
          <label>
          Last Name
          </label>
-         <input type="text" name="last_name" placeholder="Last Name *" >
+         <input type="text" name="last_name" placeholder="Last Name *" class="form-control">
       </div>
-      <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+      <div class="col-md-12 col-sm-12 col-xs-12">
          <h2> Child details</h2>
-
          <div class="container1 row">
-            <input type="hidden" name="child_name">
             <div  class="col-md-6 form-group">
-               <label>Name</label>
-               <input type="text" name="child_name[0]" placeholder="Name *">
+               <input type="hidden" name="child_name" class="form-control">
             </div>
             <div  class="col-md-6 form-group">
+               <input type="hidden" name="child_age" class="form-control">
+            </div>
+            <div  class="col-md-6 form-group">
+              <input type="hidden" name="child_gender" class="form-control">
+            </div>
+            
+            
+         </div>
+         <div class="container1 row">
+            
+            <div  class="col-md-6 form-group">
+               <label>Name</label>
+               <input type="text" name="child_name[0]" placeholder="Name *" class="form-control">
+            </div>
+            <div  class="col-md-6 form-group" >
                <label> Age</label>
-                <input type="hidden" name="child_age">
+               
                <select  name="child_age[0]" class="sele">
                      <option value="">--Age--</option>
                      <option value="1">1</option>
@@ -43,20 +55,20 @@
             
             <div  class="col-md-6 form-group">
                <label> Gender</label>
-               <input type="hidden" name="child_gender">
+              
                <ul class="list-inline">
                   <li><label class="radio">Male
-                     <input type="radio" name="child_gender[0]" value="male" checked="">
+                     <input type="radio" name="child_gender[0]" value="male" checked="" class="form-control">
                      <span class="checkround"></span>
                      </label>
                   </li>
                   <li><label class="radio">Female
-                     <input type="radio" name="child_gender[0]" value="female">
+                     <input type="radio" name="child_gender[0]" value="female" class="form-control">
                      <span class="checkround"></span>
                      </label></a>
                   </li>
                   <li><label class="radio">Other
-                     <input type="radio" name="child_gender[0]" value="other">
+                     <input type="radio" name="child_gender[0]" value="other" class="form-control">
                      <span class="checkround"></span>
                      </label>
                   </li>
@@ -74,7 +86,7 @@
          <label>
          Mobile number
          </label>
-         <input type="text" name="mobile" placeholder=" Mobile number *" >
+         <input type="text" name="mobile" placeholder=" Mobile number *" class="form-control">
       </div>
      {{--  <div class="col-md-6 col-sm-6 col-xs-12 form-group">
          <label>
@@ -87,7 +99,7 @@
          <div class="container1 row">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-group">
                <label>Address </label>
-               <textarea name="address" placeholder="Address" style="border-bottom: 1px solid rgba(119,119,119,1);
+               <textarea name="address" class="form-control" placeholder="Address" style="border-bottom: 1px solid rgba(119,119,119,1);
                   height: 100px"></textarea>
             </div>
             <div class="col-md-12 col-sm-12 col-xs-12 form-group">
@@ -132,13 +144,13 @@
                <label>
                Password
                </label>
-               <input type="password" name="password" placeholder=" Password *" >
+               <input type="password" name="password" placeholder=" Password *" class="form-control">
             </div>
             <div class="col-md-6 col-sm-6 col-xs-12 form-group">
                <label>
                Verify Password
                </label>
-               <input type="password" name="confirm_password" placeholder=" Verify Password *" >
+               <input type="password" name="confirm_password" placeholder=" Verify Password *" class="form-control">
             </div>
          </div>
       </div>

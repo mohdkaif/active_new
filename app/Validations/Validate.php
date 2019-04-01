@@ -404,12 +404,12 @@ class Validate
 
 	public function signup()
 	{
+
 		if($this->data->type=="user"){
 			$validations = [
 				'first_name'					=> $this->validation('name'),
 	        	'last_name' 					=> $this->validation('name'),
-	        	'child_name'					=> $this->validation('id'),
-	        	'child_name.*'					=> $this->validation('child'),
+	        	'child_name'					=> $this->validation('child'),
 	        	'child_name.*'					=> $this->validation('child_details'),
 	        	'child_age'						=> $this->validation('child'),
 	        	'child_age.*'					=> $this->validation('child_details'),
@@ -487,7 +487,35 @@ class Validate
 		    	}        
 		    });
 		}
-		
+
+		/*if($this->data->type=='user'){
+
+			if(empty($this->data->child_name[0])){
+				
+
+			    $validator->after(function ($validator){
+			    	
+			    	$validator->errors()->add('child_name[0]', 'Child Name is required');
+			    	      
+			    });
+			}
+			if(empty($this->data->child_age[0])){
+
+			    $validator->after(function ($validator){
+			    	
+			    	$validator->errors()->add('child_age[0]', 'Child Age is required');
+			    	      
+			    });
+			}
+			if(empty($this->data->child_gender[0])){
+
+			    $validator->after(function ($validator){
+			    	
+			    	$validator->errors()->add('child_gender[0]', 'Child Gender is required');
+			    	      
+			    });
+			}
+		}*/
 		return $validator;
 	}
 	public function bankDetail()

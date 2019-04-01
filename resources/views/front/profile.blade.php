@@ -124,7 +124,12 @@
                                   <input onchange="readURL(this)" id="uploadFile" accept="image/*" name="image" type="file" class="form-control">
                                 </div>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                  <img style="max-width: 100px;" src="{{asset('assets/images/avatar.png')}}" id="adminimg" alt="No Featured Image Added">
+                                  @if(!empty($user['image']))
+                                    <img style="max-width: 100px;" src="{{url('assets/images/providers/'.$user['image'])}}" id="adminimg">
+                                  @else
+                                    <img style="max-width: 100px;" src="{{asset('assets/images/avatar.png')}}" id="adminimg" alt="No Profile Picture Added">
+                                  @endif
+                                  
                                 </div>
                               </div>
                             </div>

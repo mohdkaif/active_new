@@ -111,9 +111,16 @@
 
       </div>
 
-       <div class="form-group col-md-6">
-        <label for="pwd">Long Distance Travel:</label>
-         <input type="text" name="long_distance_travel" placeholder="Long Distance Travel" class="form-control">
+       <div class="checkbox">
+     
+        <label></label><input type="checkbox" value="yes" id="long_distance_travel_permit" name="long_distance_travel_permit">Long Distance Travel:
+    
+        
+      </div>
+      <div class="form-group col-md-6" id="long_d_t_charge" style="display:none">
+        <label for="pwd">Long Distance Travel Charges:</label>
+      
+         <input type="text" name="long_distance_travel" placeholder="Long Distance Travel Charges" class="form-control">
         
       </div>
       <div class="checkbox">
