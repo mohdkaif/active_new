@@ -275,15 +275,15 @@ class UserController extends Controller
             $this->message = $validator->errors();
         }else{
             if($request->type == 'user'){
-                $data['facebook_id']=$request->facebook_id;
-                $data['google_id']=$request->google_id;
+                $data['facebook_id']=(!empty($request->facebook_id))?$request->facebook_id:'';
+                $data['google_id']=(!empty($request->google_id))?$request->google_id:'';
                 $data['user_type'] = $request->type;
                 $data['first_name'] = $request->first_name;
                 $data['last_name'] = $request->last_name;
                 $data['mobile'] = $request->mobile;
                 $data['otp'] = '11331';
                 $data['email'] = $request->email;
-                $data['address'] = $request->address;
+                $data['address'] = (!empty($request->address))?$request->address:'';
                 $data['country'] = $request->region;
                 $data['state'] = $request->state;
                 $data['city'] = $request->city;
@@ -292,43 +292,53 @@ class UserController extends Controller
                /* $data['service_id'] = 2;*/
                 $data['email'] = isset($request->email)?$request->email:'';
                 $user = User::create($data);
-               
-                foreach ($request->child_name as $key => $name) {  
-                    $child[$key]['name'] = $name;
-                }
+                if(!empty($request->child_name)){
 
-                foreach ($request->child_age as $key => $age) {
-                    $child[$key]['age'] = $age;
+                    foreach ($request->child_name as $key => $name) {  
+                        $child[$key]['name'] = $name;
+                    }
                 }
-                foreach ($request->child_gender as $key => $gender) {
-                    $child[$key]['gender'] = $gender;
+                if(!empty($request->child_age)){
+                    
+                  
+                    foreach ($request->child_age as $key => $age) {
+                        $child[$key]['age'] = $age;
+                    }
                 }
+                if(!empty($request->child_gender)){
+                    foreach ($request->child_gender as $key => $gender) {
+                        $child[$key]['gender'] = $gender;
+                    }
+                }
+                if(!empty($child)){
 
-                foreach ($child as $child_details) {
-                    $childData['user_id'] = $user->id;
-                    $childData['name'] = $child_details['name'];
-                    $childData['age'] = $child_details['age'];
-                    $childData['gender'] = $child_details['gender'];
-                    $childData['status'] = 'active';
-                    $save_child = UserChild::create($childData);
+                    foreach ($child as $child_details) {
+                        $childData['user_id'] = $user->id;
+                        $childData['name'] = $child_details['name'];
+                        $childData['age'] = $child_details['age'];
+                        $childData['gender'] = $child_details['gender'];
+                        $childData['status'] = 'active';
+                        $save_child = UserChild::create($childData);
+                    }
                 }
 
 
             }else{
-
+                $data['facebook_id']=(!empty($request->facebook_id))?$request->facebook_id:'';
+                $data['google_id']=(!empty($request->google_id))?$request->google_id:'';
                 $data['user_type'] = $request->type;
                 $data['first_name'] = $request->first_name;
                 $data['last_name'] = $request->last_name;
                 $data['mobile'] = $request->mobile;
-                $data['otp'] = $request->otp;
+                $data['otp'] ='fcevf';
                 $data['email'] = $request->email;
-                $data['address'] = $request->permanent_address;
-                $data['country'] = $request->country;
-                $data['state'] = $request->state;
-                $data['city'] = $request->city;
+                $data['address'] =(!empty($request->address))?$request->address:'';
+                $data['country'] = (!empty($request->country))?$request->country:'';
+                $data['state'] = (!empty($request->state))?$request->state:'';
+                $data['city'] = (!empty($request->city))?$request->city:'';
                 $data['password'] = \Hash::make($request->password);
                 $data['status'] = 'pending';
-                $data['date_of_birth'] = $request->date_of_birth;
+                $data['date_of_birth'] =(!empty($request->date_of_birth))?$request->date_of_birth:'';
                 $data['email'] = isset($request->email)?$request->email:'';
                 $data['otp'] = 'SHDJS';
                 if ($file = $request->file('image')){
@@ -339,16 +349,16 @@ class UserController extends Controller
                 }
                 $user = User::create($data);
 
-                $provider['bank_name']=$request->bank_name;                 
-                $provider['bank_account_number']=$request->bank_account;              
-                $provider['bank_holder_name']=$request->bank_holder_name;          
-                $provider['bank_ifsc_code']=$request->bank_ifsc_code;  
-                $provider['bank_branch_name']=$request->bank_branch_name; 
+                $provider['bank_name']=(!empty($request->bank_name))?$request->bank_name:'';              
+                $provider['bank_account_number']=(!empty($request->bank_account))?$request->bank_account:'';         
+                $provider['bank_holder_name']=(!empty($request->bank_holder_name))?$request->bank_holder_name:'';      
+                $provider['bank_ifsc_code']=(!empty($request->bank_ifsc_code))?$request->bank_ifsc_code:'';
+                $provider['bank_branch_name']=(!empty($request->bank_branch_name))?$request->bank_branch_name:'';
           
               /*  $provider['service_start_time']=$request->service_start_time;        
                 $provider['service_end_time']=$request->service_end_time; */         
-                $provider['distance_travel']=$request->distance_travel;           
-                $provider['long_distance_travel']=$request->long_distance_travel;
+                $provider['distance_travel']=(!empty($request->distance_travel))?$request->distance_travel:'';            
+                $provider['long_distance_travel']=(!empty($request->long_distance_travel))?$request->long_distance_travel:''; 
                 $provider['location_track_permission']=(!empty($request->location_track_permission) && $request->location_track_permission=='yes')?$request->location_track_permission:'no';
 
                 $provider['term_condition']=$request->term_condition;  

@@ -18,6 +18,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });*/
 
 
+Route::get('service-category-list', 'API\ServiceController@ServiceCategoryList');
+Route::get('service-sub-category-list', 'API\ServiceController@ServiceSubCategoryList');
+Route::post('provider-service-list', 'API\ServiceController@ServiceListForProvider');
 Route::post('user-signup', 'API\UserController@SignUp2');
 Route::post('provider-signup', 'API\UserController@SignUp2');
 Route::post('bank-details', 'API\UserController@addBankDetail');

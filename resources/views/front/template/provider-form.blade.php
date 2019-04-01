@@ -12,6 +12,8 @@
         <label for="pwd">Last Name:</label>
          <input type="text" name="last_name" placeholder="Last Name *" class="form-control">
       </div>
+    </div>
+    <div class="row">
       <div class="form-group col-md-6">
         <label for="email">Mobile:</label>
         <input type="text" name="mobile" placeholder=" Mobile number *" class="form-control">
@@ -20,17 +22,9 @@
         <label for="pwd">Email:</label>
         <input type="text" name="email" placeholder="Email *" class="form-control" >
       </div>
-      <div class="form-group col-md-12">
-        <label for="email">Profile Picture:</label>
-       
-        <div class="col-md-6 col-sm-6 col-xs-12">
-            <input onchange="readURL(this)" id="uploadFile" accept="image/*" name="image" type="file" class="form-control">
-        </div>
-         <div class="col-md-6 col-sm-6 col-xs-12">
-           <img style="max-width: 250px;" src="{{asset('assets/images/avatar.png')}}" id="adminimg" alt="No Featured Image Added">
-        </div>
-      </div>
+    </div> 
 
+<div class="row">
       <div class="form-group col-md-6">
         <label for="email">Date Of Birth:</label>
         <input type="date" name="date_of_birth" placeholder="Date Of Birth *" class="form-control">
@@ -39,6 +33,9 @@
         <label for="pwd">Address:</label>
           <textarea name="address" placeholder="Address" class="form-control"></textarea>
       </div>
+    </div>
+     <div class="row">
+
       <div class="form-group col-md-6">
         <label for="email">Region:</label>
        
@@ -58,8 +55,11 @@
        
         </select>
       </div>
+      </div>
+       <div class="row">
       <div class="form-group col-md-6">
         <label for="pwd">City:</label>
+        
         <select class="form-control" name="city" id="city" style="height: 45px;" >
           <option value="">Select City</option>
             {{-- @if(!empty($country))
@@ -68,12 +68,14 @@
                @endforeach
             @endif --}}
         </select>
+     
       </div>
 
       <div class="form-group col-md-6">
         <label for="email">Password:</label>
          <input type="password" name="password" placeholder=" Password *" class="form-control">
       </div>
+       <div class="row">
       <div class="form-group col-md-6">
         <label for="pwd">Confirm Password:</label>
          <input type="password" name="confirm_password" placeholder=" Verify Password *" class="form-control">
@@ -110,27 +112,34 @@
          <input type="text" name="distance_travel" placeholder="Distance Travel" class="form-control">
 
       </div>
-
-       <div class="checkbox">
+    </div>
+    <div class="row">
+       
+      <div class="checkbox col-md-6">
+      <label></label><input type="checkbox" value="yes" name="location_track_permission">Location Track Permission
+    </div>
+    <div class="checkbox col-md-6">
      
         <label></label><input type="checkbox" value="yes" id="long_distance_travel_permit" name="long_distance_travel_permit">Long Distance Travel:
     
         
       </div>
-      <div class="form-group col-md-6" id="long_d_t_charge" style="display:none">
+     
+    </div>
+     <div class="row">
+      <div class="form-group col-md-6">
+        <label for="email">Bank Name:</label>
+        <input type="text" name="bank_name" placeholder="Bank Name *" class="form-control">
+      </div>
+       <div class="form-group col-md-6" id="long_d_t_charge" style="display:none">
         <label for="pwd">Long Distance Travel Charges:</label>
       
          <input type="text" name="long_distance_travel" placeholder="Long Distance Travel Charges" class="form-control">
         
       </div>
-      <div class="checkbox">
-      <label></label><input type="checkbox" value="yes" name="location_track_permission">Location Track Permission
-    </div>
      
-      <div class="form-group col-md-6">
-        <label for="email">Bank Name:</label>
-        <input type="text" name="bank_name" placeholder="Bank Name *" class="form-control">
-      </div>
+    </div>
+     <div class="row">
       <div class="form-group col-md-6">
         <label for="pwd">Bank Account Number:</label>
         <input type="text" name="bank_account_number" placeholder="Bank account Number " >
@@ -140,6 +149,8 @@
         <label for="email">Bank Holder name:</label>
          <input type="text" name="bank_holder_name" placeholder=" Bank Holder Name " >
       </div>
+    </div>
+     <div class="row">
       <div class="form-group col-md-6">
         <label for="pwd">Bank IFSC Code:</label>
          <input type="text" name="bank_ifsc_code" placeholder=" Bank IFSC Code " >
@@ -148,6 +159,8 @@
         <label for="pwd">Bank Branch Name:</label>
          <input type="text" name="bank_branch_name" placeholder="Bank Branch Name" >
       </div>
+    </div>
+     <div class="row">
       <div class="form-group col-md-6">
         <label for="email">Graduation Document:</label>
         <input type="file" name="document_graduation">
@@ -156,6 +169,8 @@
         <label for="pwd">Post Graduation Document:</label>
         <input type="file" name="document_post_graduation">
       </div>
+    </div>
+     <div class="row">
 
       <div class="form-group col-md-6">
         <label for="email">Adhar Card:</label>
@@ -168,9 +183,27 @@
       <input type="hidden" name="type" value="provider">
       
     </div>
-    <div class="checkbox">
+  <div class="row">
+    
+      <div class="checkbox col-md-6">
       <label><input type="checkbox" value="yes" name="term_condition">Term And Condition</label>
-    </div>
+       </div>
+    
+  </div>
+  <div class="row">
+      <div class="form-group col-md-12">
+        <label for="email">Profile Picture:</label>
+       
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <input onchange="readURL(this)" id="uploadFile" accept="image/*" name="image" type="file" class="form-control">
+        </div>
+         <div class="col-md-6 col-sm-6 col-xs-12">
+           <img style="max-width: 250px;" src="{{asset('assets/images/avatar.png')}}" id="adminimg" alt="No Featured Image Added">
+        </div>
+      </div>
+</div> 
+   <div class="row">
     <button type="button" data-request="ajax-submit" data-target='[role="provider-signup"]' class="theme-btn btn-style">Submit</button>
+  </div>
   </form>
 </div>

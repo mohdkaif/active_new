@@ -163,7 +163,7 @@
             <section class="testimonial-section" style="background-image: url(assets/images/background/3.jpg);">
                <div class="auto-container">
                   <div class="sec-title text-center light">
-                     <h2>WHAT THE PARENTS SAY</h2>
+                     <h2>WHAT PARENTS SAY</h2>
                   </div>
                   <div class="testimonial-carousel owl-carousel owl-theme">
                      <!-- Slide item -->
@@ -205,7 +205,7 @@
                </div>
             </section>
             
-            <section class="gallery-full-width no-pd-bottom">
+      {{--       <section class="gallery-full-width no-pd-bottom">
             <div class="auto-container">
                <div class="sec-title text-center">
                   <h2>categories</h2>
@@ -292,7 +292,7 @@
                </div>
                </div>
             </div>
-            </section>
+            </section> --}}
           <section class="gallery1-full-width no-pd-bottom">
             <div class="auto-container">
                <div class="sec-title text-center">

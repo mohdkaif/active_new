@@ -204,6 +204,16 @@ class Validate
 		return $validator;
 	}
 
+	public function serviceListProvider($action='add'){
+		$validations = [
+        	/*'service_id' 						=> $this->validation('id'),*/
+        	'provider_id' 						=> $this->validation('id'),
+    	];
+    
+    	$validator = \Validator::make($this->data->all(), $validations,[]);
+		return $validator;
+	}
+
 	public function addServiceSubCategory($action='add'){
 		$validations = [
 			'service_category_id'		  => $this->validation('id'),

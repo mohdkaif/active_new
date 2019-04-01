@@ -330,6 +330,60 @@ class ServiceController extends Controller
         return $this->populateresponse();
     }
 
+    public function ServiceCategoryList(Request $request)
+    {
+      
+        $list = _arefy(ServiceCategory::listing('array'));
+                
+        $success['service_category_list']=$list;
+       
+        $this->status   = true;
+        $response = new Response($success);
+        $this->jsondata = $response->api_common_response();
+        $this->message = "Success.";
+                
+        return $this->populateresponse();
+    }
+
+    public function ServiceSubCategoryList(Request $request)
+    {
+      
+        $list = _arefy(ServiceSubCategory::listing('array'));
+                
+        $success['service_sub_category_list']=$list;
+       
+        $this->status   = true;
+        $response = new Response($success);
+        $this->jsondata = $response->api_common_response();
+        $this->message = "Success.";
+                
+        return $this->populateresponse();
+    }
+
+    public function ServiceListForProvider(Request $request)
+    {
+        $validation = new Validations($request);
+        $validator = $validation->serviceListProvider();
+        if ($validator->fails()){
+            $this->message = $validator->errors();
+        }else{
+                
+                
+            $provider_id = $request->provider_id;
+            $list = _arefy(Service::list('array','provider_id = '.$provider_id));
+                    
+            $success['service_list']=$list;
+           
+            $this->status   = true;
+            $response = new Response($success);
+            $this->jsondata = $response->api_common_response();
+            $this->message = "Success.";
+                    
+           
+        }
+        return $this->populateresponse();
+    }
+
     public function ChangePassword(Request $request)
     {
         $validation = new Validations($request);
