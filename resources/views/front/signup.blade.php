@@ -95,7 +95,6 @@ $(document).on('change','#state',function(){
 });
 
 $(document).on('change','#long_distance_travel_permit',function(){
-    alert('sca');
     if(this.checked) {
        $("#long_d_t_charge").show();
     }else{

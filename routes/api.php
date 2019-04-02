@@ -17,7 +17,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });*/
 
-
+Route::post('get-user-info', 'API\UserController@getUserInfo');
+Route::post('delete-user', 'API\UserController@deleteUser');
 Route::get('service-category-list', 'API\ServiceController@ServiceCategoryList');
 Route::get('service-sub-category-list', 'API\ServiceController@ServiceSubCategoryList');
 Route::post('provider-service-list', 'API\ServiceController@ServiceListForProvider');

@@ -8,6 +8,9 @@
             <ul class="main">
                <li class="current"><a href="{{url('/')}}">Home</a></li>
                <li><a href="{{url('/event')}}">Activity</a></li>
+               <li><a href="{{url('/event')}}">Events & Workshops</a></li>
+               <li><a href="{{url('/event')}}">Packages</a></li>
+               <li><a href="{{url('/event')}}">Kids Boutique</a></li>
                <li><a href="{{url('/about')}}">About Us  </a></li>
                <li><a href="#">Help</a></li>
                <li><a href="#">Privacy Policy</a></li>

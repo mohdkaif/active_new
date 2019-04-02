@@ -267,6 +267,71 @@ class UserController extends Controller
         return $this->populateresponse();
     }
 
+    public function deleteUser(Request $request)
+    {
+        $validation = new Validations($request);
+        $validator = $validation->getUserInfo();
+        if ($validator->fails()){
+            $this->message = $validator->errors();
+        }else{
+                $user_id = $request->user_id;
+               
+                $user = User::where('id', '=', $user_id)->get()->first();
+                if(!empty($user)){
+                    if($user->user_type=='provider'){
+
+                        $user_info = User::where('id',$user_id)->delete();
+                        $user_info = ProviderUser::where('user_id',$user_id)->delete();
+                    }else{
+                        $user_info = User::where('id',$user_id)->delete();
+                    }
+                }else{
+                     $success['user_info'] =  'No user found with this data';
+                }
+                
+                $success['success'] =  'success';
+                $this->status   = true;
+                $response = new Response($success);
+                $this->jsondata = $response->api_common_response();
+                $this->message = "User deleted Successfully.";
+                
+        }
+        return $this->populateresponse();
+    }
+
+    public function getUserInfo(Request $request)
+    {
+        $validation = new Validations($request);
+        $validator = $validation->getUserInfo();
+        if ($validator->fails()){
+            $this->message = $validator->errors();
+        }else{
+
+            $user_id = $request->user_id;
+               
+                $user = User::where('id', '=', $user_id)->get()->first();
+                
+                if(!empty($user)){
+
+                    if($user->user_type=='provider'){
+                        $user_info = _arefy(User::provider_list('single','id = '.$user_id));
+                    }else{
+                        $user_info = _arefy(User::where('id',$user_id)->get()->first());
+                    }
+                    $success['user_info'] =  $user_info;
+                }else{
+                    $success['user_info'] =  'No user found with this data';
+                }
+                
+                $this->status   = true;
+                $response = new Response($success);
+                $this->jsondata = $response->api_common_response();
+                $this->message = "Success.";
+                
+        }
+        return $this->populateresponse();
+    }
+
     public function SignUp2(Request $request)
     {
         $validation = new Validations($request);
@@ -326,6 +391,8 @@ class UserController extends Controller
             }else{
                 $data['facebook_id']=(!empty($request->facebook_id))?$request->facebook_id:'';
                 $data['google_id']=(!empty($request->google_id))?$request->google_id:'';
+                $data['special_service']=(!empty($request->special_service))?$request->special_service:'';
+                
                 $data['user_type'] = $request->type;
                 $data['first_name'] = $request->first_name;
                 $data['last_name'] = $request->last_name;
@@ -341,6 +408,9 @@ class UserController extends Controller
                 $data['date_of_birth'] =(!empty($request->date_of_birth))?$request->date_of_birth:'';
                 $data['email'] = isset($request->email)?$request->email:'';
                 $data['otp'] = 'SHDJS';
+
+                
+
                 if ($file = $request->file('image')){
                     $photo_name = time().$request->file('image')->getClientOriginalName();
                     $file->move('assets/images/providers',$photo_name);
@@ -422,6 +492,45 @@ class UserController extends Controller
                 }
                 $provider['user_id']=$user->id;
                 $provider_user = ProviderUser::create($provider);
+
+                ////service
+                $service['name']=(!empty($request->service_name))?$request->service_name:'';
+                $service['description']=(!empty($request->description))?$request->description:'';
+                $service['price_per_hour']=(!empty($request->price_per_hour))?$request->price_per_hour:'';
+                $service['price_per_children']=(!empty($request->price_per_children))?$request->price_per_children:'';
+                $service['experience_in_work']=(!empty($request->experience_in_work))?$request->experience_in_work:'';
+                $service['service_category_id']=(!empty($request->service_category_id))?$request->service_category_id:'';
+                $service['service_sub_category_id']=(!empty($request->service_sub_category_id))?$request->service_sub_category_id:'';
+                if($request->file('video')){
+                    $file = $request->file('video');
+
+                    $filename2 = $file->getClientOriginalName();
+                    $path = 'assets/service/video/';
+                    if(!File::exists($path)) {
+                        
+                        File::makeDirectory($path, $mode = 0777, true);
+                    }
+                    $res = $file->move($path, $filename2);
+                    $service['video'] = $filename2;
+                }
+                if($request->file('photo')){
+                    $path = 'assets/service/images/';
+                    if(!File::exists($path)) {
+                        File::makeDirectory($path, $mode = 0777, true);
+                    }
+                    $image       = $request->file('photo');
+                    $photo    = time().$image->getClientOriginalName();
+
+                    $image = Image::make($image->getRealPath());  
+                     
+                    $image->save('assets/service/images/' .$photo);
+                    $service['photo'] = $photo;
+                }
+                if(!empty($service['name']) && !empty($provider_user)){
+
+                    $service['provider_id'] = $provider_user->id;
+                    Service::create($service);
+                }
             }
 
             $success['success'] =  'success';

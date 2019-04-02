@@ -194,6 +194,15 @@ class Validate
 		return $validator;
 	}
 
+	public function getUserInfo($action='add'){
+		$validations = [
+        	'user_id' 						=> $this->validation('name'),
+    	];
+    	
+    	$validator = \Validator::make($this->data->all(), $validations,[]);
+		return $validator;
+	}
+
 	public function deleteService($action='add'){
 		$validations = [
         	'service_id' 						=> $this->validation('id'),
