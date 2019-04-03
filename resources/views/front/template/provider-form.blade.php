@@ -117,12 +117,14 @@
     </div>
     <div class="row">
        
-      <div class="checkbox col-md-6">
-        <label></label><input type="checkbox" value="yes" name="location_track_permission">Location Track Permission
+      <div class="col-md-6">
+      
+          <input type="checkbox" value="yes" name="location_track_permission"> Location Track Permission
+        
       </div>
-      <div class="checkbox col-md-6">
+      <div class=" col-md-6">
      
-        <label></label><input type="checkbox" value="yes" id="long_distance_travel_permit" name="long_distance_travel_permit">Long Distance Travel:
+        <input type="checkbox" value="yes" id="long_distance_travel_permit" name="long_distance_travel_permit">  Long Distance Travel:
     
         
       </div>
@@ -192,17 +194,20 @@
     </div>
     <div class="row">
       <div class="form-group col-md-12">
-        <label for="email">Profile Picture:</label>
-        <div class="col-md-6 col-sm-6 col-xs-12">
+       
+        <div class="col-md-6 col-sm-6 col-xs-12" style="padding: 0;">
+           <label for="email">Profile Picture:</label>
           <input onchange="readURL(this)" id="uploadFile" accept="image/*" name="image" type="file" class="form-control">
         </div>
         <div class="col-md-6 col-sm-6 col-xs-12">
-          <img style="max-width: 250px;" src="{{asset('assets/images/avatar.png')}}" id="adminimg" alt="No Featured Image Added">
+          <img style="max-width: 250px;margin-top: 30px;" src="{{asset('assets/images/avatar.png')}}" id="adminimg" alt="No Featured Image Added">
         </div>
       </div>
     </div> 
     <div class="row">
+      <div class="col-md-12">
       <button type="button" data-request="ajax-submit" data-target='[role="provider-signup"]' class="theme-btn btn-style">Submit</button>
+      </div>
     </div>
   </form>
 </div>
