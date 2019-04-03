@@ -7,6 +7,8 @@ use App\Models\State;
 use App\Models\Country; 
 use App\Models\City; 
 use App\Models\UserChild;
+use App\Models\Service;
+use App\Models\ServiceDays;
 use App\Models\ProviderUser; 
 use Illuminate\Support\Facades\Auth; 
 use Validator;
@@ -153,6 +155,7 @@ class UserController extends Controller
                
        
                 $success['otp'] =  $autopass;
+                $success['user_details']=$user;
                 $this->status   = true;
                 $response = new Response($success);
                 $this->jsondata = $response->api_common_response();
@@ -175,6 +178,7 @@ class UserController extends Controller
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                 $response = curl_exec($ch);
                 curl_close($ch);
+                $success['user_details']=$user;
                 $success['otp'] =  $autopass;
                 $this->status   = true;
                 $response = new Response($success);
@@ -257,7 +261,8 @@ class UserController extends Controller
         }else{
                 $data['password']=\Hash::make($request->password);
                 $user = User::where('id', '=', $request->id)->update($data);
-                $success['user'] =  $user;
+                $user_deatils = User::where('id', '=', $request->id)->firstOrFail();
+                $success['user'] =  $user_deatils;
                 $this->status   = true;
                 $response = new Response($success);
                 $this->jsondata = $response->api_common_response();
@@ -285,15 +290,17 @@ class UserController extends Controller
                     }else{
                         $user_info = User::where('id',$user_id)->delete();
                     }
+                    $this->message = "User deleted Successfully.";
                 }else{
-                     $success['user_info'] =  'No user found with this data';
+                    $this->message = "No user found with this data.";
+                     /*$success['user_details'] =  'No user found with this data';*/
                 }
                 
                 $success['success'] =  'success';
                 $this->status   = true;
                 $response = new Response($success);
                 $this->jsondata = $response->api_common_response();
-                $this->message = "User deleted Successfully.";
+                
                 
         }
         return $this->populateresponse();
@@ -318,9 +325,9 @@ class UserController extends Controller
                     }else{
                         $user_info = _arefy(User::where('id',$user_id)->get()->first());
                     }
-                    $success['user_info'] =  $user_info;
+                    $success['user_details'] =  $user_info;
                 }else{
-                    $success['user_info'] =  'No user found with this data';
+                    $success['user_details'] =  'No user found with this data';
                 }
                 
                 $this->status   = true;
@@ -339,6 +346,7 @@ class UserController extends Controller
         if ($validator->fails()){
             $this->message = $validator->errors();
         }else{
+
             if($request->type == 'user'){
                 $data['facebook_id']=(!empty($request->facebook_id))?$request->facebook_id:'';
                 $data['google_id']=(!empty($request->google_id))?$request->google_id:'';
@@ -501,6 +509,7 @@ class UserController extends Controller
                 $service['experience_in_work']=(!empty($request->experience_in_work))?$request->experience_in_work:'';
                 $service['service_category_id']=(!empty($request->service_category_id))?$request->service_category_id:'';
                 $service['service_sub_category_id']=(!empty($request->service_sub_category_id))?$request->service_sub_category_id:'';
+
                 if($request->file('video')){
                     $file = $request->file('video');
 
@@ -529,7 +538,24 @@ class UserController extends Controller
                 if(!empty($service['name']) && !empty($provider_user)){
 
                     $service['provider_id'] = $provider_user->id;
-                    Service::create($service);
+                    $service_added = Service::create($service);
+                }
+
+                ///Service days
+                $days = (!empty($request->days))?explode(',',$request->days):'';
+                $start_time = (!empty($request->start_time))?explode(',',$request->start_time):'';
+                $end_time = (!empty($request->end_time))?explode(',',$request->end_time):'';
+                if(!empty($days) && !empty($start_time) && !empty($end_time)){
+                    foreach($days as $key=> $value){
+                        $servicedays['day'] = $value;
+                        $servicedays['start_time'] = $start_time[$key];
+                        $servicedays['end_time'] = $end_time[$key];
+                        $servicedays['provider_id'] = $provider_user->id;
+                        $servicedays['service_id'] = $service_added->id;
+                        $servicedays['created_at'] = date('Y-m-d H:i:s');
+                        $servicedays['updated_at'] = date('Y-m-d H:i:s');
+                        ServiceDays::create($servicedays);
+                    }
                 }
             }
 

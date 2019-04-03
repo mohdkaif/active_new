@@ -55,9 +55,9 @@
                 @foreach($user as $service_provider_res)
                 <tr id="sessiondiv{{$service_provider_res['image']}}">
                   <?php if($service_provider_res['image']){ ?>
-                  <td><img style="height:120px;" src="{{url('assets/images/photo/'.$service_provider_res['image'])}}"></td>
+                  <td><img style="height:60px;" src="{{url('assets/images/providers/'.$service_provider_res['image'])}}"></td>
                   <?php }else{?>
-                    <td><img style="height:120px;" src="images/profile.jpg"></td>
+                    <td><img style="height:60px;" src="{{url('assets/images/user.png')}}"></td>
                   <?php } ?>
                   
                   <td>{{$service_provider_res['first_name']}} {{$service_provider_res['last_name']}}</td>

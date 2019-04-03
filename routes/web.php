@@ -41,6 +41,7 @@ Route::get('/callback', 'SocialAuthFacebookController@callback');
 /*ROUTE FOR USER*/
 Route::group(['prefix' => 'user', 'middleware' => ['userAuth']] ,function(){
 	Route::get('profile', 'UserProfileController@profile');
+	Route::get('dashboard', 'FrontController@userDashboard');
 });
 
 /*ROUTE FOR USER*/

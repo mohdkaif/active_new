@@ -61,31 +61,7 @@
                         </table>
                         
                     </div>
-                    
-                    <div class="table-responsive ">
-                        <table class="table contact-form">
-                            <tr>
-                                 <td class="sec-title"><h3><i class="fa fa-crosshairs" aria-hidden="true"></i> Specialization</h3></td>
-                            </tr>
-                         </table>
-                        <table class="table" border="0">
-                            <thead>
-                                <tr >
-                                    <td class="text-left"></td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                <td class="text-left">
-                               {{$user['service']['service_sub_category_name']}}
-                                </td>
-                                </tr>
-                                 
-                            </tbody>
-                            
-                        </table>
-                        
-                    </div>
+
                     
                     <div class="table-responsive ">
                         <table class="table contact-form">

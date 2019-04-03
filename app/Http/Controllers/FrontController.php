@@ -344,7 +344,7 @@ class FrontController extends Controller
                 $this->message  = "Login Successful";
                 $this->modal    = true;
                 if(\Auth::user()->user_type=='user'){
-                    $this->redirect = url('user/profile');
+                    $this->redirect = url('user/dashboard');
                 }else{
                     $this->redirect = url('provider/dashboard');
                 }
@@ -508,6 +508,17 @@ class FrontController extends Controller
     {
         $data['id']=$request->user;
         $data['view']='front.service_provider_dashboard';
+
+        $user = _arefy(User::provider_list('single','id = '.\Auth::user()->id));
+        $data['user'] = $user;
+        
+        return view('front.index',$data);
+    }
+
+    public function userDashboard(Request $request)
+    {
+        $data['id']=$request->user;
+        $data['view']='front.user_dashboard';
 
         $user = _arefy(User::provider_list('single','id = '.\Auth::user()->id));
         $data['user'] = $user;
