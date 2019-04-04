@@ -9,7 +9,7 @@
          </section>
          <section class="user">
                   @if(!empty($user['image']))
-                    <img src="{{url('assets/images/providers/'.$user['image'])}}" class="img-circle center-block" >
+                    <img src="{{url('assets/images/users/'.$user['image'])}}" class="img-circle center-block" >
                   @else
                     <img src="{{url('assets/images/user.png')}}" class="img-circle center-block" >
                   @endif

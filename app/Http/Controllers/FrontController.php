@@ -158,7 +158,7 @@ class FrontController extends Controller
                 $data['otp'] = '2343';
                 $data['email'] = $request->email;
                 $data['address'] = (!empty($request->address))?$request->address:'';
-                $data['country'] = $request->region;
+                $data['country'] = $request->country;
                 $data['state'] = $request->state;
                 $data['city'] = $request->city;
                 $data['password'] = \Hash::make($request->password);
@@ -217,7 +217,7 @@ class FrontController extends Controller
                 $data['otp'] = 'SHDJS';
                 if ($file = $request->file('image')){
                     $photo_name = time().$request->file('image')->getClientOriginalName();
-                    $file->move('assets/images/providers',$photo_name);
+                    $file->move('assets/images/users',$photo_name);
                     $data['image'] = $photo_name;
                    
                 }
@@ -229,7 +229,7 @@ class FrontController extends Controller
                 $provider['bank_ifsc_code']=(!empty($request->bank_ifsc_code))?$request->bank_ifsc_code:'';
                 $provider['bank_branch_name']=(!empty($request->bank_branch_name))?$request->bank_branch_name:'';
           
-              /*  $provider['service_start_time']=$request->service_start_time;        
+                /*  $provider['service_start_time']=$request->service_start_time;        
                 $provider['service_end_time']=$request->service_end_time; */         
                 $provider['distance_travel']=(!empty($request->distance_travel))?$request->distance_travel:'';         
                 $provider['long_distance_travel']=(!empty($request->long_distance_travel))?$request->long_distance_travel:''; 
@@ -532,7 +532,7 @@ class FrontController extends Controller
         $data['view']='front.service';
         $user = _arefy(User::provider_list('single','id = '.\Auth::user()->id));
         /////Get services
-       /* $data['service_categories'] = _arefy(ServiceCategory::list('array','provider_id = '.$user['provider_user']['id']));*/
+        /* $data['service_categories'] = _arefy(ServiceCategory::list('array','provider_id = '.$user['provider_user']['id']));*/
         $data['services'] = _arefy(Service::list('array','provider_id = '.$user['provider_user']['id']));
         /*$data['services'] = _arefy(Service::get());*/
        

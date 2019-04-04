@@ -421,7 +421,7 @@ class UserController extends Controller
 
                 if ($file = $request->file('image')){
                     $photo_name = time().$request->file('image')->getClientOriginalName();
-                    $file->move('assets/images/providers',$photo_name);
+                    $file->move('assets/images/users',$photo_name);
                     $data['image'] = $photo_name;
                    
                 }
@@ -608,7 +608,7 @@ class UserController extends Controller
                 $provider['location_track_permission']=(!empty($request->location_track_permission) && $request->location_track_permission=='yes')?$request->location_track_permission:'no';
                 if ($file = $request->file('image')){
                     $photo_name = time().$request->file('image')->getClientOriginalName();
-                    $file->move('assets/images/providers',$photo_name);
+                    $file->move('assets/images/users',$photo_name);
                     $data['image'] = $photo_name;
                    
                 }

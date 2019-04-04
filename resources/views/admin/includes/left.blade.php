@@ -1,7 +1,7 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="index.php" class="brand-link bg-success">
-      <img src="{{url('assets/admin/dist/img/AdminLTELogo.png')}}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"style="opacity: .8">
+      <img src="{{url('assets/images/logo.png')}}" alt="Logo" class="brand-image img-circle elevation-3"style="opacity: .8">
       <span class="brand-text font-weight-light">Active Baccha</span>
     </a>
     <!-- Sidebar -->
@@ -9,7 +9,7 @@
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="images/" style="width:35px; height:35px;" class="img-circle elevation-2" alt="User Image">
+        {{--    <img src="images/" style="width:35px; height:35px;" class="img-circle elevation-2" alt="User Image">--}}
         </div>
         <div class="info">
           <a href="editprofile.php" class="d-block"></a>
@@ -79,7 +79,7 @@
                         </li>
                
                       <li class="nav-item">
-                        <a href="user.php" class="nav-link">
+                        <a href="{{url('admin/user')}}" class="nav-link  @if(in_array(Request::segment(2),['user'])) active @endif">
                         <i class="fa fa-users nav-icon"></i>
                         <p>Users</p>
                         </a>
