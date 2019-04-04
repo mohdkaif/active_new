@@ -122,7 +122,7 @@
           <input type="checkbox" value="yes" name="location_track_permission"> Location Track Permission
         
       </div>
-      <div class=" col-md-6">
+      <div class=" col-md-6" style="margin-bottom: 10px;">
      
         <input type="checkbox" value="yes" id="long_distance_travel_permit" name="long_distance_travel_permit">  Long Distance Travel:
     
