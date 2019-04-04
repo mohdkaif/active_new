@@ -39,5 +39,7 @@ class ProviderUser extends Authenticatable
                 
         return (bool)$isUpdated;
     }
+
+   
     
 }

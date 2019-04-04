@@ -55,7 +55,7 @@
                 @foreach($user as $service_provider_res)
                 <tr id="sessiondiv{{$service_provider_res['image']}}">
                   <?php if($service_provider_res['image']){ ?>
-                  <td><img style="height:60px;" src="{{url('assets/images/providers/'.$service_provider_res['image'])}}"></td>
+                  <td><img style="height:60px;" src="{{url('assets/images/users/'.$service_provider_res['image'])}}"></td>
                   <?php }else{?>
                     <td><img style="height:60px;" src="{{url('assets/images/user.png')}}"></td>
                   <?php } ?>
@@ -79,10 +79,10 @@
                       UnApprove                                       
                       </a>
                     <?php } ?>
-                 <a href="editservice_providers.php?id={{base64_encode($service_provider_res['id'])}}">
+                 <a href="{{url('admin/provider/'.base64_encode($service_provider_res['id']).'/edit')}}">
                       <button class="btn btn-info btn-flat"><i class="fa fa-edit"></i> Edit</button>
                   </a>
-                <a href="viewservice_providers.php?id={{base64_encode($service_provider_res['id'])}}">
+                <a href="{{url('admin/provider/'.base64_encode($service_provider_res['id']))}}">
                 <button class="btn btn-info btn-flat"><i class="fa fa-eye"></i> View Details</button>
                 </a>
                

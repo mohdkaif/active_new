@@ -37,7 +37,7 @@
               <!-- Nav tabs -->
               <div class="col-md-3">
                 @if(!empty($user['image']))
-                    <img src="{{url('assets/images/providers/'.$user['image'])}}">
+                    <img src="{{url('assets/images/users/'.$user['image'])}}">
                   @else
                     <img src="{{url('assets/images/user.png')}}">
                   @endif

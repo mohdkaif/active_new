@@ -84,6 +84,11 @@ Route::group(['namespace' => 'Admin','prefix' => 'admin', 'middleware' => ['admi
 	Route::post('provider/updatestatus','ProviderController@updatestatus');
 	Route::resource('provider','ProviderController');
 
+	//Provider Controller
+	Route::get('user/view-children/{id}','UserController@viewChildren');
+	Route::resource('user','UserController');
+
+
 	//Category Controller
 	Route::post('category/deleterecord','CategoryController@deleterecord');
 	Route::post('category/status','CategoryController@updatestatus');

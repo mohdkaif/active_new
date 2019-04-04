@@ -32,7 +32,7 @@ class UserProfileController extends Controller
 				$data['gender'] = $request->gender;
                 if ($file = $request->file('image')){
                     $photo_name = time().$request->file('image')->getClientOriginalName();
-                    $file->move('assets/images/providers',$photo_name);
+                    $file->move('assets/images/users',$photo_name);
                     $data['image'] = $photo_name;
                    
                 }

@@ -65,7 +65,8 @@ class Validate
 			'child'		    		=> ['required','array','min:1'],	
 			'child_details'		    => ['required','string','distinct','min:1'],
 			'video_null'			=> ['nullable','mimes:mp4,mov,ogg,qt','max:51200'],
-			'photo_null'			=> ['nullable','mimes:jpg,jpeg,png','max:2048']
+			'photo_null'			=> ['nullable','mimes:jpg,jpeg,png','max:2048'],
+
 
 		];
 		return $validation[$key];
@@ -535,6 +536,104 @@ class Validate
 			    });
 			}
 		}*/
+		return $validator;
+	}
+
+	public function signupByAdmin()
+	{
+
+		if($this->data->type=="user"){
+			$validations = [
+				'first_name'					=> $this->validation('name'),
+	        	'last_name' 					=> $this->validation('name'),
+	        	'child_name'					=> $this->validation('child'),
+	        	'child_name.*'					=> $this->validation('child_details'),
+	        	'child_age'						=> $this->validation('child'),
+	        	'child_age.*'					=> $this->validation('child_details'),
+	        	'child_gender'					=> $this->validation('child'),
+	        	'child_gender.*'				=> $this->validation('child_details'),
+	        	'mobile'						=> $this->validation('mobile_number'),
+	        	/*'otp'							=> $this->validation('name'),*/
+	        	'address'						=> $this->validation('address'),
+	        	'country'						=> $this->validation('name'),
+	        	'state'							=> $this->validation('name'),
+	        	'city'							=> $this->validation('name'),
+	        	'password' 						=> $this->validation('password'),
+	        	'confirm_password'				=> $this->validation('c_password'),
+	        	/*'term_condition'				=> $this->validation('name')*/
+	    	];
+		}else{
+			$validations = [
+				'first_name'					=> $this->validation('name'),
+	        	'last_name' 					=> $this->validation('name'),
+	        	'mobile'						=>array_merge($this->validation('mobile_number'),[Rule::unique('users')]),
+	        	'email'							=> array_merge($this->validation('email'),[Rule::unique('users')]),
+	        	'date_of_birth' 				=> $this->validation('name'),
+	        	'address'				        => $this->validation('address'),
+	        	'country'						=> $this->validation('name'),
+	        	'state'							=> $this->validation('name'),
+	        	'city'							=> $this->validation('name'),
+	        	'permanent_address'				=> $this->validation('address'),
+	        	'permanent_country'				=> $this->validation('gallery_null'),
+	        	'permanent_state'				=> $this->validation('gallery_null'),
+	        	'permanent_city'				=> $this->validation('gallery_null'),
+	        	/*'bank_name'						=> $this->validation('name'),
+	        	'bank_account_number'			=> $this->validation('name'),
+	        	'bank_holder_name'				=> $this->validation('name'),
+	        	'bank_ifsc_code'				=> $this->validation('name'),
+	        	'bank_branch_name'				=> $this->validation('name'),*/
+	        	/*'day_of_service'				=> $this->validation('name'),
+	        	'service_start_time'			=> $this->validation('name'),
+	        	'service_end_time'				=> $this->validation('name'),
+	        	'special_service'				=> $this->validation('name'),
+	        	'distance_travel'				=> $this->validation('name'),
+	        	'long_distance_travel'			=> $this->validation('name'),
+	        	'location_track_permission'		=> $this->validation('name'),*/
+
+	        	/*'service_id'					=>$this->validation('name'),
+				'price_per_hour'				=>$this->validation('name'),
+				'price_per_children'			=>$this->validation('name'),
+				'experience_in_work'			=>$this->validation('name'),*/
+				
+	        	
+	        	/*'term_condition'				=> $this->validation('name')*/
+
+	    	];
+
+		}
+    	
+    	if($action='edit'){
+			$validations['mobile'] = array_merge($this->validation('mobile_number'),[
+				Rule::unique('users')->where(function($query){
+					$query->where('id','!=',$this->data->id);
+				})
+			]);
+			$validations['email'] = array_merge($this->validation('email'),[
+				Rule::unique('users')->where(function($query){
+					$query->where('id','!=',$this->data->id);
+				})
+			]);
+		}
+		$validator = \Validator::make($this->data->all(), $validations,[
+    		'country.required' 						=>  'Region is required.'
+    	]);
+		/*if(!empty($this->data->mobile)){
+			$userDetails = User::where('mobile',$this->data->mobile)->first();
+		    $validator->after(function ($validator) use($userDetails) {
+		    	if(!empty($userDetails)){
+		    		$validator->errors()->add('mobile', 'Mobile Number Already Exist.');
+		    	}        
+		    });
+		}
+		if(!empty($this->data->email)){
+			$userDetails = User::where('email',$this->data->email)->first();
+		    $validator->after(function ($validator) use($userDetails) {
+		    	if(!empty($userDetails)){
+		    		$validator->errors()->add('email', 'E-mail Already Exist.');
+		    	}        
+		    });
+		}*/
+
 		return $validator;
 	}
 	public function bankDetail()
