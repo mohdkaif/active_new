@@ -119,8 +119,8 @@
                               <label>
                                 Update Profile Picture
                               </label>
-                              <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-                                <div class="col-md-6 col-sm-6 col-xs-12">
+                              <div class="col-md-12 col-sm-12 col-xs-12 form-group" style="padding-left: 0;">
+                                <div class="col-md-6 col-sm-6 col-xs-12" style="padding-left: 0;">
                                   <input onchange="readURL(this)" id="uploadFile" accept="image/*" name="image" type="file" class="form-control">
                                 </div>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
@@ -162,7 +162,11 @@
                            {{--  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-group">
                                 <button type="submit" class="theme-btn btn-style">Send Message</button>
                             </div> --}}
-                            <button type="button" data-request="ajax-submit" data-target="[role='update']" class="theme-btn btn-style">Update</button>
+                            
+                              <div class="col-md-12">
+                                 <button type="button" data-request="ajax-submit" data-target="[role='update']" class="theme-btn btn-style">Update</button>
+                              </div>
+                            
                         </div>
                     </form>
                 </div>

@@ -5068,7 +5068,8 @@ padding: 50px 0 50px;
 .contact-form button{
 	font-size: 16px;
 	color: #ffffff;
-	margin-top: 10px;
+  margin-bottom: 30px;
+	margin-top: 0px;
 	 border-radius: 20px;
 }
 

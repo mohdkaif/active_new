@@ -121,6 +121,7 @@
 	
 $('.owl-carousel1').owlCarousel({
   loop: false,
+  center:true,
   margin: 10,
   nav: true,
  navText: [" <span class='fa fa-chevron-circle-left' style='color:#e45e35'></span>", " <span class='fa fa-chevron-circle-right' style='color:#e45e35'></span>"],
