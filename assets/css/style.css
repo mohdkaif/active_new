@@ -70,7 +70,7 @@ h1,h2,h3,h4,h5,h6 {
 	margin:0px;
 	background:none;
 	line-height:1.2em;
-	font-family: 'Londrina Solid';
+	font-family: sans-serif;
 }
 
 textarea{
@@ -1722,14 +1722,16 @@ img{
 	z-index:1;	
 	height: 300px;
 }
-
+.help-block{
+  color: #d16e6e;
+}
 .page-title h1{
 	position: relative;
     font-size: 36px;
     line-height: 1em;
     font-weight: 400;
     margin-bottom: 10px;
-    font-family: 'Londrina Solid'!important;
+    /*font-family: 'Londrina Solid'!important;*/
     color: #fff;
     padding-top: 70px;
 }
