@@ -62,7 +62,7 @@
                         
                     </div>
                     
-                    <div class="table-responsive ">
+                   {{--  <div class="table-responsive ">
                         <table class="table contact-form">
                             <tr>
                                  <td class="sec-title"><h3><i class="fa fa-crosshairs" aria-hidden="true"></i> Specialization</h3></td>
@@ -85,7 +85,7 @@
                             
                         </table>
                         
-                    </div>
+                    </div> --}}
                     
                     <div class="table-responsive ">
                         <table class="table contact-form">

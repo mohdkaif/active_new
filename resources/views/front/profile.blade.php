@@ -125,7 +125,7 @@
                                 </div>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                   @if(!empty($user['image']))
-                                    <img style="max-width: 100px;" src="{{url('assets/images/providers/'.$user['image'])}}" id="adminimg">
+                                    <img style="max-width: 100px;" src="{{url('assets/images/users/'.$user['image'])}}" id="adminimg">
                                   @else
                                     <img style="max-width: 100px;" src="{{asset('assets/images/avatar.png')}}" id="adminimg" alt="No Profile Picture Added">
                                   @endif

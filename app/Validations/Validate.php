@@ -90,9 +90,9 @@ class Validate
 			    		$validator->errors()->add('username', 'Your account is not active.Please contact with adminstrator for more info.');
 			    	}elseif($userDetails->user_type=='admin'){
 			    		$validator->errors()->add('username', 'You are not authorised user to login.');
-			    	}elseif($userDetails->is_mobile_verified=='no'){
+			    	}/*elseif($userDetails->is_mobile_verified=='no'){
 			    		$validator->errors()->add('username', 'You have not verified your mobile number.Please verify to continue');
-			    	}        
+			    	} */       
 			    });
 			}
 		}else{
@@ -113,9 +113,9 @@ class Validate
 			    		$validator->errors()->add('username', 'Your account is not active.Please contact with adminstrator for more info.');
 			    	}elseif($userDetails->user_type=='admin'){
 			    		$validator->errors()->add('username', 'You are not authorised user to login.');
-			    	}elseif($userDetails->is_mobile_verified=='no'){
+			    	}/*elseif($userDetails->is_mobile_verified=='no'){
 			    		$validator->errors()->add('username', 'You have not verified your mobile number.Please verify to continue');
-			    	}        
+			    	}    */    
 			    });
 			}
 		}
