@@ -52,6 +52,7 @@ class Validate
 			'start_from'			=> ['required'],
 			'photo'					=> ['required','mimes:jpg,jpeg,png','max:2408'],
 			'photomimes'			=> ['mimes:jpg,jpeg,png','max:2408'],
+				'doc_file_any'			=> ['nullable','mimes:jpg,jpeg,png,doc,docx,pdf','max:5120'],
 			'video'  				=> ['mimes:mp4,mov,ogg,qt','max:51200'],
 			'photo_null'			=> ['nullable'],
 			'gallery'				=> ['required','mimes:jpg,jpeg,png','max:2048'],
@@ -325,8 +326,8 @@ class Validate
 		$validations = [
         	'first_name'					=> $this->validation('name'),
 	        'last_name' 					=> $this->validation('name'),
-	        'mobile'						=> $this->validation('mobile_number'),
-	        'address'						=> $this->validation('qualifications'),
+	        /*'mobile'						=> $this->validation('mobile_number'),*/
+	        /*'address'						=> $this->validation('qualifications'),*/
     	];
     	$validator = \Validator::make($this->data->all(), $validations,[
 			'first_name'					=> $this->validation('name'),
@@ -474,11 +475,11 @@ class Validate
 				'price_per_children'			=>$this->validation('name'),
 				'experience_in_work'			=>$this->validation('name'),*/
 				
-	        	'document_high_school'			=> $this->validation('photomimes'),
-	        	'document_graduation'			=> $this->validation('photomimes'),
-	        	'document_post_graduation'		=> $this->validation('photomimes'),
-	        	'document_adhar_card'			=> $this->validation('photomimes'),
-	        	'document_other'				=> $this->validation('photomimes'),
+	        	'document_high_school'			=> $this->validation('doc_file_any'),
+	        	'document_graduation'			=> $this->validation('doc_file_any'),
+	        	'document_post_graduation'		=> $this->validation('doc_file_any'),
+	        	'document_adhar_card'			=> $this->validation('doc_file_any'),
+	        	'document_other'				=> $this->validation('doc_file_any'),
 	        /*	'photo'							=> $this->validation('photomimes'),
 	        	'video'							=> $this->validation('video'),*/
 	        	'password' 						=> $this->validation('password'),

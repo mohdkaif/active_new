@@ -407,10 +407,16 @@ class UserController extends Controller
                 $data['mobile'] = $request->mobile;
                 $data['otp'] ='fcevf';
                 $data['email'] = $request->email;
-                $data['address'] =(!empty($request->address))?$request->address:'';
+                $data['permanent_address'] =(!empty($request->permanent_address))?$request->permanent_address:'';
+                $data['permanent_country'] = (!empty($request->country))?$request->country:'';
+                $data['permanent_state'] = (!empty($request->state))?$request->state:'';
+                $data['permanent_city'] = (!empty($request->city))?$request->city:'';
+                $data['address'] =(!empty($request->permanent_address))?$request->permanent_address:'';
                 $data['country'] = (!empty($request->country))?$request->country:'';
                 $data['state'] = (!empty($request->state))?$request->state:'';
                 $data['city'] = (!empty($request->city))?$request->city:'';
+                $data['permanent_pincode'] = (!empty($request->pincode))?$request->pincode:'';
+                $data['pincode'] = (!empty($request->pincode))?$request->pincode:'';
                 $data['password'] = \Hash::make($request->password);
                 $data['status'] = 'pending';
                 $data['date_of_birth'] =(!empty($request->date_of_birth))?$request->date_of_birth:'';
@@ -432,7 +438,13 @@ class UserController extends Controller
                 $provider['bank_holder_name']=(!empty($request->bank_holder_name))?$request->bank_holder_name:'';      
                 $provider['bank_ifsc_code']=(!empty($request->bank_ifsc_code))?$request->bank_ifsc_code:'';
                 $provider['bank_branch_name']=(!empty($request->bank_branch_name))?$request->bank_branch_name:'';
-          
+                
+
+                $provider['graduation_year']=(!empty($request->graduation_year))?$request->graduation_year:'';              
+                $provider['post_graduation_year']=(!empty($request->post_graduation_year))?$request->post_graduation_year:'';         
+                $provider['highschool_year']=(!empty($request->high_school_year))?$request->high_school_year:'';      
+                $provider['intermediate_year']=(!empty($request->intermediate_year))?$request->intermediate_year:'';
+
               /*  $provider['service_start_time']=$request->service_start_time;        
                 $provider['service_end_time']=$request->service_end_time; */         
                 $provider['distance_travel']=(!empty($request->distance_travel))?$request->distance_travel:'';            
@@ -441,63 +453,61 @@ class UserController extends Controller
 
                 $provider['term_condition']=$request->term_condition;  
                 /*$provider['service_id']=$request->service_id;  */
-                if($request->file('document_high_school')){
-                    $path = url('/assets/images/document/');
+               if($request->file('document_high_school')){
+                    $path = 'assets/document/';
                     if(!File::exists($path)) {
                         File::makeDirectory($path, $mode = 0777, true);
                     }
                     $image       = $request->file('document_high_school');
                     $document_high_school    = time().$image->getClientOriginalName();
-                    $image = Image::make($image->getRealPath());              
-                    $image->save('assets/images/document/' .$document_high_school);
+                    $res = $image->move($path, $document_high_school);
+                    /*$image = Image::make($image->getRealPath());              
+                    $image->save('assets/document/' .$document_high_school);*/
                     $provider['document_high_school'] = $document_high_school;
                 }   
 
                 if($request->file('document_graduation')){
-                    $path = url('/assets/images/document/');
+                    $path = 'assets/document/';
                     if(!File::exists($path)) {
                         File::makeDirectory($path, $mode = 0777, true);
                     }
                     $image       = $request->file('document_graduation');
                     $document_graduation    = time().$image->getClientOriginalName();
-                    $image = Image::make($image->getRealPath());              
-                    $image->save('assets/images/document/' .$document_graduation);
+                    $res = $image->move($path, $document_graduation);
                     $provider['document_graduation'] = $document_graduation;
                 }       
                 if($request->file('document_post_graduation')){
-                    $path = url('/assets/images/document/');
+                    $path = 'assets/document/';
                     if(!File::exists($path)) {
                         File::makeDirectory($path, $mode = 0777, true);
                     }
                     $image       = $request->file('document_post_graduation');
                     $document_post_graduation    = time().$image->getClientOriginalName();
-                    $image = Image::make($image->getRealPath());              
-                    $image->save('assets/images/document/' .$document_post_graduation);
+                    $res = $image->move($path, $document_post_graduation);
+                    
                     $provider['document_post_graduation'] = $document_post_graduation;
                 } 
                 if($request->file('document_adhar_card')){
-                    $path = url('/assets/images/document/');
+                    $path = 'assets/document/';
                     if(!File::exists($path)) {
                         File::makeDirectory($path, $mode = 0777, true);
                     }
                     $image       = $request->file('document_adhar_card');
                     $document_adhar_card    = time().$image->getClientOriginalName();
-                    $image = Image::make($image->getRealPath());              
-                    $image->save('assets/images/document/' .$document_adhar_card);
+                     $res = $image->move($path, $document_adhar_card);
                     $provider['document_adhar_card'] = $document_adhar_card;
                 }
 
                 if($request->file('document_other')){
-                    $path = url('/assets/images/document/');
+                    $path = 'assets/document/';
                     if(!File::exists($path)) {
                         File::makeDirectory($path, $mode = 0777, true);
                     }
                     $image       = $request->file('document_other');
                     $document_other    = time().$image->getClientOriginalName();
-                    $image = Image::make($image->getRealPath());              
-                    $image->save('assets/images/document/' .$document_other);
+                    $res = $image->move($path, $document_other);
                     $provider['document_other'] = $document_other;
-                }
+                }   
                 $provider['user_id']=$user->id;
                 $provider_user = ProviderUser::create($provider);
 
@@ -848,13 +858,12 @@ class UserController extends Controller
             $this->message = $validator->errors();
         }else{
             
-                $data['first_name'] = $request->first_name;
-                $data['last_name'] = $request->last_name;
-                $data['address'] = $request->address;
-                $data['date_of_birth'] = $request->date_of_birth;
-                $data['gender'] = $request->gender;
-               
-                $update = User::change($request->user_id,$data);
+            $data['first_name'] = $request->first_name;
+            $data['last_name'] = $request->last_name;
+            $data['email'] = !empty($request->email)?$request->email:'';
+            $data['date_of_birth'] = $request->date_of_birth;
+            /*$data['gender'] = $request->gender;*/
+            $update = User::change($request->user_id,$data);
             
             $this->status   = true;
             $success['success'] =  $update;
@@ -940,63 +949,61 @@ class UserController extends Controller
         $validator = $validation->addDocuments();
         if ($validator->fails()){
             $this->message = $validator->errors();
-        }else{
-                
+        }else{  
+               
                 if($request->file('document_high_school')){
-                    $path = url('/assets/images/document/');
+                    $path = 'assets/document/';
                     if(!File::exists($path)) {
                         File::makeDirectory($path, $mode = 0777, true);
                     }
                     $image       = $request->file('document_high_school');
                     $document_high_school    = time().$image->getClientOriginalName();
-                    $image = Image::make($image->getRealPath());              
-                    $image->save('assets/images/document/' .$document_high_school);
+                    $res = $image->move($path, $document_high_school);
+                    /*$image = Image::make($image->getRealPath());              
+                    $image->save('assets/document/' .$document_high_school);*/
                     $provider['document_high_school'] = $document_high_school;
                 }   
 
                 if($request->file('document_graduation')){
-                    $path = url('/assets/images/document/');
+                    $path = 'assets/document/';
                     if(!File::exists($path)) {
                         File::makeDirectory($path, $mode = 0777, true);
                     }
                     $image       = $request->file('document_graduation');
                     $document_graduation    = time().$image->getClientOriginalName();
-                    $image = Image::make($image->getRealPath());              
-                    $image->save('assets/images/document/' .$document_graduation);
+                    $res = $image->move($path, $document_graduation);
                     $provider['document_graduation'] = $document_graduation;
                 }       
                 if($request->file('document_post_graduation')){
-                    $path = url('/assets/images/document/');
+                    $path = 'assets/document/';
                     if(!File::exists($path)) {
                         File::makeDirectory($path, $mode = 0777, true);
                     }
                     $image       = $request->file('document_post_graduation');
                     $document_post_graduation    = time().$image->getClientOriginalName();
-                    $image = Image::make($image->getRealPath());              
-                    $image->save('assets/images/document/' .$document_post_graduation);
+                    $res = $image->move($path, $document_post_graduation);
+                    
                     $provider['document_post_graduation'] = $document_post_graduation;
                 } 
                 if($request->file('document_adhar_card')){
-                    $path = url('/assets/images/document/');
+                    $path = 'assets/document/';
                     if(!File::exists($path)) {
                         File::makeDirectory($path, $mode = 0777, true);
                     }
                     $image       = $request->file('document_adhar_card');
                     $document_adhar_card    = time().$image->getClientOriginalName();
-                    $image = Image::make($image->getRealPath());              
-                    $image->save('assets/images/document/' .$document_adhar_card);
+                     $res = $image->move($path, $document_adhar_card);
                     $provider['document_adhar_card'] = $document_adhar_card;
                 }
 
                 if($request->file('document_other')){
-                    $path = url('/assets/images/document/');
+                    $path = 'assets/document/';
                     if(!File::exists($path)) {
                         File::makeDirectory($path, $mode = 0777, true);
                     }
                     $image       = $request->file('document_other');
                     $document_other    = time().$image->getClientOriginalName();
-                    $image = Image::make($image->getRealPath());              
-                    $image->save('assets/images/document/' .$document_other);
+                    $res = $image->move($path, $document_other);
                     $provider['document_other'] = $document_other;
                 }            
                 $user_id = $request->user_id;
