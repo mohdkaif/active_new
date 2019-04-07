@@ -145,13 +145,11 @@
                   @endif --}}
               </select>
             </div>
-
-            <div class="col-md-6 col-sm-6 col-xs-12 form-group">
-               <label>
-               Password
-               </label>
-               <input type="password" name="password" placeholder=" Password *" class="form-control">
-            </div>
+              <div class="form-group col-md-6">
+        <label for="pwd">Pincode:</label>
+        <input type="text" name="pincode" placeholder=" Pincode" class="form-control">
+      </div>
+            
       </div>
      {{--  <div class="col-md-6 col-sm-6 col-xs-12 form-group">
          <label>
@@ -161,10 +159,16 @@
       </div> --}}
       <div class="row">
          <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+               <label>
+               Password
+               </label>
+               <input type="password" name="password" placeholder=" Password *" class="form-control">
+            </div>
+         <div class="col-md-6 col-sm-6 col-xs-12 form-group">
             <label>
-            Verify Password
+            Confirm Password
             </label>
-            <input type="password" name="confirm_password" placeholder=" Verify Password *" class="form-control">
+            <input type="password" name="confirm_password" placeholder=" Confirm Password *" class="form-control">
          </div>
       </div>
       <div class="row">

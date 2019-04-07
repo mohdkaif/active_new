@@ -71,13 +71,18 @@
         </div>
      
       </div>
+       <div class="form-group col-md-6">
+        <label for="pwd">Pincode:</label>
+        <input type="text" name="pincode" placeholder=" Pincode" class="form-control">
+      </div>
 
-      <div class="form-group col-md-6">
+     
+    </div>
+    <div class="row">
+       <div class="form-group col-md-6">
         <label for="email">Password:</label>
         <input type="password" name="password" placeholder=" Password *" class="form-control">
       </div>
-    </div>
-    <div class="row">
       <div class="form-group col-md-6">
         <label for="pwd">Confirm Password:</label>
         <input type="password" name="confirm_password" placeholder=" Verify Password *" class="form-control">
@@ -109,11 +114,7 @@
         </select>
       </div>
 
- --}} <div class="form-group col-md-6">
-        <label for="pwd">Distance Travel:</label>
-        <input type="text" name="distance_travel" placeholder="Distance Travel" class="form-control">
-
-      </div>
+ --}} 
     </div>
     <div class="row">
        
@@ -131,9 +132,10 @@
      
     </div>
     <div class="row">
-      <div class="form-group col-md-6">
-        <label for="email">Bank Name:</label>
-        <input type="text" name="bank_name" placeholder="Bank Name *" class="form-control">
+     <div class="form-group col-md-6">
+        <label for="pwd">Distance Travel:</label>
+        <input type="text" name="distance_travel" placeholder="Distance Travel" class="form-control">
+
       </div>
       <div class="form-group col-md-6" id="long_d_t_charge" style="display:none">
         <label for="pwd">Long Distance Travel Charges:</label>
@@ -144,28 +146,42 @@
      
     </div>
     <div class="row">
+       <div class="form-group col-md-6">
+        <label for="email">Bank Name:</label>
+        <input type="text" name="bank_name" placeholder="Bank Name *" class="form-control">
+      </div>
       <div class="form-group col-md-6">
         <label for="pwd">Bank Account Number:</label>
         <input type="text" name="bank_account_number" placeholder="Bank account Number " >
       </div>
 
-      <div class="form-group col-md-6">
+     
+    </div>
+    <div class="row">
+       <div class="form-group col-md-6">
         <label for="email">Bank Holder name:</label>
          <input type="text" name="bank_holder_name" placeholder=" Bank Holder Name " >
       </div>
-    </div>
-    <div class="row">
       <div class="form-group col-md-6">
         <label for="pwd">Bank IFSC Code:</label>
         <input type="text" name="bank_ifsc_code" placeholder=" Bank IFSC Code " >
       </div>
-      <div class="form-group col-md-6">
+     
+    </div>
+    <div class="row">
+       <div class="form-group col-md-6">
         <label for="pwd">Bank Branch Name:</label>
         <input type="text" name="bank_branch_name" placeholder="Bank Branch Name" >
       </div>
+      <div class="form-group col-md-6">
+        <label for="email">HighSchool/Inter Document:</label>
+        <input type="file" name="document_highschool">
+      </div>
+     
+     
     </div>
     <div class="row">
-      <div class="form-group col-md-6">
+       <div class="form-group col-md-6">
         <label for="email">Graduation Document:</label>
         <input type="file" name="document_graduation">
       </div>
@@ -173,24 +189,21 @@
         <label for="pwd">Post Graduation Document:</label>
         <input type="file" name="document_post_graduation">
       </div>
-    </div>
-    <div class="row">
-
-      <div class="form-group col-md-6">
-        <label for="email">Adhar Card:</label>
-        <input type="file" name="document_adhar_card" class="form-control">
-      </div>
-      <div class="form-group col-md-6">
-        <label for="pwd">Other Document:</label>
-        <input type="file" name="document_other"  class="form-control">
-      </div>
+     
+     
       <input type="hidden" name="type" value="provider">
       
     </div>
     <div class="row">
-      <div class="checkbox col-md-6">
-        <label><input type="checkbox" value="yes" name="term_condition">Term And Condition</label>
+       <div class="form-group col-md-6">
+        <label for="email">Adhar Card:</label>
+        <input type="file" name="document_adhar_card" class="form-control">
       </div>
+       <div class="form-group col-md-6">
+        <label for="pwd">Other Document:</label>
+        <input type="file" name="document_other"  class="form-control">
+      </div>
+     
     </div>
     <div class="row">
       <div class="form-group col-md-12">
@@ -204,6 +217,12 @@
         </div>
       </div>
     </div> 
+     <div class="row">
+     
+      <div class="checkbox col-md-6">
+        <label><input type="checkbox" value="yes" name="term_condition">Terms And Conditions</label>
+      </div>
+    </div>
     <div class="row">
       <div class="col-md-12">
       <button type="button" data-request="ajax-submit" data-target='[role="provider-signup"]' class="theme-btn btn-style">Submit</button>
