@@ -15,7 +15,8 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'token','lat','lng','device_id','user_type','first_name', 'last_name','email', 'password','date_of_birth','is_email_verified','is_mobile_verified','image','mobile','otp','address','country','city','state','remember_token','status','permanent_address','permanent_country','permanent_city','permanent_state'
+        'token','lat','lng','device_id','user_type','first_name', 'last_name','email', 'password','date_of_birth','is_email_verified','is_mobile_verified','image','mobile','otp','address','country','city','state','remember_token','status','permanent_address','permanent_country','permanent_city','permanent_state',
+        'pincode','permanent_pincode','facebook_id','google_id'
     ];
 
 
@@ -24,15 +25,15 @@ class User extends Authenticatable
     }  
 
     public function state_details(){
-        return $this->hasOne('\App\Models\State','id','state');
+        return $this->hasOne('\App\Models\State','id','permanent_state');
     } 
 
      public function city_details(){
-        return $this->hasOne('\App\Models\City','id','city');
+        return $this->hasOne('\App\Models\City','id','permanent_city');
     } 
 
     public function country_details(){
-        return $this->hasOne('\App\Models\Country','id','country');
+        return $this->hasOne('\App\Models\Country','id','permanent_country');
     } 
 
     /*public function service(){

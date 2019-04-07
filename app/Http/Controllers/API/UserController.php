@@ -423,8 +423,6 @@ class UserController extends Controller
                 $data['email'] = isset($request->email)?$request->email:'';
                 $data['otp'] = 'SHDJS';
 
-                
-
                 if ($file = $request->file('image')){
                     $photo_name = time().$request->file('image')->getClientOriginalName();
                     $file->move('assets/images/users',$photo_name);
@@ -447,11 +445,12 @@ class UserController extends Controller
 
               /*  $provider['service_start_time']=$request->service_start_time;        
                 $provider['service_end_time']=$request->service_end_time; */         
-                $provider['distance_travel']=(!empty($request->distance_travel))?$request->distance_travel:'';            
+                $provider['distance_to_travel']=(!empty($request->distance_travel))?$request->distance_travel:'';            
                 $provider['long_distance_travel']=(!empty($request->long_distance_travel))?$request->long_distance_travel:''; 
                 $provider['location_track_permission']=(!empty($request->location_track_permission) && $request->location_track_permission=='yes')?$request->location_track_permission:'no';
 
-                $provider['term_condition']=$request->term_condition;  
+                $provider['term_condition']=$request->term_condition;
+                $provider['special_service']=(!empty($request->special_service))?$request->special_service:'';  
                 /*$provider['service_id']=$request->service_id;  */
                if($request->file('document_high_school')){
                     $path = 'assets/document/';
