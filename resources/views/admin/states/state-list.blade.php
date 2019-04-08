@@ -45,7 +45,6 @@
               <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                  
                   <th>State Name</th>
                   <th>Country Name</th>
                   <th>Status</th>
