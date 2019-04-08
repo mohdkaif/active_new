@@ -102,8 +102,8 @@ Route::group(['namespace' => 'Admin','prefix' => 'admin', 'middleware' => ['admi
 	Route::resource('category','CategoryController');
 
 	//SubCategory Controller
-	Route::post('subcategory/deleterecord','SubcategoryController@deleterecord');
-	Route::post('subcategory/status','SubcategoryController@updatestatus');
-	Route::resource('subcategory','SubcategoryController');
+	Route::post('subcategory/deleterecord','SubCategoryController@deleterecord');
+	Route::post('subcategory/status','SubCategoryController@updatestatus');
+	Route::resource('subcategory','SubCategoryController');
 
 });

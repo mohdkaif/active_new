@@ -38,7 +38,7 @@ class SubCategoryController extends Controller
                     $html   .= '<a href="'.url(sprintf('admin/subcategory/%s/edit',___encrypt($item['service_sub_category_id']))).'" title="Edit Category"><i class="fa  fa-edit"></i></a>|';
                      $html   .= '<a href="javascript:void(0);" 
                   data-url="'.url(sprintf('admin/subcategory/deleterecord/?id=%s&status=trashed',$item['service_sub_category_id'])).'"
-                  data-ask="'.sprintf('Are You Sure to delete %s subcategory?',$item['service_sub_category_name']).'" data-ask_image="'.url('images/delete-user.png').'"data-request="ajax-confirm" title="Delete Category"><i class="fa fa-trash fa-lg" aria-hidden="true" style="color:red;"></i></a> | ';
+                  data-ask="'.sprintf('Are You Sure to delete %s subcategory?',$item['service_sub_category_name']).'" data-ask_image="'.url('assets/images/delete-user.png').'"data-request="ajax-confirm" title="Delete Category"><i class="fa fa-trash fa-lg" aria-hidden="true" style="color:red;"></i></a> | ';
                     $html   .= '</div>';
                     return $html;
                 })
