@@ -6,11 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Models\Country;
 use App\Models\PermissionUsers;
 use App\Models\State;
+use App\Models\City;
 use Illuminate\Http\Request;
 use Validations\Validate as Validations;
 use Yajra\Datatables\Datatables;
 
-class StateController extends Controller
+class CityController extends Controller
 {
     private $state_menu_id = 7;
     /**
@@ -23,7 +24,10 @@ class StateController extends Controller
         $data['countries'] = _arrayfy(Country::where('status', '!=', 'deleted')
                 ->orderBy('created_at', 'DESC')
                 ->get());
-        $data['view'] = 'admin.states.state-list';
+         $data['states'] = _arrayfy(State::where('status', '!=', 'deleted')
+                ->orderBy('created_at', 'DESC')
+                ->get());
+        $data['view'] = 'admin.cities.list';
         return view('admin.index',$data);
         // return view('admin.states.state-list', compact('countries', $countries));
     }
@@ -36,7 +40,8 @@ class StateController extends Controller
     public function create()
     {
         $data['countries'] = Country::where('status', '=', 'active')->get();
-        $data['view'] = 'admin.states.add';
+      /*   $data['states'] = State::where('status', '=', 'active')->get();*/
+        $data['view'] = 'admin.cities.add';
         return view('admin.index',$data);
     }
 
@@ -50,23 +55,23 @@ class StateController extends Controller
     {
         
         $validation = new Validations($request);
-        $validator = $validation->addState();
+        $validator = $validation->addCity();
         if ($validator->fails()){
             $this->message = $validator->errors();
         }else{
-                $data['country_id'] = $request->country_id;
-                $data['state_name'] = $request->state_name;
+                $data['state_id'] = $request->state_id;
+                $data['city_name'] = $request->city_name;
                
                 $data['status'] ='active';
               
-                $state = State::create($data);
+                $city = City::create($data);
 
              
             $this->status   = true;
             $this->alert    = true;
-            $this->message = "State Successfully added";
+            $this->message = "City Successfully added";
             $this->modal = true;
-            $this->redirect = url('admin/states');
+            $this->redirect = url('admin/city');
         }
         return $this->populateresponse();
     }
@@ -152,15 +157,14 @@ class StateController extends Controller
 
     public function datatableView(Request $request)
     {
-        $states = _arrayfy(State::with('country')
-                ->orderBy('id', 'DESC')
-                ->where('country_id', $request->id)
-                ->where('status', '!=', 'deleted')
-                ->get());
-        $res = Datatables::of($states)
+        $cities = _arrayfy(City::list('array','state_id = '.$request->s_id));
+        $res = Datatables::of($cities)
 
-            ->editColumn('country_name', function ($item) {
+          /*  ->editColumn('country_name', function ($item) {
                 return $item['country']['country_name'];
+            })*/
+            ->editColumn('state_name', function ($item) {
+                return $item['state']['state_name'];
             })
             ->editColumn('status', function ($item) {
                 return ucfirst($item['status']);

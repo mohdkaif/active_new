@@ -35,7 +35,7 @@
                         </a>
                       </li>
                          <li class="nav-item">
-                            <a href="city.php" class="nav-link">
+                            <a href="{{url('admin/city')}}" class="nav-link">
                             <i class="fa fa-globe nav-icon"></i>
                             <p>City</p>
                             </a>

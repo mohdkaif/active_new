@@ -39,6 +39,8 @@ class ProviderController extends Controller
         $data['view']='admin.provider.add';
         $data['user']=_arrayfy(User::where('user_type','provider')->get());
        // dd($data['user']);
+        $country = Country::get();
+        $data['country'] = $country;
         return view('admin.index',$data);
     }
 
@@ -50,9 +52,58 @@ class ProviderController extends Controller
      */
     public function store(Request $request)
     {
-        //
-        print_r('dcfghbjkm,');
-        dd('wqdefrt');
+        $validation = new Validations($request);
+        $validator = $validation->signupByAdmin("add");
+        if ($validator->fails()){
+            $this->message = $validator->errors();
+        }else{
+               
+                $data['first_name'] = (!empty($request->first_name))?$request->first_name:'';
+                $data['last_name'] = (!empty($request->last_name))?$request->last_name:'';
+                $data['mobile'] = (!empty($request->mobile))?$request->mobile:'';
+                $data['email'] = (!empty($request->email))?$request->email:'';
+
+                $data['address'] = (!empty($request->address))?$request->address:'';
+                $data['country'] = (!empty($request->country))?$request->country:'';
+                $data['state'] =  (!empty($request->state))?$request->state:'';
+                $data['city'] = (!empty($request->city))?$request->city:'';
+
+                $data['permanent_address'] = (!empty($request->permanent_address))?$request->permanent_address:'';
+                $data['permanent_country'] = (!empty($request->permanent_country))?$request->permanent_country:'';
+                $data['permanent_state'] =  (!empty($request->permanent_state))?$request->permanent_state:'';
+                $data['permanent_city'] = (!empty($request->permanent_city))?$request->permanent_city:'';
+                $data['user_type'] = 'provider';
+
+                 $data['password'] = \Hash::make($request->password);
+                                $data['status'] = 'pending';
+                 $data['otp'] = 'SHDJS';
+                $data['date_of_birth'] =(!empty($request->date_of_birth))?$request->date_of_birth:'';
+                $provider['distance_to_travel']=(!empty($request->distance_travel))?$request->distance_travel:'';         
+                $provider['long_distance_travel']=(!empty($request->long_distance_travel))?$request->long_distance_travel:''; 
+                $provider['location_track_permission']=(!empty($request->location_track_permission) && $request->location_track_permission=='yes')?$request->location_track_permission:'no';
+               
+                if ($file = $request->file('image')){
+                    $photo_name = time().$request->file('image')->getClientOriginalName();
+                    $file->move('assets/images/users',$photo_name);
+                    $data['image'] = $photo_name;
+                   
+                }
+               
+                $user = User::create($data);
+                $provider['user_id'] = $user->id;
+                $provider= ProviderUser::create($provider);
+            if($user && $provider){
+                
+                $this->status   = true;
+                $this->alert    = true;
+                $this->message = "Provider Updated Successfully";
+                $this->modal = true;
+                $this->redirect = url('admin/provider');
+            }
+        }
+          
+        return $this->populateresponse();
+
     }
 
     /**
@@ -103,7 +154,7 @@ class ProviderController extends Controller
     {
         $request->request->add(['id'=>base64_decode($id)]);
         $validation = new Validations($request);
-        $validator = $validation->signupByAdmin();
+        $validator = $validation->signupByAdmin("edit");
         if ($validator->fails()){
             $this->message = $validator->errors();
         }else{

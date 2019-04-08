@@ -31,6 +31,11 @@ class FrontController extends Controller
     	$data['view'] = 'front.event';
     	return view('front.index',$data);
     }
+    public function statesListing($id)
+    {
+        $states = State::where('country_id', $id)->get();
+        return response()->json(['response' => $states]);
+    }
     public function about(Request $request)
     {
     	$data['view'] = 'front.about';

@@ -35,7 +35,7 @@ class CategoryController extends Controller
                     $html   .= '<a href="'.url(sprintf('admin/category/%s/edit',___encrypt($item['service_category_id']))).'" title="Edit Category"><i class="fa  fa-edit"></i></a>|';
                      $html   .= '<a href="javascript:void(0);" 
                   data-url="'.url(sprintf('admin/category/deleterecord/?id=%s&status=trashed',$item['service_category_id'])).'"
-                  data-ask="'.sprintf('Are You Sure to delete %s category?',$item['service_category_name']).'" data-ask_image="'.url('images/delete-user.png').'"data-request="ajax-confirm" title="Delete Category"><i class="fa fa-trash fa-lg" aria-hidden="true" style="color:red;"></i></a> | ';
+                  data-ask="'.sprintf('Are You Sure to delete %s category?',$item['service_category_name']).'" data-ask_image="'.url('assets/images/delete-user.png').'"data-request="ajax-confirm" title="Delete Category"><i class="fa fa-trash fa-lg" aria-hidden="true" style="color:red;"></i></a> | ';
                     $html   .= '</div>';
                     return $html;
                 })

@@ -16,6 +16,7 @@
 });*/
 Route::get('/', 'FrontController@index');
 Route::get('event', 'FrontController@event');
+Route::get('get-states/{id}', 'FrontController@statesListing');
 Route::get('about', 'FrontController@about');
 Route::get('/cities/list','FrontController@getCities')->name('cities.list');
 Route::get('/states/list','FrontController@getStates')->name('states.list');
@@ -70,6 +71,12 @@ Route::group(['namespace' => 'Admin','prefix' => 'admin', 'middleware' => ['admi
 	Route::post('states/drop-down','StateController@getStateAsDropDownOptions')->name('states.drop-down');
 	Route::patch('states/changestatus/{users}','StateController@changeStatus')->name('states.changestatus');
 	Route::resource('states','StateController');
+
+	//state	
+	Route::get('city/table/','CityController@datatableView')->name('city.table');
+	Route::post('city/drop-down','CityController@getCityAsDropDownOptions')->name('city.drop-down');
+	Route::patch('city/changestatus/{users}','CityController@changeStatus')->name('city.changestatus');
+	Route::resource('city','CityController');
 
 	//Provider Controller
 	Route::get('provider/edit-bank/{id}','ProviderController@editbank');

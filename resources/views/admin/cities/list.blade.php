@@ -4,12 +4,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>State</h1>
+            <h1>City</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="index.php">Home</a></li>
-              <li class="breadcrumb-item active">State</li>
+              <li class="breadcrumb-item active">City</li>
             </ol>
             
           </div>
@@ -30,13 +30,21 @@
                     @endforeach
                  </select>
                 </div>
+                <div class="form-group">
+                 <select class="form-control state" name="state_id" id="state_id" value="">
+                    <option value="">Select State</option>                  
+                    @foreach($states as $state)
+                    <option value="{{$state['id']}}">{{$state['state_name']}}</option>                  
+                    @endforeach
+                 </select>
+                </div>
               </div>
 
           <div class="card">
             <div class="card-header">
               <h3 class="card-title">All Details 
-                <a href="{{url('admin/states/create')}}" class="btn btn-success btn-flat pull-right">
-                  Add State
+                <a href="{{url('admin/city/create')}}" class="btn btn-success btn-flat pull-right">
+                  Add City
                 </a>
                </h3>
             </div> 
@@ -46,10 +54,12 @@
                 <thead>
                 <tr>
                   
+                  <th>City Name</th>
                   <th>State Name</th>
-                  <th>Country Name</th>
+                    <th>Status</th>
+                 {{--  <th>Country Name</th>
                   <th>Status</th>
-                  <th class="action" >Action</th>
+                  <th class="action" >Action</th> --}}
                 </tr>
                 </thead>
                 <tbody>
@@ -115,10 +125,26 @@
           alert('Please select country.');
           return false;
         }*/
-         $("select.country").change(function(){
+        $("#country_id").change(function () {
+        $("#state_id").html('<option value="">Select State</option>');
+        $("#state_id").attr('disabled',true);
+       
+        var mainid = $(this).val();
+        $.get('{{url('/')}}/get-states/'+mainid, function(response){
+            $("#state_id").attr('disabled',false);
+            $.each(response, function(i, cart){
+                $.each(cart, function (index, data) {
+                    $("#state_id").append('<option value="'+data.id+'">'+data.state_name+'</option>');
+                    //console.log('index', data)
+                })
+            })
+        });
+    });
+         $("select.state").change(function(){
                 var country_id = $("#country_id option:selected").val();
-                // alert(country_id);
-                if(country_id)
+                var state_id = $("#state_id option:selected").val();
+
+                if(country_id && state_id)
                 {
                   var t = $('#example1').DataTable({
                      processing: true,
@@ -135,22 +161,24 @@
                       },
                      
                       "ajax": {
-                          url: "{{route('states.table')}}",
+                          url: "{{route('city.table')}}",
                           data: function (d) {
-                             d.id = country_id
+                             d.c_id = country_id,
+                             d.s_id = state_id
                           },
                       },
                       "columns": [
+                       { data: 'city_name', name: 'city_name', searchable: true, orderable: true },
                         { data: 'state_name', name: 'state_name', searchable: true, orderable: true },
-                        { data: 'country_name', name: 'country_name', searchable: true, orderable: true },
+                      
                         { data: 'status', name: 'status', searchable: true, orderable: true },
-                        { data: 'action', name: 'action', sortable: false, searchable: false,},
+                       /* { data: 'action', name: 'action', sortable: false, searchable: false,},*/
                       ]
                  });
                 }
                 else
                 {
-                  alert('Please select country.');
+                  alert('Please select country & state.');
                   return false;
                 }
             });

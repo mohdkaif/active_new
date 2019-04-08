@@ -204,6 +204,26 @@ class Validate
     	$validator = \Validator::make($this->data->all(), $validations,[]);
 		return $validator;
 	}
+	public function addState($action='add'){
+		$validations = [
+        	'country_id' 						=> $this->validation('id'),
+        	'state_name' 						=> $this->validation('name'),
+    	];
+    	
+    	$validator = \Validator::make($this->data->all(), $validations,[]);
+		return $validator;
+	}
+
+		public function addCity($action='add'){
+		$validations = [
+        	'country_id' 						=> $this->validation('id'),
+        	'state_id' 						=> $this->validation('id'),
+        	'city_name' 						=> $this->validation('name'),
+    	];
+    	
+    	$validator = \Validator::make($this->data->all(), $validations,[]);
+		return $validator;
+	}
 
 	public function deleteService($action='add'){
 		$validations = [
@@ -540,7 +560,7 @@ class Validate
 		return $validator;
 	}
 
-	public function signupByAdmin()
+	public function signupByAdmin($action="add")
 	{
 
 		if($this->data->type=="user"){
@@ -578,6 +598,8 @@ class Validate
 	        	'permanent_country'				=> $this->validation('gallery_null'),
 	        	'permanent_state'				=> $this->validation('gallery_null'),
 	        	'permanent_city'				=> $this->validation('gallery_null'),
+	        	'password' 						=> $this->validation('password'),
+	        	'confirm_password'				=> $this->validation('c_password'),
 	        	/*'bank_name'						=> $this->validation('name'),
 	        	'bank_account_number'			=> $this->validation('name'),
 	        	'bank_holder_name'				=> $this->validation('name'),
@@ -603,7 +625,10 @@ class Validate
 
 		}
     	
-    	if($action='edit'){
+    	if($action=='edit'){
+    	
+    		$validations['password']='';
+    		$validations['confirm_password']='';
 			$validations['mobile'] = array_merge($this->validation('mobile_number'),[
 				Rule::unique('users')->where(function($query){
 					$query->where('id','!=',$this->data->id);
@@ -615,9 +640,11 @@ class Validate
 				})
 			]);
 		}
+
 		$validator = \Validator::make($this->data->all(), $validations,[
     		'country.required' 						=>  'Region is required.'
     	]);
+
 		/*if(!empty($this->data->mobile)){
 			$userDetails = User::where('mobile',$this->data->mobile)->first();
 		    $validator->after(function ($validator) use($userDetails) {
