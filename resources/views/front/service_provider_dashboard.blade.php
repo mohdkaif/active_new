@@ -1,5 +1,5 @@
 
-         <section class="page-title" style="background: #31697f; height: 300px">
+         <section class="page-title" style="background: url('{{url('assets/images/background/31.jpg')}}'); height: 300px">
          
             <div class="auto-container">
                
@@ -9,7 +9,7 @@
          </section>
          <section class="user">
                   @if(!empty($user['image']))
-                    <img src="{{url('assets/images/providers/'.$user['image'])}}" class="img-circle center-block" >
+                    <img src="{{url('assets/images/users/'.$user['image'])}}" class="img-circle center-block" >
                   @else
                     <img src="{{url('assets/images/user.png')}}" class="img-circle center-block" >
                   @endif
@@ -62,7 +62,7 @@
                         
                     </div>
                     
-                    <div class="table-responsive ">
+                   {{--  <div class="table-responsive ">
                         <table class="table contact-form">
                             <tr>
                                  <td class="sec-title"><h3><i class="fa fa-crosshairs" aria-hidden="true"></i> Specialization</h3></td>
@@ -85,7 +85,7 @@
                             
                         </table>
                         
-                    </div>
+                    </div> --}}
                     
                     <div class="table-responsive ">
                         <table class="table contact-form">

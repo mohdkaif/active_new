@@ -16,6 +16,7 @@
 });*/
 Route::get('/', 'FrontController@index');
 Route::get('event', 'FrontController@event');
+Route::get('get-states/{id}', 'FrontController@statesListing');
 Route::get('about', 'FrontController@about');
 Route::get('/cities/list','FrontController@getCities')->name('cities.list');
 Route::get('/states/list','FrontController@getStates')->name('states.list');
@@ -33,13 +34,15 @@ Route::get('get-user-form', 'FrontController@getUserFrom');
 Route::post('add-more-child', 'FrontController@addMoreChild');
 Route::get('logout', 'FrontController@logout');
 Route::get('contact', 'FrontController@contact');
-
+Route::get('verify-otp/{id}', 'FrontController@sendOtp');
+Route::post('verify-otp/{id}', 'FrontController@verifyOtp');
 Route::get('/redirect', 'SocialAuthFacebookController@redirect');
 Route::get('/callback', 'SocialAuthFacebookController@callback');
 
 /*ROUTE FOR USER*/
 Route::group(['prefix' => 'user', 'middleware' => ['userAuth']] ,function(){
 	Route::get('profile', 'UserProfileController@profile');
+	Route::get('dashboard', 'FrontController@userDashboard');
 });
 
 /*ROUTE FOR USER*/
@@ -49,6 +52,7 @@ Route::group(['prefix' => 'provider', 'middleware' => ['providerAuth']] ,functio
 	Route::post('update-profile', 'UserProfileController@updateProfile');
 	
 	Route::get('service', 'FrontController@service');
+	Route::get('service/{id}', 'FrontController@serviceDetails');
 	Route::post('update-service', 'FrontController@updateService');
 	Route::post('change-password', 'UserProfileController@changePassword');
 
@@ -68,6 +72,12 @@ Route::group(['namespace' => 'Admin','prefix' => 'admin', 'middleware' => ['admi
 	Route::patch('states/changestatus/{users}','StateController@changeStatus')->name('states.changestatus');
 	Route::resource('states','StateController');
 
+	//state	
+	Route::get('city/table/','CityController@datatableView')->name('city.table');
+	Route::post('city/drop-down','CityController@getCityAsDropDownOptions')->name('city.drop-down');
+	Route::patch('city/changestatus/{users}','CityController@changeStatus')->name('city.changestatus');
+	Route::resource('city','CityController');
+
 	//Provider Controller
 	Route::get('provider/edit-bank/{id}','ProviderController@editbank');
 	Route::post('provider/edit-bank/{id}','ProviderController@updateBank');
@@ -81,14 +91,19 @@ Route::group(['namespace' => 'Admin','prefix' => 'admin', 'middleware' => ['admi
 	Route::post('provider/updatestatus','ProviderController@updatestatus');
 	Route::resource('provider','ProviderController');
 
+	//Provider Controller
+	Route::get('user/view-children/{id}','UserController@viewChildren');
+	Route::resource('user','UserController');
+
+
 	//Category Controller
 	Route::post('category/deleterecord','CategoryController@deleterecord');
 	Route::post('category/status','CategoryController@updatestatus');
 	Route::resource('category','CategoryController');
 
 	//SubCategory Controller
-	Route::post('subcategory/deleterecord','SubcategoryController@deleterecord');
-	Route::post('subcategory/status','SubcategoryController@updatestatus');
-	Route::resource('subcategory','SubcategoryController');
+	Route::post('subcategory/deleterecord','SubCategoryController@deleterecord');
+	Route::post('subcategory/status','SubCategoryController@updatestatus');
+	Route::resource('subcategory','SubCategoryController');
 
 });

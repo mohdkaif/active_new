@@ -70,7 +70,7 @@ h1,h2,h3,h4,h5,h6 {
 	margin:0px;
 	background:none;
 	line-height:1.2em;
-	font-family: 'Londrina Solid';
+	font-family: sans-serif;
 }
 
 textarea{
@@ -1722,14 +1722,16 @@ img{
 	z-index:1;	
 	height: 300px;
 }
-
+.help-block{
+  color: #d16e6e;
+}
 .page-title h1{
 	position: relative;
     font-size: 36px;
     line-height: 1em;
     font-weight: 400;
     margin-bottom: 10px;
-    font-family: 'Londrina Solid'!important;
+    /*font-family: 'Londrina Solid'!important;*/
     color: #fff;
     padding-top: 70px;
 }
@@ -5068,7 +5070,8 @@ padding: 50px 0 50px;
 .contact-form button{
 	font-size: 16px;
 	color: #ffffff;
-	margin-top: 10px;
+  margin-bottom: 30px;
+	margin-top: 0px;
 	 border-radius: 20px;
 }
 
@@ -6759,7 +6762,7 @@ p.change_link{
 .checkround {
 
     position: absolute;
-    top: 6px;
+    top: 0;
     left: 0;
     height: 20px;
     width: 20px;
@@ -8089,4 +8092,35 @@ h3.inner-column1 {
     font-family: roboto;
     font-weight: 700;
     font-size: 18px;
+}
+span.fa.fa-chevron-circle-right {
+    display: none;
+}
+span.fa.fa-chevron-circle-left {
+    display: none;
+}
+.swal2-modal .swal2-checkbox {
+    color: #545454;
+    display: none !important;
+}
+.input-group {
+    position: relative;
+    /* display: table; */
+    border-collapse: separate;
+        width: 100%;
+    height: 45px;
+    font-size: 14px;
+    color: rgba(119,119,119,1);
+    font-weight: 400;
+    line-height: 25px;
+    border: 1px solid #2f2f2f4a;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    -ms-border-radius: 3px;
+    -o-border-radius: 3px;
+    -webkit-transition: all 300ms ease;
+    -ms-transition: all 300ms ease;
+    -o-transition: all 300ms ease;
+    -moz-transition: all 300ms ease;
+     transition: all 300ms ease;
 }

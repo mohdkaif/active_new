@@ -15,7 +15,7 @@ class ServiceSubCategory extends Model
     protected $primaryKey = 'service_sub_category_id';
 
     public function category(){
-        return $this->hasOne('Models\ServiceCategory', 'service_category_id', 'service_category_id');
+        return $this->hasOne('App\Models\ServiceCategory', 'service_category_id', 'service_category_id');
     }
 
     public static function add($data){
@@ -41,7 +41,8 @@ class ServiceSubCategory extends Model
 
 
     public static function listing($type='array',$keys='*',$where='',$order_by='service_sub_category_id-desc',$limit=10){
-        $table_name = self::select($keys)->with(['category' => function($q){
+        $table_name = self::select($keys)
+        ->with(['category' => function($q){
             $q->select('*');
         }]);
         if($where){

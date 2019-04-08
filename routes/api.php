@@ -17,8 +17,13 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });*/
 
-
-Route::post('signup', 'API\UserController@signup');
+Route::post('get-user-info', 'API\UserController@getUserInfo');
+Route::post('delete-user', 'API\UserController@deleteUser');
+Route::get('service-category-list', 'API\ServiceController@ServiceCategoryList');
+Route::get('service-sub-category-list', 'API\ServiceController@ServiceSubCategoryList');
+Route::post('provider-service-list', 'API\ServiceController@ServiceListForProvider');
+Route::post('user-signup', 'API\UserController@SignUp2');
+Route::post('provider-signup', 'API\UserController@SignUp2');
 Route::post('bank-details', 'API\UserController@addBankDetail');
 Route::post('add-qualification', 'API\UserController@addQualification');
 Route::post('update-documents', 'API\UserController@addDocuments');
@@ -29,6 +34,7 @@ Route::post('verify_email_phone', 'API\UserController@verifyEmailPhone');
 Route::post('register', 'API\UserController@register');
 Route::post('forgot_password', 'API\UserController@forgotPassword');
 Route::post('otp', 'API\UserController@otp');
+Route::post('verify-otp', 'API\UserController@verifyOtp');
 Route::post('change-password', 'API\UserController@ChangePassword');
 Route::post('add-service-category', 'API\ServiceController@addServiceCategory');
 Route::post('edit-service-category', 'API\ServiceController@editServiceCategory');
@@ -38,6 +44,11 @@ Route::post('edit-service-subcategory', 'API\ServiceController@editServiceSubCat
 
 Route::post('add-service', 'API\ServiceController@addService');
 Route::post('edit-service', 'API\ServiceController@editService');
+Route::post('delete-service', 'API\ServiceController@deleteService');
+
+
+Route::post('add-service-days', 'API\ServiceController@addServiceDays');
+Route::post('edit-service-days', 'API\ServiceController@editServiceDays');
 
 Route::post('country', 'API\UserController@country');
 Route::post('city', 'API\UserController@city');

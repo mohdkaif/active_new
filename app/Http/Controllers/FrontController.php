@@ -31,6 +31,11 @@ class FrontController extends Controller
     	$data['view'] = 'front.event';
     	return view('front.index',$data);
     }
+    public function statesListing($id)
+    {
+        $states = State::where('country_id', $id)->get();
+        return response()->json(['response' => $states]);
+    }
     public function about(Request $request)
     {
     	$data['view'] = 'front.about';
@@ -149,41 +154,58 @@ class FrontController extends Controller
         if ($validator->fails()){
             $this->message = $validator->errors();
         }else{
+            
             if($request->type == 'user'){
                 $data['user_type'] = $request->type;
                 $data['first_name'] = $request->first_name;
                 $data['last_name'] = $request->last_name;
                 $data['mobile'] = $request->mobile;
-                $data['otp'] = $request->otp;
+                $data['otp'] = '2343';
                 $data['email'] = $request->email;
-                $data['address'] = $request->address;
-                $data['country'] = $request->region;
+                $data['address'] = (!empty($request->address))?$request->address:'';
+                $data['country'] = $request->country;
                 $data['state'] = $request->state;
                 $data['city'] = $request->city;
+                $data['permanent_address'] = (!empty($request->address))?$request->address:'';
+                $data['permanent_country'] = $request->country;
+                $data['permanent_state'] = $request->state;
+                $data['permanent_city'] = $request->city;
+                 $data['permanent_pincode'] = (!empty($request->pincode))?$request->pincode:'';
+                $data['pincode'] = (!empty($request->pincode))?$request->pincode:'';
                 $data['password'] = \Hash::make($request->password);
                 $data['status'] = 'active';
                 $data['service_id'] = 2;
                 $data['email'] = isset($request->email)?$request->email:'';
-                $user = User::create($data);
+                $user_details = User::create($data);
                
-                foreach ($request->child_name as $key => $name) {  
-                    $child[$key]['name'] = $name;
-                }
+                 if(!empty($request->child_name)){
 
-                foreach ($request->child_age as $key => $age) {
-                    $child[$key]['age'] = $age;
+                    foreach ($request->child_name as $key => $name) {  
+                        $child[$key]['name'] = $name;
+                    }
                 }
-                foreach ($request->child_gender as $key => $gender) {
-                    $child[$key]['gender'] = $gender;
+                if(!empty($request->child_age)){
+                    
+                  
+                    foreach ($request->child_age as $key => $age) {
+                        $child[$key]['age'] = $age;
+                    }
                 }
+                if(!empty($request->child_gender)){
+                    foreach ($request->child_gender as $key => $gender) {
+                        $child[$key]['gender'] = $gender;
+                    }
+                }
+                if(!empty($child)){
 
-                foreach ($child as $child_details) {
-                    $childData['user_id'] = $user->id;
-                    $childData['name'] = $child_details['name'];
-                    $childData['age'] = $child_details['age'];
-                    $childData['gender'] = $child_details['gender'];
-                    $childData['status'] = 'active';
-                    $save_child = UserChild::create($childData);
+                    foreach ($child as $child_details) {
+                        $childData['user_id'] = $user_details->id;
+                        $childData['name'] = $child_details['name'];
+                        $childData['age'] = $child_details['age'];
+                        $childData['gender'] = $child_details['gender'];
+                        $childData['status'] = 'active';
+                        $save_child = UserChild::create($childData);
+                    }
                 }
 
 
@@ -195,94 +217,98 @@ class FrontController extends Controller
                 $data['mobile'] = $request->mobile;
                 $data['otp'] = $request->otp;
                 $data['email'] = $request->email;
-                $data['address'] = $request->permanent_address;
-                $data['country'] = $request->country;
-                $data['state'] = $request->state;
-                $data['city'] = $request->city;
+                $data['address'] = (!empty($request->address))?$request->address:'';
+                $data['country'] = (!empty($request->country))?$request->country:'';
+                $data['state'] =  (!empty($request->state))?$request->state:'';
+                $data['city'] = (!empty($request->city))?$request->city:'';
+                     $data['permanent_address'] = (!empty($request->address))?$request->address:'';
+                $data['permanent_country'] = $request->country;
+                $data['permanent_state'] = $request->state;
+                $data['permanent_city'] = $request->city;
+                 $data['permanent_pincode'] = (!empty($request->pincode))?$request->pincode:'';
+                $data['pincode'] = (!empty($request->pincode))?$request->pincode:'';
                 $data['password'] = \Hash::make($request->password);
-                $data['status'] = 'active';
-                $data['date_of_birth'] = $request->date_of_birth;
+                $data['status'] = 'pending';
+                $data['date_of_birth'] =(!empty($request->date_of_birth))?$request->date_of_birth:'';
                 $data['email'] = isset($request->email)?$request->email:'';
                 $data['otp'] = 'SHDJS';
                 if ($file = $request->file('image')){
                     $photo_name = time().$request->file('image')->getClientOriginalName();
-                    $file->move('assets/images/providers',$photo_name);
+                    $file->move('assets/images/users',$photo_name);
                     $data['image'] = $photo_name;
                    
                 }
                 $user = User::create($data);
 
-                $provider['bank_name']=$request->bank_name;                 
-                $provider['bank_account_number']=$request->bank_account;              
-                $provider['bank_holder_name']=$request->bank_holder_name;          
-                $provider['bank_ifsc_code']=$request->bank_ifsc_code;  
-                $provider['bank_branch_name']=$request->bank_branch_name; 
+                $provider['bank_name']=(!empty($request->bank_name))?$request->bank_name:'';          
+                $provider['bank_account_number']=(!empty($request->bank_account))?$request->bank_account:'';      
+                $provider['bank_holder_name']=(!empty($request->bank_holder_name))?$request->bank_holder_name:'';      
+                $provider['bank_ifsc_code']=(!empty($request->bank_ifsc_code))?$request->bank_ifsc_code:'';
+                $provider['bank_branch_name']=(!empty($request->bank_branch_name))?$request->bank_branch_name:'';
           
-              /*  $provider['service_start_time']=$request->service_start_time;        
+                /*  $provider['service_start_time']=$request->service_start_time;        
                 $provider['service_end_time']=$request->service_end_time; */         
-                $provider['distance_travel']=$request->distance_travel;           
-                $provider['long_distance_travel']=$request->long_distance_travel;
-                $provider['location_track_permission']=$request->location_track_permission;
-                      
+                $provider['distance_to_travel']=(!empty($request->distance_travel))?$request->distance_travel:'';         
+                $provider['long_distance_travel']=(!empty($request->long_distance_travel))?$request->long_distance_travel:''; 
+                $provider['location_track_permission']=(!empty($request->location_track_permission) && $request->location_track_permission=='yes')?$request->location_track_permission:'no';
+
                 $provider['term_condition']=$request->term_condition;  
                 /*$provider['service_id']=$request->service_id;  */
                 if($request->file('document_high_school')){
-                    $path = url('/assets/images/document/');
+                    $path = 'assets/document/';
                     if(!File::exists($path)) {
                         File::makeDirectory($path, $mode = 0777, true);
                     }
                     $image       = $request->file('document_high_school');
                     $document_high_school    = time().$image->getClientOriginalName();
-                    $image = Image::make($image->getRealPath());              
-                    $image->save('assets/images/document/' .$document_high_school);
+                    $res = $image->move($path, $document_high_school);
+                    /*$image = Image::make($image->getRealPath());              
+                    $image->save('assets/document/' .$document_high_school);*/
                     $provider['document_high_school'] = $document_high_school;
                 }   
 
                 if($request->file('document_graduation')){
-                    $path = url('/assets/images/document/');
+                    $path = 'assets/document/';
                     if(!File::exists($path)) {
                         File::makeDirectory($path, $mode = 0777, true);
                     }
                     $image       = $request->file('document_graduation');
                     $document_graduation    = time().$image->getClientOriginalName();
-                    $image = Image::make($image->getRealPath());              
-                    $image->save('assets/images/document/' .$document_graduation);
+                    $res = $image->move($path, $document_graduation);
                     $provider['document_graduation'] = $document_graduation;
                 }       
                 if($request->file('document_post_graduation')){
-                    $path = url('/assets/images/document/');
+                    $path = 'assets/document/';
                     if(!File::exists($path)) {
                         File::makeDirectory($path, $mode = 0777, true);
                     }
                     $image       = $request->file('document_post_graduation');
                     $document_post_graduation    = time().$image->getClientOriginalName();
-                    $image = Image::make($image->getRealPath());              
-                    $image->save('assets/images/document/' .$document_post_graduation);
+                    $res = $image->move($path, $document_post_graduation);
+                    
                     $provider['document_post_graduation'] = $document_post_graduation;
                 } 
                 if($request->file('document_adhar_card')){
-                    $path = url('/assets/images/document/');
+                    $path = 'assets/document/';
                     if(!File::exists($path)) {
                         File::makeDirectory($path, $mode = 0777, true);
                     }
                     $image       = $request->file('document_adhar_card');
                     $document_adhar_card    = time().$image->getClientOriginalName();
-                    $image = Image::make($image->getRealPath());              
-                    $image->save('assets/images/document/' .$document_adhar_card);
+                     $res = $image->move($path, $document_adhar_card);
                     $provider['document_adhar_card'] = $document_adhar_card;
                 }
 
                 if($request->file('document_other')){
-                    $path = url('/assets/images/document/');
+                    $path = 'assets/document/';
                     if(!File::exists($path)) {
                         File::makeDirectory($path, $mode = 0777, true);
                     }
                     $image       = $request->file('document_other');
                     $document_other    = time().$image->getClientOriginalName();
-                    $image = Image::make($image->getRealPath());              
-                    $image->save('assets/images/document/' .$document_other);
+                    $res = $image->move($path, $document_other);
                     $provider['document_other'] = $document_other;
-                }
+                }   
                 $provider['user_id']=$user->id;
                 $provider_user = ProviderUser::create($provider);
             }
@@ -290,7 +316,13 @@ class FrontController extends Controller
             $this->alert    = true;
             $this->message = "SignUp Successful";
             $this->modal = true;
-            $this->redirect = url('login');
+            
+            if($request->type == 'user'){
+                $this->redirect = url('verify-otp/'.___encrypt($user_details->id));
+            }else{
+                $this->redirect = url('verify-otp/'.___encrypt($user->id));
+            }
+           /* $this->redirect = url('login');*/
         }
         return $this->populateresponse();
     }
@@ -310,7 +342,7 @@ class FrontController extends Controller
         return view('front.index',$data);
     }
     public function auth(Request $request)
-    {
+    { 
         $validation = new Validations($request);
         $validator = $validation->login();
         if ($validator->fails()){
@@ -342,6 +374,55 @@ class FrontController extends Controller
     {
         $data['view']='front.forgotpass';
         return view('front.index',$data);
+    }
+    public function sendOtp(Request $request,$user_id)
+    {
+        
+        $autopass = strtoupper(str_random(6));
+        
+        $user = User::where('id', '=', ___decrypt($user_id))->firstOrFail();
+        $input['otp'] = $autopass;
+        $upd = $user->update($input);
+        $apiKey = urlencode('Af8JoCyMRKc-3KCSW0EBcsbim6Y7FVTtg6SD1bOvfC');
+        // Message details
+        $phone_code=91;
+        $numbers = array($phone_code.$user->mobile);
+        $sender = urlencode('TXTLCL');
+        $message = rawurlencode('Active Bachha Mobile verification OTP is '.$autopass);
+        $numbers = implode(',', $numbers);
+        $data = array('apikey' => $apiKey, 'numbers' => $numbers, "sender" => $sender, "message" => $message);
+        $ch = curl_init('https://api.textlocal.in/send/');
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($ch);
+        curl_close($ch);
+        $data['user_id'] = $user_id;
+        $data['view']='front.otp';
+        return view('front.index',$data);
+    }
+    public function verifyOtp(Request $request,$user_id)
+    {   
+        $request->request->add(['user_id'=>___decrypt($user_id)]);
+        $validation = new Validations($request);
+        $validator = $validation->verifyOtp();
+        if ($validator->fails()){
+            $this->message = $validator->errors();
+        }else{
+            
+            $user = User::where('id', '=', ___decrypt($user_id))->firstOrFail();
+            if($request->otp==$user->otp){
+                $input['is_mobile_verified'] = 'yes';
+                $upd = $user->update($input);
+                $this->status   = true;
+                $this->alert    = true;
+                $this->message  = "Mobile Verification Successful";
+                $this->modal    = true;
+                $this->redirect = url('login');
+                
+            }
+        }
+        return $this->populateresponse();
     }
 
     public function sendForgotOTp(Request $request)
@@ -442,6 +523,18 @@ class FrontController extends Controller
     {
         $data['id']=$request->user;
         $data['view']='front.service_provider_dashboard';
+
+        $user = _arefy(User::provider_list('single','id = '.\Auth::user()->id));
+        $data['user'] = $user;
+        
+        return view('front.index',$data);
+    }
+
+    public function userDashboard(Request $request)
+    {
+        $data['id']=$request->user;
+        $data['view']='front.user_dashboard';
+
         $user = _arefy(User::provider_list('single','id = '.\Auth::user()->id));
         $data['user'] = $user;
         
@@ -453,8 +546,25 @@ class FrontController extends Controller
        
         $data['view']='front.service';
         $user = _arefy(User::provider_list('single','id = '.\Auth::user()->id));
-        $data['service'] = _arefy(Service::where('service_sub_category_id',$user['provider_user']['service_id'])->get()->first());
-        $data['services'] = _arefy(Service::get());
+        /////Get services
+        /* $data['service_categories'] = _arefy(ServiceCategory::list('array','provider_id = '.$user['provider_user']['id']));*/
+        $data['services'] = _arefy(Service::list('array','provider_id = '.$user['provider_user']['id']));
+        /*$data['services'] = _arefy(Service::get());*/
+       
+        $data['user'] = $user;
+        
+        return view('front.index',$data);
+    }
+
+     public function serviceDetails(Request $request,$service_id)
+    {
+         
+        $data['view']='front.service_view';
+        $user = _arefy(User::provider_list('single','id = '.\Auth::user()->id));
+        /////Get services
+       /* $data['service_categories'] = _arefy(ServiceCategory::list('array','provider_id = '.$user['provider_user']['id']));*/
+        $data['service_details'] = _arefy(Service::list('single','id = '.$service_id));
+        /*$data['services'] = _arefy(Service::get());*/
        
         $data['user'] = $user;
         

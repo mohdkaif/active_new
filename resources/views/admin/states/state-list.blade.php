@@ -35,7 +35,7 @@
           <div class="card">
             <div class="card-header">
               <h3 class="card-title">All Details 
-                <a href="addstate.php" class="btn btn-success btn-flat pull-right">
+                <a href="{{url('admin/states/create')}}" class="btn btn-success btn-flat pull-right">
                   Add State
                 </a>
                </h3>

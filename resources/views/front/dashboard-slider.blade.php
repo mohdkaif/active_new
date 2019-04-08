@@ -14,7 +14,7 @@
                     
                      
                     
-                    
+                    @if(!empty(\Auth::user()) && \Auth::user()->user_type=='provider')
                      <div class="info-block ">
                      <a href="#" style="text-align:center">
                         <div class="inner-box inner-box1 clearfix">
@@ -32,7 +32,7 @@
                            <h3>Manage Service</h3>
                         </div></a>
                      </div>
-                    
+                    @endif
                      
                     
                     {{--  <div class="info-block ">

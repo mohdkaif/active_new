@@ -7,7 +7,7 @@ use App\Models\Country;
 use App\Models\PermissionUsers;
 use App\Models\State;
 use Illuminate\Http\Request;
-use Validator;
+use Validations\Validate as Validations;
 use Yajra\Datatables\Datatables;
 
 class StateController extends Controller
@@ -35,8 +35,9 @@ class StateController extends Controller
      */
     public function create()
     {
-        $countries = Country::where('status', '=', 'active')->get();
-        return view('Admin.states.add-state', compact('countries', $countries));
+        $data['countries'] = Country::where('status', '=', 'active')->get();
+        $data['view'] = 'admin.states.add';
+        return view('admin.index',$data);
     }
 
     /**
@@ -47,21 +48,27 @@ class StateController extends Controller
      */
     public function store(Request $request)
     {
-        $request->flash();
-        $validator = Validator::make($request->all(), [
-            'country_id' => 'required',
-            'state_name' => 'required|max:250',
-        ], [
-            'state_name.required' => 'The State Name field is required.',
-        ]);
-        if ($validator->fails()) {
-            return back()->withErrors($validator)->withInput();
-        } else {
-            $input['country_id'] = $request['country_id'];
-            $input['state_name'] = $request['state_name'];
-            State::create($input);
-            return redirect()->route('states.index')->with('delete', 'State Added Successfully.');
+        
+        $validation = new Validations($request);
+        $validator = $validation->addState();
+        if ($validator->fails()){
+            $this->message = $validator->errors();
+        }else{
+                $data['country_id'] = $request->country_id;
+                $data['state_name'] = $request->state_name;
+               
+                $data['status'] ='active';
+              
+                $state = State::create($data);
+
+             
+            $this->status   = true;
+            $this->alert    = true;
+            $this->message = "State Successfully added";
+            $this->modal = true;
+            $this->redirect = url('admin/states');
         }
+        return $this->populateresponse();
     }
 
     /**

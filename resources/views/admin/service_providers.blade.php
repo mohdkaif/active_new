@@ -55,9 +55,9 @@
                 @foreach($user as $service_provider_res)
                 <tr id="sessiondiv{{$service_provider_res['image']}}">
                   <?php if($service_provider_res['image']){ ?>
-                  <td><img style="height:120px;" src="{{url('assets/images/photo/'.$service_provider_res['image'])}}"></td>
+                  <td><img style="height:60px;" src="{{url('assets/images/users/'.$service_provider_res['image'])}}"></td>
                   <?php }else{?>
-                    <td><img style="height:120px;" src="images/profile.jpg"></td>
+                    <td><img style="height:60px;" src="{{url('assets/images/user.png')}}"></td>
                   <?php } ?>
                   
                   <td>{{$service_provider_res['first_name']}} {{$service_provider_res['last_name']}}</td>
@@ -71,18 +71,18 @@
                       if($status=='pending')
                       {
                       ?>
-                      <a class="btn  btn-success btn-flat"  href="javascript:void(0);"  data-url="{{url(sprintf('admin/provider/updatestatus/?id=%s&status=active',$service_provider_res['id']))}}" data-ask="Are you sure Un-approve service provider?"  data-ask_image="{{url('assets/default/warning.png')}}" data-request="ajax-confirm" title="Update Status">
-                      <i class="fa fa-check-square-o"></i>Approved </a>
+                      <a class="btn  btn-success btn-flat"  href="javascript:void(0);"  data-url="{{url(sprintf('admin/provider/updatestatus/?id=%s&status=active',$service_provider_res['id']))}}" data-ask="Are you sure you want to approve service provider?"  data-ask_image="{{url('assets/default/warning.png')}}" data-request="ajax-confirm" title="Update Status">
+                      <i class="fa fa-check-square-o"></i>Approve </a>
                       <?php }else{ ?>
-                      <a class="btn btn-warning btn-flat"  href="javascript:void(0);"  data-url="{{url(sprintf('admin/provider/updatestatus/?id=%s&status=pending',$service_provider_res['id']))}}" data-ask="Are you sure Approve service provider?"  data-ask_image="{{url('assets/default/warning.png')}}" data-request="ajax-confirm" title="Update Status">
+                      <a class="btn btn-warning btn-flat"  href="javascript:void(0);"  data-url="{{url(sprintf('admin/provider/updatestatus/?id=%s&status=pending',$service_provider_res['id']))}}" data-ask="Are you sure you want to UnApprove service provider?"  data-ask_image="{{url('assets/default/warning.png')}}" data-request="ajax-confirm" title="Update Status">
                       <i class="icon-edit icon-white"></i>  
-                      NotApproved                                        
+                      UnApprove                                       
                       </a>
                     <?php } ?>
-                 <a href="editservice_providers.php?id={{base64_encode($service_provider_res['id'])}}">
+                 <a href="{{url('admin/provider/'.base64_encode($service_provider_res['id']).'/edit')}}">
                       <button class="btn btn-info btn-flat"><i class="fa fa-edit"></i> Edit</button>
                   </a>
-                <a href="viewservice_providers.php?id={{base64_encode($service_provider_res['id'])}}">
+                <a href="{{url('admin/provider/'.base64_encode($service_provider_res['id']))}}">
                 <button class="btn btn-info btn-flat"><i class="fa fa-eye"></i> View Details</button>
                 </a>
                

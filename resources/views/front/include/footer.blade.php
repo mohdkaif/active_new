@@ -33,7 +33,7 @@ packages feel free to ping us .We also organise birthday
                         <li><a href="about.php">About  
                            </a>
                         </li>
-                        <li><a href="#">Tearm & Conditions   
+                        <li><a href="#">Terms & Conditions   
                            </a>
                         </li>
                          <li><a href="#">Help  

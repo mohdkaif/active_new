@@ -6,6 +6,9 @@ use App\User;
 use App\Models\State; 
 use App\Models\Country; 
 use App\Models\City; 
+use App\Models\UserChild;
+use App\Models\Service;
+use App\Models\ServiceDays;
 use App\Models\ProviderUser; 
 use Illuminate\Support\Facades\Auth; 
 use Validator;
@@ -95,6 +98,7 @@ class UserController extends Controller
             return $this->populateresponse();
 
         }
+
         $validation = new Validations($request);
         $validator = $validation->login();
         if ($validator->fails()){
@@ -151,6 +155,7 @@ class UserController extends Controller
                
        
                 $success['otp'] =  $autopass;
+                $success['user_details']=$user;
                 $this->status   = true;
                 $response = new Response($success);
                 $this->jsondata = $response->api_common_response();
@@ -173,6 +178,7 @@ class UserController extends Controller
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                 $response = curl_exec($ch);
                 curl_close($ch);
+                $success['user_details']=$user;
                 $success['otp'] =  $autopass;
                 $this->status   = true;
                 $response = new Response($success);
@@ -188,24 +194,60 @@ class UserController extends Controller
 
     public function otp(Request $request)
     {
+        
+        $user = User::where('id', '=', $request->user_id)->firstOrFail();
+        if($user){
+            $success['user_details']=$user;
+            $autopass = strtoupper(str_random(6));
+            $input['otp'] = $autopass;
+            $upd = $user->update($input);
+
+            $apiKey = urlencode('Af8JoCyMRKc-3KCSW0EBcsbim6Y7FVTtg6SD1bOvfC');
+            // Message details
+            $phone_code=91;
+            $numbers = array($phone_code.$user->mobile);
+            $sender = urlencode('TXTLCL');
+            $message = rawurlencode('Active Bachha Mobile verification OTP is '.$autopass);
+            $numbers = implode(',', $numbers);
+            $data = array('apikey' => $apiKey, 'numbers' => $numbers, "sender" => $sender, "message" => $message);
+            $ch = curl_init('https://api.textlocal.in/send/');
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            $response = curl_exec($ch);
+            curl_close($ch);
+
+            $this->status   = true;
+            $response = new Response($success);
+            $this->jsondata = $response->api_common_response();
+            $this->message = "OTP Sent Successfully.";
+        
+                
+        }
+        return $this->populateresponse();
+    }
+
+    public function verifyOtp(Request $request)
+    {   
+        
         $validation = new Validations($request);
-        $validator = $validation->otp();
+        $validator = $validation->verifyOtp();
         if ($validator->fails()){
             $this->message = $validator->errors();
         }else{
-                $user = User::where('otp', '=', $request->otp)->firstOrFail();
-                if($user){
-                    $success['user_details']=$user;
-                    $autopass = strtoupper(str_random(4));
-                    $input['otp'] = $autopass;
-                    $upd = $user->update($input);
+            
+            $user = User::where('id', '=', $request->user_id)->firstOrFail();
+            if($request->otp==$user->otp){
+                $input['is_mobile_verified'] = 'yes';
+                $upd = $user->update($input);
 
-                    $this->status   = true;
-                    $response = new Response($success);
-                    $this->jsondata = $response->api_common_response();
-                    $this->message = "Success.";
-                }
+                $success['success'] = 'success';
+                $this->status   = true;
+                $response = new Response($success);
+                $this->jsondata = $response->api_common_response();
+                $this->message = "Mobile Verification Successful";
                 
+            }
         }
         return $this->populateresponse();
     }
@@ -219,12 +261,321 @@ class UserController extends Controller
         }else{
                 $data['password']=\Hash::make($request->password);
                 $user = User::where('id', '=', $request->id)->update($data);
-                $success['user'] =  $user;
+                $user_deatils = User::where('id', '=', $request->id)->firstOrFail();
+                $success['user'] =  $user_deatils;
                 $this->status   = true;
                 $response = new Response($success);
                 $this->jsondata = $response->api_common_response();
                 $this->message = "Password changed Successfully.";
                 
+        }
+        return $this->populateresponse();
+    }
+
+    public function deleteUser(Request $request)
+    {
+        $validation = new Validations($request);
+        $validator = $validation->getUserInfo();
+        if ($validator->fails()){
+            $this->message = $validator->errors();
+        }else{
+                $user_id = $request->user_id;
+               
+                $user = User::where('id', '=', $user_id)->get()->first();
+                if(!empty($user)){
+                    if($user->user_type=='provider'){
+
+                        $user_info = User::where('id',$user_id)->delete();
+                        $user_info = ProviderUser::where('user_id',$user_id)->delete();
+                    }else{
+                        $user_info = User::where('id',$user_id)->delete();
+                    }
+                    $this->message = "User deleted Successfully.";
+                }else{
+                    $this->message = "No user found with this data.";
+                     /*$success['user_details'] =  'No user found with this data';*/
+                }
+                
+                $success['success'] =  'success';
+                $this->status   = true;
+                $response = new Response($success);
+                $this->jsondata = $response->api_common_response();
+                
+                
+        }
+        return $this->populateresponse();
+    }
+
+    public function getUserInfo(Request $request)
+    {
+        $validation = new Validations($request);
+        $validator = $validation->getUserInfo();
+        if ($validator->fails()){
+            $this->message = $validator->errors();
+        }else{
+
+            $user_id = $request->user_id;
+               
+                $user = User::where('id', '=', $user_id)->get()->first();
+                
+                if(!empty($user)){
+
+                    if($user->user_type=='provider'){
+                        $user_info = _arefy(User::provider_list('single','id = '.$user_id));
+                    }else{
+                        $user_info = _arefy(User::where('id',$user_id)->get()->first());
+                    }
+                    $success['user_details'] =  $user_info;
+                }else{
+                    $success['user_details'] =  'No user found with this data';
+                }
+                
+                $this->status   = true;
+                $response = new Response($success);
+                $this->jsondata = $response->api_common_response();
+                $this->message = "Success.";
+                
+        }
+        return $this->populateresponse();
+    }
+
+    public function SignUp2(Request $request)
+    {
+        $validation = new Validations($request);
+        $validator = $validation->signup();
+        if ($validator->fails()){
+            $this->message = $validator->errors();
+        }else{
+
+            if($request->type == 'user'){
+                $data['facebook_id']=(!empty($request->facebook_id))?$request->facebook_id:'';
+                $data['google_id']=(!empty($request->google_id))?$request->google_id:'';
+                $data['user_type'] = $request->type;
+                $data['first_name'] = $request->first_name;
+                $data['last_name'] = $request->last_name;
+                $data['mobile'] = $request->mobile;
+                $data['otp'] = '11331';
+                $data['email'] = $request->email;
+                $data['address'] = (!empty($request->address))?$request->address:'';
+                $data['country'] = $request->region;
+                $data['state'] = $request->state;
+                $data['city'] = $request->city;
+                $data['password'] = \Hash::make($request->password);
+                $data['status'] = 'active';
+               /* $data['service_id'] = 2;*/
+                $data['email'] = isset($request->email)?$request->email:'';
+                $user = User::create($data);
+                if(!empty($request->child_name)){
+
+                    foreach ($request->child_name as $key => $name) {  
+                        $child[$key]['name'] = $name;
+                    }
+                }
+                if(!empty($request->child_age)){
+                    
+                  
+                    foreach ($request->child_age as $key => $age) {
+                        $child[$key]['age'] = $age;
+                    }
+                }
+                if(!empty($request->child_gender)){
+                    foreach ($request->child_gender as $key => $gender) {
+                        $child[$key]['gender'] = $gender;
+                    }
+                }
+                if(!empty($child)){
+
+                    foreach ($child as $child_details) {
+                        $childData['user_id'] = $user->id;
+                        $childData['name'] = $child_details['name'];
+                        $childData['age'] = $child_details['age'];
+                        $childData['gender'] = $child_details['gender'];
+                        $childData['status'] = 'active';
+                        $save_child = UserChild::create($childData);
+                    }
+                }
+
+
+            }else{
+                $data['facebook_id']=(!empty($request->facebook_id))?$request->facebook_id:'';
+                $data['google_id']=(!empty($request->google_id))?$request->google_id:'';
+                $data['special_service']=(!empty($request->special_service))?$request->special_service:'';
+                
+                $data['user_type'] = $request->type;
+                $data['first_name'] = $request->first_name;
+                $data['last_name'] = $request->last_name;
+                $data['mobile'] = $request->mobile;
+                $data['otp'] ='fcevf';
+                $data['email'] = $request->email;
+                $data['permanent_address'] =(!empty($request->permanent_address))?$request->permanent_address:'';
+                $data['permanent_country'] = (!empty($request->country))?$request->country:'';
+                $data['permanent_state'] = (!empty($request->state))?$request->state:'';
+                $data['permanent_city'] = (!empty($request->city))?$request->city:'';
+                $data['address'] =(!empty($request->permanent_address))?$request->permanent_address:'';
+                $data['country'] = (!empty($request->country))?$request->country:'';
+                $data['state'] = (!empty($request->state))?$request->state:'';
+                $data['city'] = (!empty($request->city))?$request->city:'';
+                $data['permanent_pincode'] = (!empty($request->pincode))?$request->pincode:'';
+                $data['pincode'] = (!empty($request->pincode))?$request->pincode:'';
+                $data['password'] = \Hash::make($request->password);
+                $data['status'] = 'pending';
+                $data['date_of_birth'] =(!empty($request->date_of_birth))?$request->date_of_birth:'';
+                $data['email'] = isset($request->email)?$request->email:'';
+                $data['otp'] = 'SHDJS';
+
+                if ($file = $request->file('image')){
+                    $photo_name = time().$request->file('image')->getClientOriginalName();
+                    $file->move('assets/images/users',$photo_name);
+                    $data['image'] = $photo_name;
+                   
+                }
+                $user = User::create($data);
+
+                $provider['bank_name']=(!empty($request->bank_name))?$request->bank_name:'';              
+                $provider['bank_account_number']=(!empty($request->bank_account))?$request->bank_account:'';         
+                $provider['bank_holder_name']=(!empty($request->bank_holder_name))?$request->bank_holder_name:'';      
+                $provider['bank_ifsc_code']=(!empty($request->bank_ifsc_code))?$request->bank_ifsc_code:'';
+                $provider['bank_branch_name']=(!empty($request->bank_branch_name))?$request->bank_branch_name:'';
+                
+
+                $provider['graduation_year']=(!empty($request->graduation_year))?$request->graduation_year:'';              
+                $provider['post_graduation_year']=(!empty($request->post_graduation_year))?$request->post_graduation_year:'';         
+                $provider['highschool_year']=(!empty($request->high_school_year))?$request->high_school_year:'';      
+                $provider['intermediate_year']=(!empty($request->intermediate_year))?$request->intermediate_year:'';
+
+              /*  $provider['service_start_time']=$request->service_start_time;        
+                $provider['service_end_time']=$request->service_end_time; */         
+                $provider['distance_to_travel']=(!empty($request->distance_travel))?$request->distance_travel:'';            
+                $provider['long_distance_travel']=(!empty($request->long_distance_travel))?$request->long_distance_travel:''; 
+                $provider['location_track_permission']=(!empty($request->location_track_permission) && $request->location_track_permission=='yes')?$request->location_track_permission:'no';
+
+                $provider['term_condition']=$request->term_condition;
+                $provider['special_service']=(!empty($request->special_service))?$request->special_service:'';  
+                /*$provider['service_id']=$request->service_id;  */
+               if($request->file('document_high_school')){
+                    $path = 'assets/document/';
+                    if(!File::exists($path)) {
+                        File::makeDirectory($path, $mode = 0777, true);
+                    }
+                    $image       = $request->file('document_high_school');
+                    $document_high_school    = time().$image->getClientOriginalName();
+                    $res = $image->move($path, $document_high_school);
+                    /*$image = Image::make($image->getRealPath());              
+                    $image->save('assets/document/' .$document_high_school);*/
+                    $provider['document_high_school'] = $document_high_school;
+                }   
+
+                if($request->file('document_graduation')){
+                    $path = 'assets/document/';
+                    if(!File::exists($path)) {
+                        File::makeDirectory($path, $mode = 0777, true);
+                    }
+                    $image       = $request->file('document_graduation');
+                    $document_graduation    = time().$image->getClientOriginalName();
+                    $res = $image->move($path, $document_graduation);
+                    $provider['document_graduation'] = $document_graduation;
+                }       
+                if($request->file('document_post_graduation')){
+                    $path = 'assets/document/';
+                    if(!File::exists($path)) {
+                        File::makeDirectory($path, $mode = 0777, true);
+                    }
+                    $image       = $request->file('document_post_graduation');
+                    $document_post_graduation    = time().$image->getClientOriginalName();
+                    $res = $image->move($path, $document_post_graduation);
+                    
+                    $provider['document_post_graduation'] = $document_post_graduation;
+                } 
+                if($request->file('document_adhar_card')){
+                    $path = 'assets/document/';
+                    if(!File::exists($path)) {
+                        File::makeDirectory($path, $mode = 0777, true);
+                    }
+                    $image       = $request->file('document_adhar_card');
+                    $document_adhar_card    = time().$image->getClientOriginalName();
+                     $res = $image->move($path, $document_adhar_card);
+                    $provider['document_adhar_card'] = $document_adhar_card;
+                }
+
+                if($request->file('document_other')){
+                    $path = 'assets/document/';
+                    if(!File::exists($path)) {
+                        File::makeDirectory($path, $mode = 0777, true);
+                    }
+                    $image       = $request->file('document_other');
+                    $document_other    = time().$image->getClientOriginalName();
+                    $res = $image->move($path, $document_other);
+                    $provider['document_other'] = $document_other;
+                }   
+                $provider['user_id']=$user->id;
+                $provider_user = ProviderUser::create($provider);
+
+                ////service
+                $service['name']=(!empty($request->service_name))?$request->service_name:'';
+                $service['description']=(!empty($request->description))?$request->description:'';
+                $service['price_per_hour']=(!empty($request->price_per_hour))?$request->price_per_hour:'';
+                $service['price_per_children']=(!empty($request->price_per_children))?$request->price_per_children:'';
+                $service['experience_in_work']=(!empty($request->experience_in_work))?$request->experience_in_work:'';
+                $service['service_category_id']=(!empty($request->service_category_id))?$request->service_category_id:'';
+                $service['service_sub_category_id']=(!empty($request->service_sub_category_id))?$request->service_sub_category_id:'';
+
+                if($request->file('video')){
+                    $file = $request->file('video');
+
+                    $filename2 = $file->getClientOriginalName();
+                    $path = 'assets/service/video/';
+                    if(!File::exists($path)) {
+                        
+                        File::makeDirectory($path, $mode = 0777, true);
+                    }
+                    $res = $file->move($path, $filename2);
+                    $service['video'] = $filename2;
+                }
+                if($request->file('photo')){
+                    $path = 'assets/service/images/';
+                    if(!File::exists($path)) {
+                        File::makeDirectory($path, $mode = 0777, true);
+                    }
+                    $image       = $request->file('photo');
+                    $photo    = time().$image->getClientOriginalName();
+
+                    $image = Image::make($image->getRealPath());  
+                     
+                    $image->save('assets/service/images/' .$photo);
+                    $service['photo'] = $photo;
+                }
+                if(!empty($service['name']) && !empty($provider_user)){
+
+                    $service['provider_id'] = $provider_user->id;
+                    $service_added = Service::create($service);
+                }
+
+                ///Service days
+                $days = (!empty($request->days))?explode(',',$request->days):'';
+                $start_time = (!empty($request->start_time))?explode(',',$request->start_time):'';
+                $end_time = (!empty($request->end_time))?explode(',',$request->end_time):'';
+                if(!empty($days) && !empty($start_time) && !empty($end_time)){
+                    foreach($days as $key=> $value){
+                        $servicedays['day'] = $value;
+                        $servicedays['start_time'] = $start_time[$key];
+                        $servicedays['end_time'] = $end_time[$key];
+                        $servicedays['provider_id'] = $provider_user->id;
+                        $servicedays['service_id'] = $service_added->id;
+                        $servicedays['created_at'] = date('Y-m-d H:i:s');
+                        $servicedays['updated_at'] = date('Y-m-d H:i:s');
+                        ServiceDays::create($servicedays);
+                    }
+                }
+            }
+
+            $success['success'] =  'success';
+            $success['user_details'] =  $user;
+            $this->status   = true;
+            $response = new Response($success);
+            $this->jsondata = $response->api_common_response();
+            $this->message = "SignUp Successful.";
+
+
         }
         return $this->populateresponse();
     }
@@ -263,7 +614,13 @@ class UserController extends Controller
                 $provider['service_end_time']=$request->service_end_time;*/          
                 $provider['distance_travel']=$request->distance_travel;           
                 $provider['long_distance_travel']=$request->long_distance_travel; 
-                $provider['location_track_permission']=$request->location_track_permission;
+                $provider['location_track_permission']=(!empty($request->location_track_permission) && $request->location_track_permission=='yes')?$request->location_track_permission:'no';
+                if ($file = $request->file('image')){
+                    $photo_name = time().$request->file('image')->getClientOriginalName();
+                    $file->move('assets/images/users',$photo_name);
+                    $data['image'] = $photo_name;
+                   
+                }
                 /*$provider['service_id']=$request->service_id;*/
                /* $provider['price_per_hour']=$request->price_per_hour;
                 $provider['price_per_children']=$request->price_per_children;
@@ -371,6 +728,7 @@ class UserController extends Controller
        
                */
                 $success['success'] =  'success';
+                $success['user_details'] =  $user;
                 $this->status   = true;
                 $response = new Response($success);
                 $this->jsondata = $response->api_common_response();
@@ -499,13 +857,12 @@ class UserController extends Controller
             $this->message = $validator->errors();
         }else{
             
-                $data['first_name'] = $request->first_name;
-                $data['last_name'] = $request->last_name;
-                $data['address'] = $request->address;
-                $data['date_of_birth'] = $request->date_of_birth;
-                $data['gender'] = $request->gender;
-               
-                $update = User::change($request->user_id,$data);
+            $data['first_name'] = $request->first_name;
+            $data['last_name'] = $request->last_name;
+            $data['email'] = !empty($request->email)?$request->email:'';
+            $data['date_of_birth'] = $request->date_of_birth;
+            /*$data['gender'] = $request->gender;*/
+            $update = User::change($request->user_id,$data);
             
             $this->status   = true;
             $success['success'] =  $update;
@@ -591,63 +948,61 @@ class UserController extends Controller
         $validator = $validation->addDocuments();
         if ($validator->fails()){
             $this->message = $validator->errors();
-        }else{
-                
+        }else{  
+               
                 if($request->file('document_high_school')){
-                    $path = url('/assets/images/document/');
+                    $path = 'assets/document/';
                     if(!File::exists($path)) {
                         File::makeDirectory($path, $mode = 0777, true);
                     }
                     $image       = $request->file('document_high_school');
                     $document_high_school    = time().$image->getClientOriginalName();
-                    $image = Image::make($image->getRealPath());              
-                    $image->save('assets/images/document/' .$document_high_school);
+                    $res = $image->move($path, $document_high_school);
+                    /*$image = Image::make($image->getRealPath());              
+                    $image->save('assets/document/' .$document_high_school);*/
                     $provider['document_high_school'] = $document_high_school;
                 }   
 
                 if($request->file('document_graduation')){
-                    $path = url('/assets/images/document/');
+                    $path = 'assets/document/';
                     if(!File::exists($path)) {
                         File::makeDirectory($path, $mode = 0777, true);
                     }
                     $image       = $request->file('document_graduation');
                     $document_graduation    = time().$image->getClientOriginalName();
-                    $image = Image::make($image->getRealPath());              
-                    $image->save('assets/images/document/' .$document_graduation);
+                    $res = $image->move($path, $document_graduation);
                     $provider['document_graduation'] = $document_graduation;
                 }       
                 if($request->file('document_post_graduation')){
-                    $path = url('/assets/images/document/');
+                    $path = 'assets/document/';
                     if(!File::exists($path)) {
                         File::makeDirectory($path, $mode = 0777, true);
                     }
                     $image       = $request->file('document_post_graduation');
                     $document_post_graduation    = time().$image->getClientOriginalName();
-                    $image = Image::make($image->getRealPath());              
-                    $image->save('assets/images/document/' .$document_post_graduation);
+                    $res = $image->move($path, $document_post_graduation);
+                    
                     $provider['document_post_graduation'] = $document_post_graduation;
                 } 
                 if($request->file('document_adhar_card')){
-                    $path = url('/assets/images/document/');
+                    $path = 'assets/document/';
                     if(!File::exists($path)) {
                         File::makeDirectory($path, $mode = 0777, true);
                     }
                     $image       = $request->file('document_adhar_card');
                     $document_adhar_card    = time().$image->getClientOriginalName();
-                    $image = Image::make($image->getRealPath());              
-                    $image->save('assets/images/document/' .$document_adhar_card);
+                     $res = $image->move($path, $document_adhar_card);
                     $provider['document_adhar_card'] = $document_adhar_card;
                 }
 
                 if($request->file('document_other')){
-                    $path = url('/assets/images/document/');
+                    $path = 'assets/document/';
                     if(!File::exists($path)) {
                         File::makeDirectory($path, $mode = 0777, true);
                     }
                     $image       = $request->file('document_other');
                     $document_other    = time().$image->getClientOriginalName();
-                    $image = Image::make($image->getRealPath());              
-                    $image->save('assets/images/document/' .$document_other);
+                    $res = $image->move($path, $document_other);
                     $provider['document_other'] = $document_other;
                 }            
                 $user_id = $request->user_id;

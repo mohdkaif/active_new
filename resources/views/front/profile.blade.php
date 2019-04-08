@@ -37,7 +37,7 @@
               <!-- Nav tabs -->
               <div class="col-md-3">
                 @if(!empty($user['image']))
-                    <img src="{{url('assets/images/providers/'.$user['image'])}}">
+                    <img src="{{url('assets/images/users/'.$user['image'])}}">
                   @else
                     <img src="{{url('assets/images/user.png')}}">
                   @endif
@@ -115,6 +115,28 @@
                             </div>
 
 
+                            <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                              <label>
+                                Update Profile Picture
+                              </label>
+                              <div class="col-md-12 col-sm-12 col-xs-12 form-group" style="padding-left: 0;">
+                                <div class="col-md-6 col-sm-6 col-xs-12" style="padding-left: 0;">
+                                  <input onchange="readURL(this)" id="uploadFile" accept="image/*" name="image" type="file" class="form-control">
+                                </div>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                  @if(!empty($user['image']))
+                                    <img style="max-width: 100px;" src="{{url('assets/images/users/'.$user['image'])}}" id="adminimg">
+                                  @else
+                                    <img style="max-width: 100px;" src="{{asset('assets/images/avatar.png')}}" id="adminimg" alt="No Profile Picture Added">
+                                  @endif
+                                  
+                                </div>
+                              </div>
+                            </div>
+
+                            
+
+
                              {{-- <div class="col-md-6 col-sm-6 col-xs-12 form-group">
                               <label>
                                  Photo
@@ -140,7 +162,11 @@
                            {{--  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-group">
                                 <button type="submit" class="theme-btn btn-style">Send Message</button>
                             </div> --}}
-                            <button type="button" data-request="ajax-submit" data-target="[role='update']" class="theme-btn btn-style">Update</button>
+                            
+                              <div class="col-md-12">
+                                 <button type="button" data-request="ajax-submit" data-target="[role='update']" class="theme-btn btn-style">Update</button>
+                              </div>
+                            
                         </div>
                     </form>
                 </div>
@@ -289,4 +315,19 @@
 </section>
  
 @section('requirejs')
+<script type="text/javascript">
+   
+    function readURL(input) {
+
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#adminimg').attr('src', e.target.result);
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }   
+    }
+</script>
 @endsection

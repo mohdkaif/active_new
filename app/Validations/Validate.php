@@ -52,6 +52,7 @@ class Validate
 			'start_from'			=> ['required'],
 			'photo'					=> ['required','mimes:jpg,jpeg,png','max:2408'],
 			'photomimes'			=> ['mimes:jpg,jpeg,png','max:2408'],
+				'doc_file_any'			=> ['nullable','mimes:jpg,jpeg,png,doc,docx,pdf','max:5120'],
 			'video'  				=> ['mimes:mp4,mov,ogg,qt','max:51200'],
 			'photo_null'			=> ['nullable'],
 			'gallery'				=> ['required','mimes:jpg,jpeg,png','max:2048'],
@@ -60,12 +61,13 @@ class Validate
 			'slug_no_space'		    => ['required','alpha_dash','max:255'],
 			'password_check'	    => ['required'],
 			'file'					=> ['required','mimes:pdf'],
-			'document_file'		    => ['nullable','mimes:doc,docx,pdf,jpg,jpeg,png','max:5120'],
+			'document_file'		    => ['nullable','mimes:jpg,jpeg,png','max:5120'],
 			'newpassword'		    => ['required','max:10'],	
 			'child'		    		=> ['required','array','min:1'],	
 			'child_details'		    => ['required','string','distinct','min:1'],
 			'video_null'			=> ['nullable','mimes:mp4,mov,ogg,qt','max:51200'],
-			'photo_null'			=> ['nullable','mimes:jpg,jpeg,png','max:2048']
+			'photo_null'			=> ['nullable','mimes:jpg,jpeg,png','max:2048'],
+
 
 		];
 		return $validation[$key];
@@ -86,10 +88,12 @@ class Validate
 			    	if(empty($userDetails)){
 			    		$validator->errors()->add('username', 'No Account Found With This Mobile Number.');
 			    	}elseif($userDetails->status!='active'){
-			    		$validator->errors()->add('username', 'your account is not active.Please contact with adminstrator for more info.');
+			    		$validator->errors()->add('username', 'Your account is not active.Please contact with adminstrator for more info.');
 			    	}elseif($userDetails->user_type=='admin'){
-			    		$validator->errors()->add('username', 'you are not authorised user to login.');
-			    	}        
+			    		$validator->errors()->add('username', 'You are not authorised user to login.');
+			    	}/*elseif($userDetails->is_mobile_verified=='no'){
+			    		$validator->errors()->add('username', 'You have not verified your mobile number.Please verify to continue');
+			    	} */       
 			    });
 			}
 		}else{
@@ -106,7 +110,13 @@ class Validate
 			    $validator->after(function ($validator) use($userDetails) {
 			    	if(empty($userDetails)){
 			    		$validator->errors()->add('username', 'No Account Found With This Email.');
-			    	}        
+			    	}elseif($userDetails->status!='active'){
+			    		$validator->errors()->add('username', 'Your account is not active.Please contact with adminstrator for more info.');
+			    	}elseif($userDetails->user_type=='admin'){
+			    		$validator->errors()->add('username', 'You are not authorised user to login.');
+			    	}/*elseif($userDetails->is_mobile_verified=='no'){
+			    		$validator->errors()->add('username', 'You have not verified your mobile number.Please verify to continue');
+			    	}    */    
 			    });
 			}
 		}
@@ -186,6 +196,55 @@ class Validate
 		return $validator;
 	}
 
+	public function getUserInfo($action='add'){
+		$validations = [
+        	'user_id' 						=> $this->validation('name'),
+    	];
+    	
+    	$validator = \Validator::make($this->data->all(), $validations,[]);
+		return $validator;
+	}
+	public function addState($action='add'){
+		$validations = [
+        	'country_id' 						=> $this->validation('id'),
+        	'state_name' 						=> $this->validation('name'),
+    	];
+    	
+    	$validator = \Validator::make($this->data->all(), $validations,[]);
+		return $validator;
+	}
+
+		public function addCity($action='add'){
+		$validations = [
+        	'country_id' 						=> $this->validation('id'),
+        	'state_id' 						=> $this->validation('id'),
+        	'city_name' 						=> $this->validation('name'),
+    	];
+    	
+    	$validator = \Validator::make($this->data->all(), $validations,[]);
+		return $validator;
+	}
+
+	public function deleteService($action='add'){
+		$validations = [
+        	'service_id' 						=> $this->validation('id'),
+        /*	'provider_id' 						=> $this->validation('id'),*/
+    	];
+    
+    	$validator = \Validator::make($this->data->all(), $validations,[]);
+		return $validator;
+	}
+
+	public function serviceListProvider($action='add'){
+		$validations = [
+        	/*'service_id' 						=> $this->validation('id'),*/
+        	'provider_id' 						=> $this->validation('id'),
+    	];
+    
+    	$validator = \Validator::make($this->data->all(), $validations,[]);
+		return $validator;
+	}
+
 	public function addServiceSubCategory($action='add'){
 		$validations = [
 			'service_category_id'		  => $this->validation('id'),
@@ -210,9 +269,9 @@ class Validate
         	'provider_id'   => $this->validation('phone'),
         	'name'   => $this->validation('name'),
         	'description'   => $this->validation('address'),
-        	'days_for_service'   => $this->validation('address'),
+        	/*'days_for_service'   => $this->validation('address'),
         	'service_start_time'		  => $this->validation('name'),
-        	'service_end_time'   => $this->validation('name'),
+        	'service_end_time'   => $this->validation('name'),*/
         	'special_day'   => $this->validation('last_name'),
         	'price_per_hour'   => $this->validation('name'),
         	'price_per_children'		  => $this->validation('name'),
@@ -246,13 +305,49 @@ class Validate
 		return $validator;
 	}
 
+	public function verifyOtp(){
+		$validations = [
+        	'otp' 						=> $this->validation('name')
+    	];
+    	$validator = \Validator::make($this->data->all(), $validations,[
+		
+			
+		]);
+
+		if(!empty($this->data->user_id)){
+
+	    		$user = User::findOrFail($this->data->user_id);
+	    		
+	    		
+	    		$validator->after(function ($validator) use($user) {
+
+						if ($this->data->otp!=$user->otp){
+							
+						    $validator->errors()->add('otp', 'Incorrect OTP');
+						  
+						}
+						
+				           
+		    	});
+    		}else{
+    			$validator->after(function ($validator) use($user) {
+
+					$validator->errors()->add('user_id', 'User Id is required');
+			         
+		    	});
+    		}  
+		
+		return $validator;
+	}
+
+
 
 	public function updateProfile(){
 		$validations = [
         	'first_name'					=> $this->validation('name'),
 	        'last_name' 					=> $this->validation('name'),
-	        'mobile'						=> $this->validation('mobile_number'),
-	        'address'						=> $this->validation('qualifications'),
+	        /*'mobile'						=> $this->validation('mobile_number'),*/
+	        /*'address'						=> $this->validation('qualifications'),*/
     	];
     	$validator = \Validator::make($this->data->all(), $validations,[
 			'first_name'					=> $this->validation('name'),
@@ -350,24 +445,26 @@ class Validate
 
 	public function signup()
 	{
+
 		if($this->data->type=="user"){
 			$validations = [
 				'first_name'					=> $this->validation('name'),
 	        	'last_name' 					=> $this->validation('name'),
-	        	'child_name.*'					=> $this->validation('child'),
+	        	'child_name'					=> $this->validation('child'),
 	        	'child_name.*'					=> $this->validation('child_details'),
 	        	'child_age'						=> $this->validation('child'),
 	        	'child_age.*'					=> $this->validation('child_details'),
 	        	'child_gender'					=> $this->validation('child'),
 	        	'child_gender.*'				=> $this->validation('child_details'),
 	        	'mobile'						=> $this->validation('mobile_number'),
-	        	'otp'							=> $this->validation('name'),
+	        	/*'otp'							=> $this->validation('name'),*/
 	        	'address'						=> $this->validation('address'),
-	        	'region'						=> $this->validation('name'),
+	        	'country'						=> $this->validation('name'),
 	        	'state'							=> $this->validation('name'),
 	        	'city'							=> $this->validation('name'),
 	        	'password' 						=> $this->validation('password'),
-	        	'confirm_password'				=> $this->validation('c_password')
+	        	'confirm_password'				=> $this->validation('c_password'),
+	        	/*'term_condition'				=> $this->validation('name')*/
 	    	];
 		}else{
 			$validations = [
@@ -376,14 +473,15 @@ class Validate
 	        	'mobile'						=> $this->validation('mobile_number'),
 	        	'email'							=> $this->validation('email'),
 	        	'date_of_birth' 				=> $this->validation('name'),
-	        	'permanent_address'				=> $this->validation('address'),
+	        	'address'				        => $this->validation('address'),
 	        	'country'						=> $this->validation('name'),
 	        	'state'							=> $this->validation('name'),
 	        	'city'							=> $this->validation('name'),
-	        	'bank_name'						=> $this->validation('name'),
+	        	/*'bank_name'						=> $this->validation('name'),
 	        	'bank_account_number'			=> $this->validation('name'),
 	        	'bank_holder_name'				=> $this->validation('name'),
 	        	'bank_ifsc_code'				=> $this->validation('name'),
+	        	'bank_branch_name'				=> $this->validation('name'),*/
 	        	/*'day_of_service'				=> $this->validation('name'),
 	        	'service_start_time'			=> $this->validation('name'),
 	        	'service_end_time'				=> $this->validation('name'),
@@ -392,19 +490,18 @@ class Validate
 	        	'long_distance_travel'			=> $this->validation('name'),
 	        	'location_track_permission'		=> $this->validation('name'),*/
 
-	        	'service_id'					=>$this->validation('name'),
+	        	/*'service_id'					=>$this->validation('name'),
 				'price_per_hour'				=>$this->validation('name'),
 				'price_per_children'			=>$this->validation('name'),
-				'experience_in_work'			=>$this->validation('name'),
+				'experience_in_work'			=>$this->validation('name'),*/
 				
-	        	'document_high_school'			=> $this->validation('photomimes'),
-	        	'document_graduation'			=> $this->validation('photomimes'),
-	        	'document_post_graduation'		=> $this->validation('photomimes'),
-	        	'document_adhar_card'			=> $this->validation('photomimes'),
-	        	'document_other'				=> $this->validation('photomimes'),
-	        	'document_other'				=> $this->validation('photomimes'),
-	        	'photo'							=> $this->validation('photomimes'),
-	        	'video'							=> $this->validation('video'),
+	        	'document_high_school'			=> $this->validation('doc_file_any'),
+	        	'document_graduation'			=> $this->validation('doc_file_any'),
+	        	'document_post_graduation'		=> $this->validation('doc_file_any'),
+	        	'document_adhar_card'			=> $this->validation('doc_file_any'),
+	        	'document_other'				=> $this->validation('doc_file_any'),
+	        /*	'photo'							=> $this->validation('photomimes'),
+	        	'video'							=> $this->validation('video'),*/
 	        	'password' 						=> $this->validation('password'),
 	        	'confirm_password'				=> $this->validation('c_password'),
 	        	'term_condition'				=> $this->validation('name')
@@ -431,7 +528,140 @@ class Validate
 		    	}        
 		    });
 		}
-		
+
+		/*if($this->data->type=='user'){
+
+			if(empty($this->data->child_name[0])){
+				
+
+			    $validator->after(function ($validator){
+			    	
+			    	$validator->errors()->add('child_name[0]', 'Child Name is required');
+			    	      
+			    });
+			}
+			if(empty($this->data->child_age[0])){
+
+			    $validator->after(function ($validator){
+			    	
+			    	$validator->errors()->add('child_age[0]', 'Child Age is required');
+			    	      
+			    });
+			}
+			if(empty($this->data->child_gender[0])){
+
+			    $validator->after(function ($validator){
+			    	
+			    	$validator->errors()->add('child_gender[0]', 'Child Gender is required');
+			    	      
+			    });
+			}
+		}*/
+		return $validator;
+	}
+
+	public function signupByAdmin($action="add")
+	{
+
+		if($this->data->type=="user"){
+			$validations = [
+				'first_name'					=> $this->validation('name'),
+	        	'last_name' 					=> $this->validation('name'),
+	        	'child_name'					=> $this->validation('child'),
+	        	'child_name.*'					=> $this->validation('child_details'),
+	        	'child_age'						=> $this->validation('child'),
+	        	'child_age.*'					=> $this->validation('child_details'),
+	        	'child_gender'					=> $this->validation('child'),
+	        	'child_gender.*'				=> $this->validation('child_details'),
+	        	'mobile'						=> $this->validation('mobile_number'),
+	        	/*'otp'							=> $this->validation('name'),*/
+	        	'address'						=> $this->validation('address'),
+	        	'country'						=> $this->validation('name'),
+	        	'state'							=> $this->validation('name'),
+	        	'city'							=> $this->validation('name'),
+	        	'password' 						=> $this->validation('password'),
+	        	'confirm_password'				=> $this->validation('c_password'),
+	        	/*'term_condition'				=> $this->validation('name')*/
+	    	];
+		}else{
+			$validations = [
+				'first_name'					=> $this->validation('name'),
+	        	'last_name' 					=> $this->validation('name'),
+	        	'mobile'						=>array_merge($this->validation('mobile_number'),[Rule::unique('users')]),
+	        	'email'							=> array_merge($this->validation('email'),[Rule::unique('users')]),
+	        	'date_of_birth' 				=> $this->validation('name'),
+	        	'address'				        => $this->validation('address'),
+	        	'country'						=> $this->validation('name'),
+	        	'state'							=> $this->validation('name'),
+	        	'city'							=> $this->validation('name'),
+	        	'permanent_address'				=> $this->validation('address'),
+	        	'permanent_country'				=> $this->validation('gallery_null'),
+	        	'permanent_state'				=> $this->validation('gallery_null'),
+	        	'permanent_city'				=> $this->validation('gallery_null'),
+	        	'password' 						=> $this->validation('password'),
+	        	'confirm_password'				=> $this->validation('c_password'),
+	        	/*'bank_name'						=> $this->validation('name'),
+	        	'bank_account_number'			=> $this->validation('name'),
+	        	'bank_holder_name'				=> $this->validation('name'),
+	        	'bank_ifsc_code'				=> $this->validation('name'),
+	        	'bank_branch_name'				=> $this->validation('name'),*/
+	        	/*'day_of_service'				=> $this->validation('name'),
+	        	'service_start_time'			=> $this->validation('name'),
+	        	'service_end_time'				=> $this->validation('name'),
+	        	'special_service'				=> $this->validation('name'),
+	        	'distance_travel'				=> $this->validation('name'),
+	        	'long_distance_travel'			=> $this->validation('name'),
+	        	'location_track_permission'		=> $this->validation('name'),*/
+
+	        	/*'service_id'					=>$this->validation('name'),
+				'price_per_hour'				=>$this->validation('name'),
+				'price_per_children'			=>$this->validation('name'),
+				'experience_in_work'			=>$this->validation('name'),*/
+				
+	        	
+	        	/*'term_condition'				=> $this->validation('name')*/
+
+	    	];
+
+		}
+    	
+    	if($action=='edit'){
+    	
+    		$validations['password']='';
+    		$validations['confirm_password']='';
+			$validations['mobile'] = array_merge($this->validation('mobile_number'),[
+				Rule::unique('users')->where(function($query){
+					$query->where('id','!=',$this->data->id);
+				})
+			]);
+			$validations['email'] = array_merge($this->validation('email'),[
+				Rule::unique('users')->where(function($query){
+					$query->where('id','!=',$this->data->id);
+				})
+			]);
+		}
+
+		$validator = \Validator::make($this->data->all(), $validations,[
+    		'country.required' 						=>  'Region is required.'
+    	]);
+
+		/*if(!empty($this->data->mobile)){
+			$userDetails = User::where('mobile',$this->data->mobile)->first();
+		    $validator->after(function ($validator) use($userDetails) {
+		    	if(!empty($userDetails)){
+		    		$validator->errors()->add('mobile', 'Mobile Number Already Exist.');
+		    	}        
+		    });
+		}
+		if(!empty($this->data->email)){
+			$userDetails = User::where('email',$this->data->email)->first();
+		    $validator->after(function ($validator) use($userDetails) {
+		    	if(!empty($userDetails)){
+		    		$validator->errors()->add('email', 'E-mail Already Exist.');
+		    	}        
+		    });
+		}*/
+
 		return $validator;
 	}
 	public function bankDetail()
@@ -452,6 +682,27 @@ class Validate
 		
 		return $validator;
 	}
+
+	public function addServiceDays()
+	{
+		
+			$validations = [
+				'service_id'						=> $this->validation('id'),
+	        	'provider_id'						=> $this->validation('id'),
+	        	'day'			=> $this->validation('mobile_number'),
+	        	'start_time'				=> $this->validation('name'),
+	        	'end_time'				=> $this->validation('name'),
+	        
+	    	];
+
+		
+    	$validator = \Validator::make($this->data->all(), $validations,[
+    	]);
+		
+		return $validator;
+	}
+
+	
 	public function qualificationDetail()
 	{
 		

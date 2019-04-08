@@ -94,6 +94,7 @@
         //   },500)
         // });
       </script>
+      @yield('requirejs')
       @stack('scripts')
     </body>
 </html>

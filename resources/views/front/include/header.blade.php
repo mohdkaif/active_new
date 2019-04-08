@@ -7,7 +7,10 @@
          <nav>
             <ul class="main">
                <li class="current"><a href="{{url('/')}}">Home</a></li>
-               <li><a href="{{url('/event')}}">Events </a></li>
+               <li><a href="{{url('/event')}}">Activity</a></li>
+               <li><a href="{{url('/event')}}">Events & Workshops</a></li>
+               <li><a href="{{url('/event')}}">Packages</a></li>
+               <li><a href="{{url('/event')}}">Kids Boutique</a></li>
                <li><a href="{{url('/about')}}">About Us  </a></li>
                <li><a href="#">Help</a></li>
                <li><a href="#">Privacy Policy</a></li>
@@ -25,19 +28,24 @@
             </div>
          @else
           <!-- After login -->
-            <div class="header-bottom">
+            
 
                @if(\Auth::user()->user_type=='user')
+               <div class="header-bottom">
                   <a href="{{url('user/profile')}}" class="btn btn-default btn-default1 center-block pull-left">Profile</a>
-                  <a href="{{url('user/dashboard')}}" class="btn btn-default btn-default1 center-block pull-left">Dashboard</a>
-                  
+                 {{--  <a href="{{url('user/dashboard')}}" class="btn btn-default btn-default1 center-block pull-left">Dashboard</a> --}}
+               </div>
                @else
+               <div class="header-bottom">
                   <a href="{{url('provider/profile')}}" class="btn btn-default btn-default1 center-block pull-left">Profile</a>
+               </div>
+               <div class="header-bottom">
                   <a href="{{url('provider/dashboard')}}" class="btn btn-default btn-default1 center-block pull-left">Dashboard</a>
-                 
+               </div>
                @endif
-               <a href="{{url('logout')}}" class="btn btn-default btn-default1 center-block pull-left">Logout</a>
-            </div>
+               <div class="header-bottom">
+                  <a href="{{url('logout')}}" class="btn btn-default btn-default1 center-block pull-left">Logout</a>
+               </div>
         @endif
          </nav>
          <div class="overlay"></div>

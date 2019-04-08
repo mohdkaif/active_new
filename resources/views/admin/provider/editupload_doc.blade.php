@@ -5,12 +5,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Edit Qualifications</h1>
+            <h1>Edit Documents</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="index.php">Home</a></li>
-              <li class="breadcrumb-item active">Qualifications</li>
+              <li class="breadcrumb-item active">Documents</li>
             </ol>
           </div>
         </div>
@@ -48,42 +48,42 @@
             <!-- /.card-header -->
              
             <div class="card-body">
-                <form  role="qualification" action="{{url('admin/provider/edit-qualification/'.base64_encode($qualification['id']))}}" method="post" enctype="multipart/form-data">
+                <form  role="qualification" action="{{url('admin/provider/edit-document/'.base64_encode($qualification['id']))}}" method="post" enctype="multipart/form-data">
                   <input type="hidden" name="user_id" value="{{base64_encode($qualification['id'])}}">
                      <div class="form-group">
                         <label class="col-sm-6 control-label">Highschool Document</label>
                         <div class="col-sm-6">
-                          <input type="file" name="document_high_school" value="{{$qualification['document_high_school']}}" class="form-control">
+                          <input type="file" name="document_high_school"  class="form-control">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-6 control-label">Intermediate Document</label>
                         <div class="col-sm-6">
-                          <input type="file" name="document_intermediate" value="{{$qualification['document_intermediate']}}" class="form-control">
+                          <input type="file" name="document_intermediate" class="form-control">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-6 control-label">Graducation Document</label>
+                        <label class="col-sm-6 control-label">Graduation Document</label>
                         <div class="col-sm-6">
-                          <input type="file" name="document_graduation" value="{{$qualification['document_graduation']}}" class="form-control">
+                          <input type="file" name="document_graduation"  class="form-control">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-6 control-label">Post Graducation Document</label>
+                        <label class="col-sm-6 control-label">Post Graduation Document</label>
                         <div class="col-sm-6">
-                          <input type="file" name="document_post_graduation" value="{{$qualification['document_post_graduation']}}" class="form-control">
+                          <input type="file" name="document_post_graduation"  class="form-control">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-6 control-label">Adhar Document</label>
                         <div class="col-sm-6">
-                          <input type="file" name="document_adhar_card" value="{{$qualification['document_adhar_card']}}" class="form-control">
+                          <input type="file" name="document_adhar_card"  class="form-control">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-6 control-label">Other Document</label>
                         <div class="col-sm-6">
-                          <input type="file" name="other_document" value="{{$qualification['other_document']}}" class="form-control">
+                          <input type="file" name="document_other" class="form-control">
                         </div>
                     </div>
                       <div class="form-group">
