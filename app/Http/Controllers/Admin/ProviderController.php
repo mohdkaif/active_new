@@ -231,13 +231,6 @@ class ProviderController extends Controller
 
     }
 
-    /*public function updatebank($id){
-        $id          = base64_decode($id);
-        $data['view']='admin.provider.editbank';
-        $data['bank']=_arrayfy(ProviderUser::where('user_id',$id)->firstOrFail());
-        return view('admin.index',$data);
-
-    }*/
     public function updateBank(Request $request,$id)
     {
         $validation = new Validations($request);
