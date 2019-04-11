@@ -16,7 +16,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'token','lat','lng','device_id','user_type','first_name', 'last_name','email', 'password','date_of_birth','is_email_verified','is_mobile_verified','image','mobile','otp','address','country','city','state','remember_token','status','permanent_address','permanent_country','permanent_city','permanent_state',
-        'pincode','permanent_pincode','facebook_id','google_id'
+        'pincode','permanent_pincode','facebook_id','google_id','gender'
     ];
 
 
@@ -42,11 +42,13 @@ class User extends Authenticatable
     
 
      public static function provider_list($fetch='array',$where='',$keys=['*'],$order='id-desc'){
-                
+                 
+
+                 $thumb_asset = asset('/assets/document/');
         $table_course = self::select($keys)
         ->with([
-            'provider_user' => function($q) {
-                $q->select('*');
+            'provider_user' => function($q) use($thumb_asset){
+                $q->select('*',\DB::RAW("CONCAT('{$thumb_asset}/',document_high_school) as 'document_high_school_file'"),\DB::RAW("CONCAT('{$thumb_asset}/',document_intermediate) as 'document_intermediate_file'"),\DB::RAW("CONCAT('{$thumb_asset}/',document_graduation) as 'document_graduation_file'"),\DB::RAW("CONCAT('{$thumb_asset}/',document_post_graduation) as 'document_post_graduation_file'"),\DB::RAW("CONCAT('{$thumb_asset}/',document_adhar_card) as 'document_adhar_card_file'"),\DB::RAW("CONCAT('{$thumb_asset}/',document_other) as 'document_other_file'"));
                 
             },
             'state_details' => function($q) {

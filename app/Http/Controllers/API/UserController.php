@@ -3,7 +3,9 @@ namespace App\Http\Controllers\API;
 use Illuminate\Http\Request; 
 use App\Http\Controllers\Controller; 
 use App\User; 
-use App\Models\State; 
+use App\Models\State;
+use App\Models\Faq; 
+use App\Models\Feedback;  
 use App\Models\Country; 
 use App\Models\City; 
 use App\Models\UserChild;
@@ -317,7 +319,7 @@ class UserController extends Controller
             $user_id = $request->user_id;
                
                 $user = User::where('id', '=', $user_id)->get()->first();
-                
+                $success['contact_no'] =  '+91-9044443264';
                 if(!empty($user)){
 
                     if($user->user_type=='provider'){
@@ -350,6 +352,7 @@ class UserController extends Controller
             if($request->type == 'user'){
                 $data['facebook_id']=(!empty($request->facebook_id))?$request->facebook_id:'';
                 $data['google_id']=(!empty($request->google_id))?$request->google_id:'';
+                $data['gender']=(!empty($request->gender))?$request->gender:'';
                 $data['user_type'] = $request->type;
                 $data['first_name'] = $request->first_name;
                 $data['last_name'] = $request->last_name;
@@ -400,7 +403,7 @@ class UserController extends Controller
                 $data['facebook_id']=(!empty($request->facebook_id))?$request->facebook_id:'';
                 $data['google_id']=(!empty($request->google_id))?$request->google_id:'';
                 $data['special_service']=(!empty($request->special_service))?$request->special_service:'';
-                
+                $data['gender']=(!empty($request->gender))?$request->gender:'';
                 $data['user_type'] = $request->type;
                 $data['first_name'] = $request->first_name;
                 $data['last_name'] = $request->last_name;
@@ -1079,6 +1082,67 @@ class UserController extends Controller
                 $response = new Response($success);
                 $this->jsondata = $response->api_common_response();
                 $this->message = "Address Details Updated Successfully.";
+               
+            
+        }
+        return $this->populateresponse();
+    }
+
+    public function faq(Request $request)
+    {
+        $validation = new Validations($request);
+        $validator = $validation->faq();
+        if ($validator->fails()){
+            $this->message = $validator->errors();
+        }else{
+                
+                $data['question']=!empty($request->question)?$request->question:'';         
+                $data['status']='active';                 
+                $data['created_at']=date('Y-m-d H:i:s');
+                $data['updated_at']=date('Y-m-d H:i:s');
+               
+
+                    $insertId = Faq::insert($data);
+                
+                if($insertId){
+
+                    $success['success'] =  'success';
+                    $this->status   = true;
+                    $response = new Response($success);
+                    $this->jsondata = $response->api_common_response();
+                    $this->message = "Query submitted successfully, We will contact you shortly.";
+                }
+               
+            
+        }
+        return $this->populateresponse();
+    }
+
+     public function feedback(Request $request)
+    {
+        $validation = new Validations($request);
+        $validator = $validation->feedback();
+        if ($validator->fails()){
+            $this->message = $validator->errors();
+        }else{
+                
+                $data['feedback']=!empty($request->feedback)?$request->feedback:''; 
+                $data['user_id']=!empty($request->user_id)?$request->user_id:'';         
+                $data['status']='active';                 
+                $data['created_at']=date('Y-m-d H:i:s');
+                $data['updated_at']=date('Y-m-d H:i:s');
+               
+
+                    $insertId = Feedback::insert($data);
+                
+                if($insertId){
+
+                    $success['success'] =  'success';
+                    $this->status   = true;
+                    $response = new Response($success);
+                    $this->jsondata = $response->api_common_response();
+                    $this->message = "Feedback submitted successfully.";
+                }
                
             
         }

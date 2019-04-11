@@ -162,8 +162,8 @@ class ServiceController extends Controller
             $data['service_category_id'] = $request->service_category_id;
             $data['service_sub_category_id'] = $request->service_sub_category_id;
             $data['provider_id'] = $request->provider_id;
-            $data['name'] = $request->name;
-            $data['description'] = $request->description;
+            $data['name'] = $request->service_name;
+           /* $data['description'] = $request->description;*/
           /*  $data['days_for_service'] = $request->days_for_service;
             $data['service_start_time'] = $request->service_start_time;
             $data['service_end_time'] = $request->service_end_time;*/
@@ -203,6 +203,24 @@ class ServiceController extends Controller
             $data['updated_at'] = date('Y-m-d H:i:s');
 
             $service = Service::add($data);
+
+            $days = (!empty($request->days))?explode(',',$request->days):'';
+            $start_time = (!empty($request->start_time))?explode(',',$request->start_time):'';
+            $end_time = (!empty($request->end_time))?explode(',',$request->end_time):'';
+            if(!empty($days) && !empty($start_time) && !empty($end_time)){
+                foreach($days as $key=> $value){
+                    $servicedays['day'] = $value;
+                    $servicedays['start_time'] = $start_time[$key];
+                    $servicedays['end_time'] = $end_time[$key];
+                    $servicedays['provider_id'] = $request->provider_id;
+                    $servicedays['service_id'] = $service;
+                    $servicedays['created_at'] = date('Y-m-d H:i:s');
+                    $servicedays['updated_at'] = date('Y-m-d H:i:s');
+                    ServiceDays::create($servicedays);
+                }
+            }
+
+            
             $success['success'] =  'success';
            /* $success['service'] =  $service;*/
             $this->status   = true;
@@ -221,12 +239,12 @@ class ServiceController extends Controller
         if ($validator->fails()){
             $this->message = $validator->errors();
         }else{
-            $id = $request->id;
+            $id = $request->service_id;
             $data['service_category_id'] = $request->service_category_id;
             $data['service_sub_category_id'] = $request->service_sub_category_id;
             $data['provider_id'] = $request->provider_id;
-            $data['name'] = $request->name;
-            $data['description'] = $request->description;
+            $data['name'] = $request->service_name;
+           /* $data['description'] = $request->description;*/
             /*$data['days_for_service'] = $request->days_for_service;
             $data['service_start_time'] = $request->service_start_time;
             $data['service_end_time'] = $request->service_end_time;*/
@@ -267,6 +285,24 @@ class ServiceController extends Controller
             $data['updated_at'] = date('Y-m-d H:i:s');
 
             $service = Service::change($id,$data);
+
+            ServiceDays::where('service_id',$id)->delete();
+
+            $days = (!empty($request->days))?explode(',',$request->days):'';
+            $start_time = (!empty($request->start_time))?explode(',',$request->start_time):'';
+            $end_time = (!empty($request->end_time))?explode(',',$request->end_time):'';
+            if(!empty($days) && !empty($start_time) && !empty($end_time)){
+                foreach($days as $key=> $value){
+                    $servicedays['day'] = $value;
+                    $servicedays['start_time'] = $start_time[$key];
+                    $servicedays['end_time'] = $end_time[$key];
+                    $servicedays['provider_id'] = $request->provider_id;
+                    $servicedays['service_id'] = $id;
+                    $servicedays['created_at'] = date('Y-m-d H:i:s');
+                    $servicedays['updated_at'] = date('Y-m-d H:i:s');
+                    ServiceDays::create($servicedays);
+                }
+            }
             $success['success'] =  'success';
            /* $success['service'] =  $service;*/
             $this->status   = true;

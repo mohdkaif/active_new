@@ -267,7 +267,7 @@ class Validate
 			'service_category_id'		  => $this->validation('id'),
         	'service_sub_category_id'   => $this->validation('country'),
         	'provider_id'   => $this->validation('phone'),
-        	'name'   => $this->validation('name'),
+        	'service_name'   => $this->validation('name'),
         	'description'   => $this->validation('address'),
         	/*'days_for_service'   => $this->validation('address'),
         	'service_start_time'		  => $this->validation('name'),
@@ -282,7 +282,7 @@ class Validate
     	];
     	if($action=='edit'){
     		
-    			$validations['id'] = $this->validation('id');
+    			$validations['service_id'] = $this->validation('id');
     		
     	}
     	$validator = \Validator::make($this->data->all(), $validations,[
@@ -477,6 +477,7 @@ class Validate
 	        	'country'						=> $this->validation('name'),
 	        	'state'							=> $this->validation('name'),
 	        	'city'							=> $this->validation('name'),
+	        	'gender'							=> $this->validation('name'),
 	        	/*'bank_name'						=> $this->validation('name'),
 	        	'bank_account_number'			=> $this->validation('name'),
 	        	'bank_holder_name'				=> $this->validation('name'),
@@ -728,13 +729,13 @@ class Validate
 			$validations = [
 				'user_id'						=> $this->validation('id'),
 	        	'current_address'				=> $this->validation('address'),
-	        	'current_country'				=> $this->validation('name'),
-	        	'current_state'				    => $this->validation('name'),
-	        	'current_city'				    => $this->validation('name'),
-	        	'permanent_address'				=> $this->validation('last_name'),
-	        	'permanent_country'			    => $this->validation('country'),
-	        	'permanent_state'				=> $this->validation('country'),
-	        	'permanent_city'				=> $this->validation('country'),
+	        	'current_country'				=> $this->validation('address'),
+	        	'current_state'				    => $this->validation('address'),
+	        	'current_city'				    => $this->validation('address'),
+	        	'permanent_address'				=> $this->validation('address'),
+	        	'permanent_country'			    => $this->validation('id'),
+	        	'permanent_state'				=> $this->validation('id'),
+	        	'permanent_city'				=> $this->validation('id'),
 	        
 	    	];
 
@@ -744,6 +745,39 @@ class Validate
 		
 		return $validator;
 	}
+
+	public function faq()
+	{
+		
+			$validations = [
+				'question'						=> $this->validation('qualifications'),
+	        	
+	    	];
+
+		
+    	$validator = \Validator::make($this->data->all(), $validations,[
+    	]);
+		
+		return $validator;
+	}
+
+	public function feedback()
+	{
+		
+			$validations = [
+				'feedback'						=> $this->validation('qualifications'),
+				'user_id'						=> $this->validation('id'),
+	        	
+	    	];
+
+		
+    	$validator = \Validator::make($this->data->all(), $validations,[
+    	]);
+		
+		return $validator;
+	}
+
+
 
 	public function addDocuments()
 	{
