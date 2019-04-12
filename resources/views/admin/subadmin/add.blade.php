@@ -48,7 +48,7 @@
             <!-- /.card-header -->
          
             <div class="card-body">
-                <form  method="POST" enctype="multipart/form-data" role="add" action="{{url('admin/provider')}}">
+                <form  method="POST" enctype="multipart/form-data" role="add" action="{{route('subadmin.store')}}">
                 
                   <div class="row">
                     <div class="col-md-12">
@@ -97,9 +97,13 @@
                         </div>
                       </div>
                        <div class="form-group col-sm-6">
-                        <label class="col-sm-4 control-label">Email</label>
+                        <label class="col-sm-4 control-label">Gender</label>
                         <div class="col-sm-12">
-                           <input type="text" name="email"  class="form-control">
+                           <select class="form-control" name="gender">
+                             <option value="">Select Gender</option>
+                             <option value="male">Male</option>
+                             <option value="female">Female</option>
+                           </select>
                         </div>
                       </div>
                   </div>
@@ -132,7 +136,7 @@
                     </div>
                     <div class="row" class="col-sm-12">
                       <div class="form-group col-sm-6">
-                        <label class="col-sm-4 control-label">Region</label>
+                        <label class="col-sm-4 control-label">City</label>
                         <div class="col-sm-12">
                            <select class="form-control" name="city" id="city" style="height: 45px;" >
                            
@@ -174,7 +178,7 @@
                     </div>
                     <div class="row" class="col-sm-12">
                       <div class="form-group col-sm-6">
-                        <label class="col-sm-4 control-label">Region</label>
+                        <label class="col-sm-4 control-label">Permanent City</label>
                         <div class="col-sm-12">
                            <select class="form-control" name="permanent_city" id="permanent_city" style="height: 45px;" >
                            
@@ -192,7 +196,7 @@
                       <div class="col-md-12">
                       <div class="form-group">
                           <button type="button"  data-request="ajax-submit" data-target='[role="add"]' class="btn btn-success btn-flat">Submit</button>
-                          <a href="{{url('admin/provider')}}">
+                          <a href="{{route('subadmin.index')}}">
                             <input type="button" class="btn btn-info btn-flat" value="Back" style="margin-left:10px;">
                           </a>
                       </div>

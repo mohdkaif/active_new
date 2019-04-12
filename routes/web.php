@@ -109,8 +109,11 @@ Route::group(['namespace' => 'Admin','prefix' => 'admin', 'middleware' => ['admi
 	//Sub-Admin Controller
 	Route::resource('subadmin','SubAdmincontroller',array(
 		'names'=>array(
-				'index'=>'subadmin.index',
+				'index' =>'subadmin.index',
 				'create'=>'subadmin.create',
+				'store' =>'subadmin.store',
+				'edit'  =>'subadmin.edit',
+				'update'=>'subadmin.update',
 
 		)
 	));

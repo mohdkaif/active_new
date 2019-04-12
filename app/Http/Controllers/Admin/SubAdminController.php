@@ -9,7 +9,7 @@ use App\Models\Country;
 use App\Models\ServiceCategory;
 use Yajra\DataTables\DataTables;
 use Yajra\DataTables\Html\Builder;
-use Validations\CategoryValidation as Validations;
+use Validations\SubAdminValidation as Validations;
 class SubAdminController extends Controller
 {
 
@@ -90,7 +90,7 @@ class SubAdminController extends Controller
      */
     public function store(Request $request){
         $validation = new Validations($request);
-        $validator   = $validation->createCategory();
+        $validator   = $validation->add();
         if($validator->fails()){
             $this->message = $validator->errors();
         }else{
