@@ -151,7 +151,7 @@
                        </div>
                     </div>
                       <div class="form-group">
-                        <h5><b>Permanent Address</b></h5>
+                        <h5><b>Permanent Address</b><input type="checkbox" onclick="fillAddress(this.id);" id="same">Same as Present Address</h5>
                       </div>
                     <div class="row" class="col-sm-12">
                       <div class="form-group col-sm-6">
@@ -291,17 +291,6 @@ $(document).on('change','#permanent_state',function(){
             })
         });
 });
-
-$(document).on('change','#long_distance_travel_permit',function(){
-    if(this.checked) {
-      $("#long_d_t_charge").show();
-    }else{
-      $("#long_distance_travel").val("");
-      $("#long_d_t_charge").hide();
-
-    }
-});
-
 </script>
 <script type="text/javascript">
    
@@ -318,4 +307,25 @@ $(document).on('change','#long_distance_travel_permit',function(){
         }   
     }
 </script>
+<script type="text/javascript">
+   $(document).ready(function(){
+       $('input[type="checkbox"]').click(function(){
+           if($(this).prop("checked") == true){
+                $("#permanent_country").val($("#country").val()); 
+                $("#permanent_state").html($("#state").html());  
+                $("#permanent_state").val($("#state").val());
+                $("#permanent_city").html($("#city").html());    
+                $("#permanent_city").val($("#city").val());  
+                $("#permanent_address").val($("#address").val());           
+           }
+           else if($(this).prop("checked") == false){
+                $("#permanent_country").val(''); 
+                $("#permanent_state").val('');  
+                $("#permanent_city").val('');  
+                $("#permanent_address").val('');    
+           }
+       });
+   });
+</script>
+
 @endsection
