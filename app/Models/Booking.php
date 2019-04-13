@@ -8,7 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 
 
-class Faq extends Authenticatable
+class Booking extends Authenticatable
 {
     use HasApiTokens, Notifiable;
     /**
@@ -16,16 +16,34 @@ class Faq extends Authenticatable
      *
      * @var array
      */
-    protected $table = "faq";
+    protected $table = "booking";
     protected $fillable = [
-        'id','question','answer','status','created_at','updated_at'
+        'id',  'user_id', 'service_id',  'provider_id', 'date',    'time',    'price',   'booking_number',  'tracking_id', 'txn_id',  'payment_status',  'payment_mode',  'booking_status'
     ];
+
+    public function user_details(){
+        return $this->hasOne('App\User', 'id', 'user_id');
+    }
+
+    public function service_details(){
+        return $this->hasOne('App\Models\Service', 'id', 'service_id');
+    }
+ 
 
    
 
      public static function list($fetch='array',$where='',$keys=['*'],$order='id-desc'){
                 
-        $table_course = self::select($keys);
+        $table_course = self::select($keys)
+        ->with([
+            'user_details' => function($q){
+                $q->select('*');
+            },
+            'service_details' => function($q){
+                $q->select('*');
+            },
+
+        ]);
 
         if($where){
             $table_course->whereRaw($where);

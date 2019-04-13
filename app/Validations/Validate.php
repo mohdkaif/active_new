@@ -183,6 +183,27 @@ class Validate
 		return $validator;
 	}
 
+	public function providerBookingList(){
+		$validations = [
+        	'provider_id' 						=> $this->validation('name'),
+        	'booking_status' 						=> $this->validation('name')
+    	];
+    	$validator = \Validator::make($this->data->all(), $validations,[]);
+
+		if(!empty($this->data->provider_id)){
+    		$userDetails = \App\Models\ProviderUser::where('id',$this->data->provider_id)->first();
+		    $validator->after(function ($validator) use($userDetails) {
+		    	if(empty($userDetails)){
+		    		$validator->errors()->add('provider_id', 'No Account Found With This id.');
+		    	}        
+		    });
+    	}
+		return $validator;
+	}
+
+
+
+
 	public function addServiceCategory($action='add'){
 		$validations = [
         	'service_category_name' 						=> $this->validation('name'),
@@ -423,7 +444,9 @@ class Validate
 			
 		]);
     	if(!empty($this->data->otp)){
+
     		$userDetails = User::where(['otp'=> $this->data->otp,'id'=>___decrypt($this->data->id)])->first();
+    		
 		    $validator->after(function ($validator) use($userDetails) {
 		    	if(empty($userDetails)){
 		    		$validator->errors()->add('otp', 'Invalid OTP.Please enter correct OTP.');
@@ -431,13 +454,26 @@ class Validate
 		    });
     	}
 		}else{
+
 			$validations = [
+				'otp'							=> $this->validation('name'),
+
 				'id'							=> $this->validation('name'),
 				'password' 						=> $this->validation('password'),
 				'confirm_password'				=> $this->validation('c_password')
 			];
 			$validator = \Validator::make($this->data->all(), $validations,[
 			]);
+			if(!empty($this->data->otp)){
+
+    		$userDetails = User::where(['otp'=> $this->data->otp,'id'=>___decrypt($this->data->id)])->first();
+    		
+		    $validator->after(function ($validator) use($userDetails) {
+		    	if(empty($userDetails)){
+		    		$validator->errors()->add('otp', 'Invalid OTP.Please enter correct OTP.');
+		    	}        
+		    });
+    	}
 		}
 		
 		return $validator;

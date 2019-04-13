@@ -79,6 +79,24 @@
      
     </div>
     <div class="row">
+      <div class="form-group col-md-6">
+        <label for="pwd">Gender:</label>
+        <div class="input-group">
+ 
+          <select class="" name="gender" id="gender" style="height: 45px;" >
+            <option value="">Select Gender</option>
+              <option value="female">Female</option>
+               <option value="male">Male</option>
+               <option value="other">Other</option>
+          </select>
+        </div>
+     
+      </div>
+
+
+     
+    </div>
+    <div class="row">
        <div class="form-group col-md-6">
         <label for="email">Password:</label>
         <input type="password" name="password" placeholder=" Password *" class="form-control">

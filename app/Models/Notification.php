@@ -8,7 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 
 
-class Faq extends Authenticatable
+class Notification extends Authenticatable
 {
     use HasApiTokens, Notifiable;
     /**
@@ -16,13 +16,12 @@ class Faq extends Authenticatable
      *
      * @var array
      */
-    protected $table = "faq";
+    protected $table = "notification";
     protected $fillable = [
-        'id','question','answer','status','created_at','updated_at'
+        'id','notification','status','created_at','updated_at'
     ];
 
-   
-
+    
      public static function list($fetch='array',$where='',$keys=['*'],$order='id-desc'){
                 
         $table_course = self::select($keys);

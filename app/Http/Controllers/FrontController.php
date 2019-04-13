@@ -8,6 +8,7 @@ use App\Models\State;
 use App\Models\City;
 use App\Models\Service;
 use App\Models\Country;
+use App\Models\Booking;
 use App\User;
 use App\Models\UserChild;
 use Auth;
@@ -216,12 +217,13 @@ class FrontController extends Controller
                 $data['last_name'] = $request->last_name;
                 $data['mobile'] = $request->mobile;
                 $data['otp'] = $request->otp;
+                $data['gender']=(!empty($request->gender))?$request->gender:'';
                 $data['email'] = $request->email;
                 $data['address'] = (!empty($request->address))?$request->address:'';
                 $data['country'] = (!empty($request->country))?$request->country:'';
                 $data['state'] =  (!empty($request->state))?$request->state:'';
                 $data['city'] = (!empty($request->city))?$request->city:'';
-                     $data['permanent_address'] = (!empty($request->address))?$request->address:'';
+                $data['permanent_address'] = (!empty($request->address))?$request->address:'';
                 $data['permanent_country'] = $request->country;
                 $data['permanent_state'] = $request->state;
                 $data['permanent_city'] = $request->city;
@@ -254,7 +256,7 @@ class FrontController extends Controller
 
                 $provider['term_condition']=$request->term_condition;  
                 /*$provider['service_id']=$request->service_id;  */
-                if($request->file('document_high_school')){
+               if($request->file('document_high_school')){
                     $path = 'assets/document/';
                     if(!File::exists($path)) {
                         File::makeDirectory($path, $mode = 0777, true);
@@ -378,8 +380,10 @@ class FrontController extends Controller
     public function sendOtp(Request $request,$user_id)
     {
         
-        $autopass = strtoupper(str_random(6));
-        
+        ////$autopass = strtoupper(str_random(6));
+        $digits = 4;
+        $autopass = rand(pow(10, $digits-1), pow(10, $digits)-1);
+
         $user = User::where('id', '=', ___decrypt($user_id))->firstOrFail();
         $input['otp'] = $autopass;
         $upd = $user->update($input);
@@ -434,7 +438,10 @@ class FrontController extends Controller
         }else{
             
                 $user = Auth::user(); 
-                $autopass = strtoupper(str_random(8));
+                /*$autopass = strtoupper(str_random(8));*/
+                $digits = 4;
+                $autopass = rand(pow(10, $digits-1), pow(10, $digits)-1);
+
                $data['otp']=$autopass;
             if(!is_numeric($request->username)){
 

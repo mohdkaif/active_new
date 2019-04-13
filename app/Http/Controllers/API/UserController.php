@@ -9,6 +9,8 @@ use App\Models\Feedback;
 use App\Models\Country; 
 use App\Models\City; 
 use App\Models\UserChild;
+use App\Models\NotificationHistory; 
+use App\Models\Booking;
 use App\Models\Service;
 use App\Models\ServiceDays;
 use App\Models\ProviderUser; 
@@ -135,8 +137,10 @@ class UserController extends Controller
             $this->message = $validator->errors();
         }else{
             
-                $user = Auth::user(); 
-                $autopass = strtoupper(str_random(8));
+                $user = Auth::user();
+                $digits = 4;
+                $autopass = rand(pow(10, $digits-1), pow(10, $digits)-1); 
+                /*$autopass = strtoupper(str_random(8));*/
                 $success['user_details']=$user;
             if(!is_numeric($request->username)){
 
@@ -154,7 +158,7 @@ class UserController extends Controller
 
                 $emailData['custom_text'] = 'Your Enquiry has been submitted successfully';
                 $mailSuccess = ___mail_sender($emailData['email'],$user->name,"forgot_password",$emailData);
-               
+                User::where('email', '=', $request->username)->update(['otp'=>$autopass]);
        
                 $success['otp'] =  $autopass;
                 $success['user_details']=$user;
@@ -180,6 +184,8 @@ class UserController extends Controller
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                 $response = curl_exec($ch);
                 curl_close($ch);
+
+               
                 $success['user_details']=$user;
                 $success['otp'] =  $autopass;
                 $this->status   = true;
@@ -197,10 +203,13 @@ class UserController extends Controller
     public function otp(Request $request)
     {
         
-        $user = User::where('id', '=', $request->user_id)->firstOrFail();
-        if($user){
+        $user = User::where('id', '=', $request->user_id)->first();
+        
+        if(!empty($user)){
             $success['user_details']=$user;
-            $autopass = strtoupper(str_random(6));
+            /*$autopass = strtoupper(str_random(6));*/
+            $digits = 4;
+            $autopass = rand(pow(10, $digits-1), pow(10, $digits)-1);
             $input['otp'] = $autopass;
             $upd = $user->update($input);
 
@@ -225,6 +234,12 @@ class UserController extends Controller
             $this->message = "OTP Sent Successfully.";
         
                 
+        }else{
+            $this->status   = true;
+            $success['user_details'] =[];
+            $response = new Response($success);
+            $this->jsondata = $response->api_common_response();
+            $this->message = "User does not exist.";
         }
         return $this->populateresponse();
     }
@@ -1090,7 +1105,7 @@ class UserController extends Controller
 
     public function faq(Request $request)
     {
-        $validation = new Validations($request);
+       /* $validation = new Validations($request);
         $validator = $validation->faq();
         if ($validator->fails()){
             $this->message = $validator->errors();
@@ -1115,6 +1130,17 @@ class UserController extends Controller
                
             
         }
+        return $this->populateresponse();*/
+        $faq = _arefy(Faq::list('array'));
+        $success['success'] =  'success';
+        $success['faq'] =  $faq;
+        
+        $this->status   = true;
+        $response = new Response($success);
+        $this->jsondata = $response->api_common_response();
+        $this->message = "Success.";
+                
+        
         return $this->populateresponse();
     }
 
@@ -1148,5 +1174,46 @@ class UserController extends Controller
         }
         return $this->populateresponse();
     }
+
+      public function notification_history()
+    {
+       
+           
+        $notification_history = _arefy(NotificationHistory::list('array'));
+        $success['success'] =  'success';
+        $success['notification_history'] =  $notification_history;
+        
+        $this->status   = true;
+        $response = new Response($success);
+        $this->jsondata = $response->api_common_response();
+        $this->message = "Success.";
+                
+        
+        return $this->populateresponse();
+    }
+
+     public function providerBookingList(Request $request)
+    {
+       
+        $validation = new Validations($request);
+        $validator = $validation->providerBookingList();
+        if ($validator->fails()){
+            $this->message = $validator->errors();
+        }else{
+            $where = "provider_id = ".$request->provider_id." AND booking_status = '".$request->booking_status."'";
+            $list = _arefy(Booking::list('array',$where));
+            $success['success'] =  'success';
+            $success['booking_list'] =  $list;
+            
+            $this->status   = true;
+            $response = new Response($success);
+            $this->jsondata = $response->api_common_response();
+            $this->message = "Success.";
+               
+            
+        }
+        return $this->populateresponse();
+    }
+
 
 }

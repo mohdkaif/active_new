@@ -17,8 +17,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });*/
 
+Route::get('notification-history', 'API\UserController@notification_history');
 Route::post('get-user-info', 'API\UserController@getUserInfo');
-Route::post('faq', 'API\UserController@faq');
+Route::get('faq', 'API\UserController@faq');
 Route::post('feedback', 'API\UserController@feedback');
 Route::post('delete-user', 'API\UserController@deleteUser');
 Route::get('service-category-list', 'API\ServiceController@ServiceCategoryList');
@@ -58,6 +59,7 @@ Route::post('state', 'API\UserController@state');
 Route::post('profile', 'API\UserController@profile');
 Route::post('profile-update', 'API\UserController@updateProfile');
 
+Route::post('provider-booking-list', 'API\UserController@providerBookingList');
 
 Route::group(['middleware' => 'auth:api'], function(){
 Route::post('details', 'API\UserController@details');

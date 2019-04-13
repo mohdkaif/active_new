@@ -8,7 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 
 
-class Faq extends Authenticatable
+class NotificationHistory extends Authenticatable
 {
     use HasApiTokens, Notifiable;
     /**
@@ -16,16 +16,24 @@ class Faq extends Authenticatable
      *
      * @var array
      */
-    protected $table = "faq";
+    protected $table = "notification_history";
     protected $fillable = [
-        'id','question','answer','status','created_at','updated_at'
+        'id','notification_id','date','time'
     ];
+
+    public function notification(){
+        return $this->hasOne('App\Models\Notification', 'id', 'notification_id');
+    }
+ 
 
    
 
      public static function list($fetch='array',$where='',$keys=['*'],$order='id-desc'){
                 
-        $table_course = self::select($keys);
+        $table_course = self::select($keys)
+        ->with(['notification' => function($q){
+            $q->select('*');
+        }]);
 
         if($where){
             $table_course->whereRaw($where);
