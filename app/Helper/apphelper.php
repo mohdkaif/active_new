@@ -1,6 +1,5 @@
 <?php
     use Illuminate\Support\Facades\Mail;
-    
     use Perks\Helpers\Common;
     function ___alert($alert){
         if(empty($alert)){  
