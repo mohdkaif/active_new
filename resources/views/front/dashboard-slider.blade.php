@@ -46,7 +46,7 @@
                      
                     
                       <div class="info-block ">
-                     <a href="bank-details.php" style="text-align:center">
+                     <a href="{{url('provider/bookings')}}" style="text-align:center">
                         <div class="inner-box inner-box1 clearfix">
                            <div class="icon-box"><i class="fa fa-university"></i></div>
                             <h3>My Booking</h3>

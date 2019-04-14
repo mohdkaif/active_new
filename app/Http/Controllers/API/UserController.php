@@ -21,6 +21,9 @@ use Perks\Response;
 use Intervention\Image\ImageManagerStatic as Image;
 use File;
 use TextLocal;
+use App\Models\SubscriptionProvider;
+use App\Models\Subscription;
+
 class UserController extends Controller 
 {
    /* public function __construct(Request $request){
@@ -339,9 +342,45 @@ class UserController extends Controller
 
                     if($user->user_type=='provider'){
                         $user_info = _arefy(User::provider_list('single','id = '.$user_id));
+                        $row = _arefy(SubscriptionProvider::where(['user_id'=>$user_id,'payment_status'=>'completed'])->get());
+
+                        $flag = false;
+
+                        if(!empty($row)){
+
+                            ////For all the rows , check if  payment completed row has not expired , one row should be there, otherwise all are previous month transactions for subscriptions.
+                            foreach ($row as $key1 => $value1) {
+
+                                $flag = false;
+
+                                $sub_id = $value1['subscription_id'];
+                                $sub_details = Subscription::where('id',$sub_id)->first();
+                                $months = $sub_details->months;
+
+                                $expiring_date = strtotime(date('Y-m-d', strtotime("+".$months." months", strtotime($value1['date']))));
+                                
+                                $todays_time = strtotime(date('Y-m-d'));
+                                if($expiring_date>$todays_time){
+
+                                    ///Yes there is one subscription that has not expired
+                                    $flag=true;
+                                    break;
+                                }
+
+
+                            }
+                        }
+
+                        if(!empty($flag) && $flag==true){
+                            $user_info['provider_user']['subscribed'] = 'true';
+                        }else{
+                            $user_info['provider_user']['subscribed'] = 'false'; 
+                        }
+                        
                     }else{
                         $user_info = _arefy(User::where('id',$user_id)->get()->first());
                     }
+
                     $success['user_details'] =  $user_info;
                 }else{
                     $success['user_details'] =  'No user found with this data';
@@ -1180,6 +1219,12 @@ class UserController extends Controller
        
            
         $notification_history = _arefy(NotificationHistory::list('array'));
+
+        if(!empty($notification_history)){
+            foreach ($notification_history as $key => $value) {
+                $notification_history[$key]['time'] = date('g:i A',strtotime($value['time']));
+            }
+        }
         $success['success'] =  'success';
         $success['notification_history'] =  $notification_history;
         
@@ -1214,6 +1259,74 @@ class UserController extends Controller
         }
         return $this->populateresponse();
     }
+
+    public function providerSubscriptionList(Request $request)
+    {
+       
+        $validation = new Validations($request);
+        $validator = $validation->providerSubscriptionList();
+        if ($validator->fails()){
+            $this->message = $validator->errors();
+        }else{
+            $where = "provider_id = ".$request->provider_id;
+            $list = _arefy(Subscription::list('array'));
+            if(!empty($list)){
+                foreach ($list as $key => $value) {
+
+                    ////Check if it has not expired
+
+                    $rows = _arefy(SubscriptionProvider::where(['provider_id'=>$request->provider_id,'payment_status'=>'completed','subscription_id'=>$value['id']])->get());
+
+                    $flag = false;
+
+                    if(!empty($rows)){
+                        
+
+                        ////For all the rows , check if  payment completed row has not expired , one row should be there, otherwise all are previous month transactions for subscriptions.
+                        foreach ($rows as $key1 => $value1) {
+
+                            $flag = false;
+
+                            $sub_id = $value['id'];
+                           
+                            $months = $value['months'];
+
+                            $expiring_date = strtotime(date('Y-m-d', strtotime("+".$months." months", strtotime($value1['date']))));
+                            
+                            $todays_time = strtotime(date('Y-m-d'));
+                            if($expiring_date>$todays_time){
+
+                                ///Yes there is one subscription that has not expired
+                                $flag=true;
+                                break;
+                            }
+
+
+                        }
+                    }
+
+                    if(!empty($flag) && $flag==true){
+                        $list[$key]['subscribed'] = 'true';
+                    }else{
+                        $list[$key]['subscribed'] = 'false'; 
+                    }
+                    
+                }
+            }
+            $success['success'] =  'success';
+            $success['subscription_list'] =  $list;
+            
+            $this->status   = true;
+            $response = new Response($success);
+            $this->jsondata = $response->api_common_response();
+            $this->message = "Success.";
+               
+            
+        }
+        return $this->populateresponse();
+    }
+
+    
 
 
 }

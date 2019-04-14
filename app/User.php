@@ -48,7 +48,7 @@ class User extends Authenticatable
         $table_course = self::select($keys)
         ->with([
             'provider_user' => function($q) use($thumb_asset){
-                $q->select('*',\DB::RAW("CONCAT('{$thumb_asset}/',document_high_school) as 'document_high_school_file'"),\DB::RAW("CONCAT('{$thumb_asset}/',document_intermediate) as 'document_intermediate_file'"),\DB::RAW("CONCAT('{$thumb_asset}/',document_graduation) as 'document_graduation_file'"),\DB::RAW("CONCAT('{$thumb_asset}/',document_post_graduation) as 'document_post_graduation_file'"),\DB::RAW("CONCAT('{$thumb_asset}/',document_adhar_card) as 'document_adhar_card_file'"),\DB::RAW("CONCAT('{$thumb_asset}/',document_other) as 'document_other_file'"));
+                $q->select('*',\DB::RAW("CONCAT('{$thumb_asset}/',document_high_school) as 'document_high_school_file'"),\DB::RAW("CONCAT('{$thumb_asset}/',document_graduation) as 'document_graduation_file'"),\DB::RAW("CONCAT('{$thumb_asset}/',document_post_graduation) as 'document_post_graduation_file'"),\DB::RAW("CONCAT('{$thumb_asset}/',document_adhar_card) as 'document_adhar_card_file'"),\DB::RAW("CONCAT('{$thumb_asset}/',document_other) as 'document_other_file'"));
                 
             },
             'state_details' => function($q) {

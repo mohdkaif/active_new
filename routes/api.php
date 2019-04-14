@@ -23,7 +23,7 @@ Route::get('faq', 'API\UserController@faq');
 Route::post('feedback', 'API\UserController@feedback');
 Route::post('delete-user', 'API\UserController@deleteUser');
 Route::get('service-category-list', 'API\ServiceController@ServiceCategoryList');
-Route::get('service-sub-category-list', 'API\ServiceController@ServiceSubCategoryList');
+Route::post('service-sub-category-list', 'API\ServiceController@ServiceSubCategoryList');
 Route::post('provider-service-list', 'API\ServiceController@ServiceListForProvider');
 Route::post('user-signup', 'API\UserController@SignUp2');
 Route::post('provider-signup', 'API\UserController@SignUp2');
@@ -60,6 +60,7 @@ Route::post('profile', 'API\UserController@profile');
 Route::post('profile-update', 'API\UserController@updateProfile');
 
 Route::post('provider-booking-list', 'API\UserController@providerBookingList');
+Route::post('provider-subscription-list', 'API\UserController@providerSubscriptionList');
 
 Route::group(['middleware' => 'auth:api'], function(){
 Route::post('details', 'API\UserController@details');

@@ -56,6 +56,8 @@ Route::group(['prefix' => 'provider', 'middleware' => ['providerAuth']] ,functio
 	Route::post('update-service', 'FrontController@updateService');
 	Route::post('change-password', 'UserProfileController@changePassword');
 
+	Route::get('my-bookings','FrontController@myBookings');
+
 });
 
 /*ROUTE FOR ADMIN*/

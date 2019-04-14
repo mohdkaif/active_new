@@ -201,6 +201,24 @@ class Validate
 		return $validator;
 	}
 
+	public function providerSubscriptionList(){
+		$validations = [
+        	'provider_id' 						=> $this->validation('name'),
+        
+    	];
+    	$validator = \Validator::make($this->data->all(), $validations,[]);
+
+		if(!empty($this->data->provider_id)){
+    		$userDetails = \App\Models\ProviderUser::where('id',$this->data->provider_id)->first();
+		    $validator->after(function ($validator) use($userDetails) {
+		    	if(empty($userDetails)){
+		    		$validator->errors()->add('provider_id', 'No Account Found With This id.');
+		    	}        
+		    });
+    	}
+		return $validator;
+	}
+
 
 
 

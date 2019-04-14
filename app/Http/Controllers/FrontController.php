@@ -526,6 +526,19 @@ class FrontController extends Controller
         return redirect('/');
     }
 
+    public function myBookings(Request $request)
+    {
+        
+        $provider_id = ProviderUser::where('user_id',\Auth::user()->id)->first()->id;
+        $bookings = Booking::list('array','provider_id = '.$provider_id);
+
+        
+        $data['bookings'] = $bookings;
+        $data['view']='front.provider_bookings';
+        return view('front.index',$data);
+    }
+    
+
     public function providerDashboard(Request $request)
     {
         $data['id']=$request->user;

@@ -383,15 +383,25 @@ class ServiceController extends Controller
 
     public function ServiceSubCategoryList(Request $request)
     {
-      
-        $list = _arefy(ServiceSubCategory::listing('array'));
-                
-        $success['service_sub_category_list']=$list;
-       
-        $this->status   = true;
-        $response = new Response($success);
-        $this->jsondata = $response->api_common_response();
-        $this->message = "Success.";
+        if(!empty($request->service_category_id)){
+
+            $list = _arefy(ServiceSubCategory::listing('array','*','service_category_id = '.$request->service_category_id));
+                    
+            $success['service_sub_category_list']=$list;
+           
+            $this->status   = true;
+            $response = new Response($success);
+            $this->jsondata = $response->api_common_response();
+            $this->message = "Success.";
+        }else{
+
+            $success['service_sub_category_list']='Please enter sub category id';
+           
+            $this->status   = true;
+            $response = new Response($success);
+            $this->jsondata = $response->api_common_response();
+            $this->message = "Success.";
+        }
                 
         return $this->populateresponse();
     }
