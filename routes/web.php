@@ -109,6 +109,7 @@ Route::group(['namespace' => 'Admin','prefix' => 'admin', 'middleware' => ['admi
 	Route::resource('subcategory','SubCategoryController');
 
 	//Sub-Admin Controller
+	Route::post('subadmin/status','SubAdmincontroller@updatestatus');
 	Route::resource('subadmin','SubAdmincontroller',array(
 		'names'=>array(
 				'index' =>'subadmin.index',
@@ -119,5 +120,6 @@ Route::group(['namespace' => 'Admin','prefix' => 'admin', 'middleware' => ['admi
 
 		)
 	));
+
 
 });

@@ -68,6 +68,11 @@ CREATE TABLE `active_bachha`.`service_days` ( `id` INT NOT NULL AUTO_INCREMENT ,
 ALTER TABLE `services` DROP `days_for_service`, DROP `service_start_time`, DROP `service_end_time`;
 
 
+14/4/2019 by Sudeep
+ALTER TABLE `users` CHANGE `status` `status` ENUM('active','inactive','pending','trashed') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'pending' COMMENT '0=&quot;NotApproved&quot;,1=&quot;Approed&quot;';
+
+
+
 
 
 

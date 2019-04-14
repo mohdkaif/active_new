@@ -13,7 +13,7 @@ class SubAdminValidation{
 
 	public function add(){
 		$validations = [
-            'image'                  => ['required','image','mimes:jpeg,bmp,png,jpg'],
+            'image'                  => ['nullable','image','mimes:jpeg,bmp,png,jpg'],
             'first_name'             => ['required'],
             'last_name'              => ['required'],
             'phone_number'           => ['required','regex:'.MOBILE_FORMAT,'unique:users,mobile'],
@@ -23,9 +23,13 @@ class SubAdminValidation{
             'country'                => ['required'],
             'state'                  => ['required'],
             'city'                   => ['required'],
+            'address'                => ['required'],
             'permanent_country'      => ['required'],
             'permanent_state'        => ['required'],
             'permanent_city'         => ['required'],
+            'permanent_address'      => ['required'],
+            'password'               => ['required','min:6'],
+            'confirm'                => ['same:password']
 
     	];
     	
@@ -33,17 +37,26 @@ class SubAdminValidation{
         return $validator;	
 	}
 
-	public function updateCategory(){
+	public function edit(){
 		$validations = [
-            'service_category_name'  => ['required',Rule::unique('service_category')->ignore($this->data->id, 'service_category_id')],
-    	];
+            'image'                  => ['nullable','image','mimes:jpeg,bmp,png,jpg'],
+            'first_name'             => ['required'],
+            'last_name'              => ['required'],
+            'phone_number'           => ['required','regex:'.MOBILE_FORMAT,'unique:users,mobile,'.$this->data->id],
+            'email'                  => ['required','email','unique:users,email,'.$this->data->id],
+            'date_of_birth'          => ['nullable'],
+            'gender'                 => ['required',Rule::in(['male','female'])],
+            'country'                => ['required'],
+            'state'                  => ['required'],
+            'city'                   => ['required'],
+            'address'                => ['required'],
+            'permanent_country'      => ['required'],
+            'permanent_state'        => ['required'],
+            'permanent_city'         => ['required'],
+            'permanent_address'      => ['required'],
+        ];
     	
-        $validator = \Validator::make($this->data->all(), $validations,[
-            'service_category_name.required'   => 'Please Enter Category Name.',
-            'service_category_name.unique'     => 'Category Already Exist.'
-
-
-        ]);
+        $validator = \Validator::make($this->data->all(), $validations,[]);
         return $validator;	
 	}
 

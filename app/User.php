@@ -25,16 +25,28 @@ class User extends Authenticatable
     }  
 
     public function state_details(){
-        return $this->hasOne('\App\Models\State','id','permanent_state');
+        return $this->hasOne('\App\Models\State','id','state');
     } 
 
      public function city_details(){
-        return $this->hasOne('\App\Models\City','id','permanent_city');
+        return $this->hasOne('\App\Models\City','id','city');
     } 
 
     public function country_details(){
+        return $this->hasOne('\App\Models\Country','id','country');
+    }
+    public function permanent_state_details(){
+        return $this->hasOne('\App\Models\State','id','permanent_state');
+    } 
+
+     public function permanent_city_details(){
+        return $this->hasOne('\App\Models\City','id','permanent_city');
+    } 
+
+    public function permanent_country_details(){
         return $this->hasOne('\App\Models\Country','id','permanent_country');
     } 
+
 
     /*public function service(){
         return $this->hasMany('\App\Models\Service','provider_id','service_id');
@@ -42,9 +54,7 @@ class User extends Authenticatable
     
 
      public static function provider_list($fetch='array',$where='',$keys=['*'],$order='id-desc'){
-                 
-
-                 $thumb_asset = asset('/assets/document/');
+        $thumb_asset = asset('/assets/document/');
         $table_course = self::select($keys)
         ->with([
             'provider_user' => function($q) use($thumb_asset){
@@ -63,6 +73,7 @@ class User extends Authenticatable
                 $q->select('*');
                 
             },
+
             /*'service' => function($q) {
                 $q->select('*');
                 
@@ -95,7 +106,7 @@ class User extends Authenticatable
 
     public static function list($fetch='array',$where='',$keys=['*'],$order='id-desc'){
                 
-        $table_course = self::select($keys)
+        $table_course = self::select($keys)->where('status','!=','trashed')
         ->with([
             
             'state_details' => function($q) {
@@ -107,6 +118,18 @@ class User extends Authenticatable
                 
             },
             'country_details' => function($q) {
+                $q->select('*');
+                
+            },
+            'permanent_state_details' => function($q) {
+                $q->select('*');
+                
+            },
+            'permanent_city_details' => function($q) {
+                $q->select('*');
+                
+            },
+            'permanent_country_details' => function($q) {
                 $q->select('*');
                 
             },
@@ -145,7 +168,7 @@ class User extends Authenticatable
         $table_course = \DB::table('users');
         if(!empty($data)){
             $table_course->where('id','=',$userID);
-            $isUpdated = $table_course->update($data); 
+            $isUpdated = $table_course->update($data);
         }
                 
         return (bool)$isUpdated;
