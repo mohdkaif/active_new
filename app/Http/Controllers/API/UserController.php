@@ -418,7 +418,30 @@ class UserController extends Controller
                 $data['first_name'] = $request->first_name;
                 $data['last_name'] = $request->last_name;
                 $data['mobile'] = $request->mobile;
-                $data['otp'] = '11331';
+
+                $digits = 4;
+                $autopass = rand(pow(10, $digits-1), pow(10, $digits)-1);
+
+                $data['otp'] = $autopass;
+
+                ////otp
+                $apiKey = urlencode('Af8JoCyMRKc-3KCSW0EBcsbim6Y7FVTtg6SD1bOvfC');
+                // Message details
+                $phone_code=91;
+                $numbers = array($phone_code.$data['mobile']);
+                $sender = urlencode('TXTLCL');
+                $message = rawurlencode('Active Bachha Mobile verification OTP is '.$autopass);
+                $numbers = implode(',', $numbers);
+                $data = array('apikey' => $apiKey, 'numbers' => $numbers, "sender" => $sender, "message" => $message);
+                $ch = curl_init('https://api.textlocal.in/send/');
+                curl_setopt($ch, CURLOPT_POST, true);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                $response = curl_exec($ch);
+                curl_close($ch);
+                /////
+
+
                 $data['email'] = $request->email;
                 $data['address'] = (!empty($request->address))?$request->address:'';
                 $data['country'] = $request->region;
@@ -469,7 +492,29 @@ class UserController extends Controller
                 $data['first_name'] = $request->first_name;
                 $data['last_name'] = $request->last_name;
                 $data['mobile'] = $request->mobile;
-                $data['otp'] ='fcevf';
+
+                $digits = 4;
+                $autopass = rand(pow(10, $digits-1), pow(10, $digits)-1);
+
+                $data['otp'] = $autopass;
+
+                 ////otp
+                $apiKey = urlencode('Af8JoCyMRKc-3KCSW0EBcsbim6Y7FVTtg6SD1bOvfC');
+                // Message details
+                $phone_code=91;
+                $numbers = array($phone_code.$data['mobile']);
+                $sender = urlencode('TXTLCL');
+                $message = rawurlencode('Active Bachha Mobile verification OTP is '.$autopass);
+                $numbers = implode(',', $numbers);
+                $data = array('apikey' => $apiKey, 'numbers' => $numbers, "sender" => $sender, "message" => $message);
+                $ch = curl_init('https://api.textlocal.in/send/');
+                curl_setopt($ch, CURLOPT_POST, true);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                $response = curl_exec($ch);
+                curl_close($ch);
+                /////
+
                 $data['email'] = $request->email;
                 $data['permanent_address'] =(!empty($request->permanent_address))?$request->permanent_address:'';
                 $data['permanent_country'] = (!empty($request->country))?$request->country:'';
@@ -485,7 +530,7 @@ class UserController extends Controller
                 $data['status'] = 'pending';
                 $data['date_of_birth'] =(!empty($request->date_of_birth))?$request->date_of_birth:'';
                 $data['email'] = isset($request->email)?$request->email:'';
-                $data['otp'] = 'SHDJS';
+               
 
                 if ($file = $request->file('image')){
                     $photo_name = time().$request->file('image')->getClientOriginalName();
@@ -926,6 +971,13 @@ class UserController extends Controller
             $data['email'] = !empty($request->email)?$request->email:'';
             $data['date_of_birth'] = $request->date_of_birth;
             /*$data['gender'] = $request->gender;*/
+
+            if ($file = $request->file('image')){
+                $photo_name = time().$request->file('image')->getClientOriginalName();
+                $file->move('assets/images/users',$photo_name);
+                $data['image'] = $photo_name;
+               
+            }
             $update = User::change($request->user_id,$data);
             
             $this->status   = true;
@@ -1113,10 +1165,12 @@ class UserController extends Controller
                 $data['country']=$request->current_country;                   
                 $data['state']=$request->current_state;                     
                 $data['city']=$request->current_city;
+                $data['pincode']=$request->current_pincode;
                 $data['permanent_address']=$request->permanent_address;         
                 $data['permanent_country']=$request->permanent_country;                   
                 $data['permanent_state']=$request->permanent_state;                     
                 $data['permanent_city']=$request->permanent_city;
+                 $data['permanent_pincode']=$request->permanent_pincode;
                 $user_id = $request->user_id;
                 if(!empty($data)){
 
