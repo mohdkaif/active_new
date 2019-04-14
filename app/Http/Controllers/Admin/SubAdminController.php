@@ -28,29 +28,38 @@ class SubAdminController extends Controller
         $data['menu']       = 'category-list';
         $data['breadcrumb'] = '<ul class="page-breadcrumb breadcrumb"><li><a href="'.url('/').'"><i class="fa fa-home" style="font-size:12px;"></i> Home</a><i class="fa fa-circle"></i></li><li> &nbsp;<a href="">Category</a></li></ul>';
         $data['view']       = 'admin.subadmin.list';
-        $category           = _arefy(ServiceCategory::all());
+        $user                = _arefy(User::list('array',"user_type='subadmin'"));
         if ($request->ajax()) {
-            return DataTables::of($category)
+            return DataTables::of($user)
                 ->editColumn('action',function($item){
                     $html    = '<div class="edit_details_box">';
-                    $html   .= '<a href="'.url(sprintf('admin/category/%s/edit',___encrypt($item['service_category_id']))).'" title="Edit Category"><i class="fa  fa-edit"></i></a>|';
+                if($item['status']=='pending'){
                      $html   .= '<a href="javascript:void(0);" 
-                  data-url="'.url(sprintf('admin/category/deleterecord/?id=%s&status=trashed',$item['service_category_id'])).'"
-                  data-ask="'.sprintf('Are You Sure to delete %s category?',$item['service_category_name']).'" data-ask_image="'.url('assets/images/delete-user.png').'"data-request="ajax-confirm" title="Delete Category"><i class="fa fa-trash fa-lg" aria-hidden="true" style="color:red;"></i></a> | ';
-                    $html   .= '</div>';
-                    return $html;
-                })
+                  data-url="'.url(sprintf('admin/subadmin/status/?id=%s&status=active',$item['id'])).'"
+                  data-ask="'.sprintf('Are You Sure to approve %s ?',$item['first_name']).'" data-ask_image="'.url('assets/images/delete-user.png').'"data-request="ajax-confirm" title="Approve Sub Admin"><i class="fa fa-check" aria-hidden="true"></i></a> | ';
 
+                }
+                $html   .= '<a href="'.route('subadmin.edit',___encrypt($item['id'])).'" title="Edit"><i class="fa  fa-edit"></i></a>|';
+                 $html   .= '<a href="javascript:void(0);" 
+              data-url="'.url(sprintf('admin/subadmin/status/?id=%s&status=trashed',$item['id'])).'"
+              data-ask="'.sprintf('Are You Sure to delete %s ?',$item['first_name']).'" data-ask_image="'.url('assets/images/delete-user.png').'"data-request="ajax-confirm" title="Delete Sub Admin"><i class="fa fa-trash fa-lg" aria-hidden="true" style="color:red;"></i></a> | ';
+                $html   .= '</div> ';
+                return $html;
+                })
                 ->editColumn('status',function($item){
                 $spanhtml   = _showSpan($item['status']);
                  if($item['status']=='active'){
                   $html   = '<a href="javascript:void(0);" 
-                  data-url="'.url(sprintf('admin/category/status/?id=%s&status=inactive',$item['service_category_id'])).'"
-                  data-ask="'.sprintf(INACTIVE_MSG,$item['service_category_name'] ).'" data-ask_image="'.url('images/inactive-user.png').'"data-request="ajax-confirm" title="Update Status">'.$spanhtml.'</a>';  
+                  data-url="'.url(sprintf('admin/subadmin/status/?id=%s&status=inactive',$item['id'])).'"
+                  data-ask="'.sprintf(INACTIVE_MSG,$item['first_name'] ).'" data-ask_image="'.url('images/inactive-user.png').'"data-request="ajax-confirm" title="Update Status">'.$spanhtml.'</a>';  
                 }elseif($item['status']=='inactive'){
                   $html   = '<a href="javascript:void(0);" 
-                  data-url="'.url(sprintf('admin/category/status/?id=%s&status=active',$item['service_category_id'])).'"
-                  data-ask="'.sprintf(ACTIVE_MSG,$item['service_category_name']).'" data-ask_image="'.url('images/active-user.png').'"data-request="ajax-confirm" title="Update Status">'.$spanhtml.'</a>';  
+                  data-url="'.url(sprintf('admin/subadmin/status/?id=%s&status=active',$item['id'])).'"
+                  data-ask="'.sprintf(ACTIVE_MSG,$item['first_name']).'" data-ask_image="'.url('images/active-user.png').'"data-request="ajax-confirm" title="Update Status">'.$spanhtml.'</a>';  
+
+                }elseif($item['status']=='pending'){
+                  $html   = '<a href="javascript:void(0);>'.$spanhtml. '</a>';
+                 
 
                 }
             return $html;
@@ -62,7 +71,7 @@ class SubAdminController extends Controller
             ->parameters([
                 "dom" => "<'row' <'col-md-6 col-sm-12 col-xs-4'l><'col-md-6 col-sm-12 col-xs-4'f>><'row filter'><'row white_box_wrapper database_table table-responsive'rt><'row' <'col-md-6'i><'col-md-6'p>>",
             ])
-            ->addColumn(['data' => 'service_category_name', 'name' => 'service_category_name','title' => 'Category Name','orderable' => true, 'width' => 120])
+            ->addColumn(['data' => 'first_name', 'name' => 'first_name','title' => 'Name','orderable' => true, 'width' => 120])
             ->addColumn(['data'=>'status','name'=>'status','title'=>'Status','orderable'=> true,'width'=> 120])
             ->addColumn(['data'=>'created_at','name'=>'created_at','title'=>'Created At','orderable'=> true,'width'=> 120])
             ->addColumn(['data'=>'updated_at','name'=>'updated_at','title'=>'Updated At','orderable'=> true,'width'=> 120])
@@ -94,14 +103,39 @@ class SubAdminController extends Controller
         if($validator->fails()){
             $this->message = $validator->errors();
         }else{
-            $data['service_category_name'] = $request->service_category_name;
-            $isadded                       = ServiceCategory::add($data);
+            if ($file = $request->file('image')){
+                    $photo_name = time() . '.' . $file->getClientOriginalExtension();
+                    $file->move('assets/images/users',$photo_name);
+                    $data['image'] = $photo_name;
+            }
+            $data['first_name']    = $request->first_name;
+            $data['last_name']     = $request->last_name;
+            $data['mobile']        = $request->phone_number;
+            $data['email']         = $request->email;
+            $data['gender']        = $request->gender;
+            if($request->has('date_of_birth')){
+                $data['date_of_birth'] =  $request->date_of_birth;
+
+            }
+            $data['country']               = $request->country;
+            $data['city']                  = $request->city;
+            $data['state']                 = $request->state;
+            $data['address']               = $request->address;
+            $data['country']               = $request->country;
+            $data['permanent_country']     = $request->permanent_country;
+            $data['permanent_city']        = $request->permanent_city;
+            $data['permanent_state']       = $request->permanent_state;
+            $data['permanent_address']     = $request->permanent_address;
+            $data['password']              = bcrypt($request->password);
+            $data['otp']                   = 123456;
+            $data['user_type']             = 'subadmin';
+            $isadded                       = User::create($data);
             if($isadded){
                 $this->status   = true;
                 $this->modal    = true;
                 $this->alert    = true;
-                $this->message  = "Category  has been added successfully.";
-                $this->redirect = url('admin/category');
+                $this->message  = "Sub Admin  has been added successfully.";
+                $this->redirect = route('subadmin.index');
             }
         }
         return $this->populateresponse();
@@ -127,9 +161,12 @@ class SubAdminController extends Controller
      */
     public function edit($id)
     {
-        $service_category_id          = ___decrypt($id);
-        $data['details']              = _arefy(ServiceCategory::listing('single','*',"service_category_id=$service_category_id"));
-        $data['view']                 ='admin.category.edit';
+
+        $id                           = ___decrypt($id);
+        $data['country']              =  Country::get();
+        $data['details']              = _arefy(User::list('single',"id=$id",'*'));
+        /*dd($data['details']);*/
+        $data['view']                 ='admin.subadmin.edit';
         return view('admin.index',$data);
     }
 
@@ -145,18 +182,40 @@ class SubAdminController extends Controller
         $id          = ___decrypt($id);
         $request->id = $id;
         $validation  = new Validations($request);
-        $validator   = $validation->updateCategory();
+        $validator   = $validation->edit();
         if($validator->fails()){
             $this->message = $validator->errors();
         }else{
-            $data['service_category_name'] = $request->service_category_name;
-            $isadded                       = ServiceCategory::change($id,$data);
-            if($isadded){
+           if ($file = $request->file('image')){
+                    $photo_name = time() . '.' . $file->getClientOriginalExtension();
+                    $file->move('assets/images/users',$photo_name);
+                    $data['image'] = $photo_name;
+            }
+            $data['first_name']    = $request->first_name;
+            $data['last_name']     = $request->last_name;
+            $data['mobile']        = $request->phone_number;
+            $data['email']         = $request->email;
+            $data['gender']        = $request->gender;
+            if($request->has('date_of_birth')){
+                $data['date_of_birth'] =  $request->date_of_birth;
+
+            }
+            $data['country']               = $request->country;
+            $data['city']                  = $request->city;
+            $data['state']                 = $request->state;
+            $data['address']               = $request->address;
+            $data['country']               = $request->country;
+            $data['permanent_country']     = $request->permanent_country;
+            $data['permanent_city']        = $request->permanent_city;
+            $data['permanent_state']       = $request->permanent_state;
+            $data['permanent_address']     = $request->permanent_address;
+            $isUpdated                     = User::change($id,$data);
+            if($isUpdated){
                 $this->status   = true;
                 $this->modal    = true;
                 $this->alert    = true;
-                $this->message  = "Category updated successfully.";
-                $this->redirect = url('admin/category');
+                $this->message  = "Sub Admin Updated successfully.";
+                $this->redirect = route('subadmin.index');
             }
         }
         return $this->populateresponse();
@@ -176,7 +235,7 @@ class SubAdminController extends Controller
 
     public function updatestatus(Request $request){
         $data                   = ['status'=>$request->status,'updated_at'=>date('Y-m-d H:i:s')];
-        $isUpdated              = ServiceCategory::updateStatus($request->id,$data);
+        $isUpdated              = User::updateStatus($request->id,$data);
         if($isUpdated){
             $this->status       = true;
             $this->redirect     = true;
@@ -185,15 +244,5 @@ class SubAdminController extends Controller
         return $this->populateresponse();
     }
 
-    public function deleterecord(Request $request){
-        $isDeleted = ServiceCategory::find($request->id)->delete();
-        if($isDeleted){
-            $this->status       = true;
-            $this->redirect     = true;
-            $this->jsondata     = [];
-        }
-        return $this->populateresponse();
-    
-    }
 
 }

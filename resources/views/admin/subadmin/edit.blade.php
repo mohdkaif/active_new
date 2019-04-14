@@ -5,7 +5,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Add  Sub Admin</h1>
+            <h1>Edit  Sub Admin</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -25,7 +25,7 @@
           <div class="card card-info card-outline">
             <div class="card-header">
               <h3 class="card-title">
-               Add Details
+               Edit Details
                 <small></small>
               </h3>
               <!-- tools box -->
@@ -48,8 +48,8 @@
             <!-- /.card-header -->
          
             <div class="card-body">
-                <form  method="POST" enctype="multipart/form-data" role="add" action="{{route('subadmin.store')}}">
-                
+                <form  method="POST" enctype="multipart/form-data" role="add" action="{{route('subadmin.update',___encrypt($details['id']))}}">
+                  <input type="hidden" name="_method" value="PUT">
                   <div class="row">
                     <div class="col-md-12">
                       <div class="form-group">
@@ -65,13 +65,13 @@
                       <div class="form-group col-sm-6">
                         <label class="col-sm-4 control-label">First Name </label>
                         <div class="col-sm-12">
-                           <input type="text" name="first_name" class="form-control">
+                           <input type="text" name="first_name" value="{{$details['first_name']}}" class="form-control">
                         </div>
                       </div>
                        <div class="form-group col-sm-6">
                         <label class="col-sm-4 control-label">Last Name</label>
                         <div class="col-sm-12">
-                           <input type="text" name="last_name"  class="form-control">
+                           <input type="text" name="last_name" value="{{$details['last_name']}}"  class="form-control">
                         </div>
                       </div>
                   </div>
@@ -79,13 +79,13 @@
                       <div class="form-group col-sm-6">
                         <label class="col-sm-4 control-label">Phone Number</label>
                         <div class="col-sm-12">
-                           <input type="text" name="phone_number" class="form-control">
+                           <input type="text" name="phone_number" value="{{$details['mobile']}}" class="form-control">
                         </div>
                       </div>
                        <div class="form-group col-sm-6">
                         <label class="col-sm-4 control-label">Email</label>
                         <div class="col-sm-12">
-                           <input type="text" name="email"  class="form-control">
+                           <input type="text" name="email" value="{{$details['email']}}"  class="form-control">
                         </div>
                       </div>
                   </div>
@@ -93,7 +93,7 @@
                       <div class="form-group col-sm-6">
                         <label class="col-sm-4 control-label">Date Of Birth</label>
                         <div class="col-sm-12">
-                           <input type="date" name="date_of_birth" class="form-control">
+                           <input type="date" name="date_of_birth" value="{{$details['date_of_birth']}}" class="form-control">
                         </div>
                       </div>
                        <div class="form-group col-sm-6">
@@ -101,8 +101,8 @@
                         <div class="col-sm-12">
                            <select class="form-control" name="gender">
                              <option value="">Select Gender</option>
-                             <option value="male">Male</option>
-                             <option value="female">Female</option>
+                             <option value="male"@if($details['gender']=='male') selected @endif>Male</option>
+                             <option value="female" @if($details['gender']=='female') selected @endif>Female</option>
                            </select>
                         </div>
                       </div>
@@ -119,7 +119,7 @@
                             <option value="">Select Region</option>
                               @if(!empty($country))
                                  @foreach($country as $countries)
-                                    <option  value="{{$countries->id}}">{{$countries->country_name}}</option>
+                                    <option  value="{{$countries->id}}" @if($details['country']==$countries->id) selected @endif >{{$countries->country_name}}</option>
                                  @endforeach
                               @endif
                           </select>
@@ -129,7 +129,7 @@
                         <label for="pwd">State:</label>
                         <div class="input-group">
                           <select class="form-control" name="state" id="state" style="height: 45px;" >
-                            <option value="">Select State</option>
+                            <option value="{{$details['state_details']['id']}}">{{$details['state_details']['state_name']}}</option>
                           </select>
                         </div>
                        </div>
@@ -139,14 +139,14 @@
                         <label class="col-sm-4 control-label">City</label>
                         <div class="col-sm-12">
                            <select class="form-control" name="city" id="city" style="height: 45px;" >
-                           
+                            <option value="{{$details['city_details']['id']}}">{{$details['city_details']['city_name']}}</option>
                           </select>
                         </div>
                       </div>
                        <div class="form-group col-sm-6">
                         <label for="pwd">Address:</label>
                         <div class="input-group">
-                         <textarea class="form-control" name="address" id="address"  autocomplete="off" placeholder="&nbsp;&nbsp;Present Full address" style="resize: none;" rows="4" cols="70"></textarea>
+                         <textarea class="form-control" name="address" id="address"  autocomplete="off" placeholder="&nbsp;&nbsp;Present Full address" style="resize: none;" rows="4" cols="70">{{$details['address']}}</textarea>
                         </div>
                        </div>
                     </div>
@@ -161,7 +161,7 @@
                             <option value="">Select Region</option>
                               @if(!empty($country))
                                  @foreach($country as $countries)
-                                    <option  value="{{$countries->id}}">{{$countries->country_name}}</option>
+                                    <option  value="{{$countries->id}}" @if($details['permanent_country']==$countries->id) selected @endif >{{$countries->country_name}}</option>
                                  @endforeach
                               @endif
                           </select>
@@ -171,7 +171,7 @@
                         <label for="pwd">State:</label>
                         <div class="input-group">
                           <select class="form-control" name="permanent_state" id="permanent_state" style="height: 45px;" >
-                            <option value="">Select State</option>
+                            <option value="{{$details['permanent_state_details']['id']}}">{{$details['permanent_state_details']['state_name']}}</option>
                           </select>
                         </div>
                        </div>
@@ -181,32 +181,17 @@
                         <label class="col-sm-4 control-label">Permanent City</label>
                         <div class="col-sm-12">
                            <select class="form-control" name="permanent_city" id="permanent_city" style="height: 45px;" >
-                           
+                            <option value="{{$details['permanent_city_details']['id']}}">{{$details['permanent_city_details']['city_name']}}</option>
                           </select>
                         </div>
                       </div>
                        <div class="form-group col-sm-6">
                         <label for="pwd">Address:</label>
                         <div class="input-group">
-                         <textarea class="form-control" name="permanent_address" id="permanent_address"  autocomplete="off" placeholder="&nbsp;&nbsp;Permanent Full address" style="resize: none;" rows="4" cols="70"></textarea>
+                         <textarea class="form-control" name="permanent_address" id="permanent_address"  autocomplete="off" placeholder="&nbsp;&nbsp;Permanent Full address" style="resize: none;" rows="4" cols="70">{{$details['permanent_address']}}</textarea>
                         </div>
                        </div>
                     </div>
-                    <div class="row" class="col-sm-12">
-                      <div class="form-group col-sm-6">
-                        <label class="col-sm-4 control-label">Password</label>
-                        <div class="col-sm-12">
-                           <input type="password" name="password" class="form-control">
-                        </div>
-                      </div>
-                       <div class="form-group col-sm-6">
-                        <label class="col-sm-4 control-label">Confirm Password </label>
-                        <div class="col-sm-12">
-                           <input type="password" name="confirm"  class="form-control">
-                        </div>
-                      </div>
-                  </div>
-
                       <div class="col-md-12">
                       <div class="form-group">
                           <button type="button"  data-request="ajax-submit" data-target='[role="add"]' class="btn btn-success btn-flat">Submit</button>
