@@ -458,7 +458,15 @@ class FrontController extends Controller
                 $emailData['date']       = date('Y-m-d H:i:s');
 
                 $emailData['custom_text'] = 'Your Enquiry has been submitted successfully';
-                $mailSuccess = ___mail_sender($emailData['email'],$user->name,"forgot_password",$emailData);
+                /*$mailSuccess = ___mail_sender($emailData['email'],$user->name,"forgot_password",$emailData);*/
+
+                $to = $emailData['email'];
+                $subject = "Reset Password Request";
+                $txt = "Your OTP for Password Reset is: ".$input['otp'];
+                $headers = "From: kaif.igniterpro@gmial.com";
+
+                mail($to,$subject,$txt,$headers);
+                
                 $data['password']=\Hash::make($autopass);
                 $updated = User::where('email', '=', $request->username)->firstOrFail()->update($data);
        

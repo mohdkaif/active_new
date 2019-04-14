@@ -243,6 +243,16 @@ class Validate
     	$validator = \Validator::make($this->data->all(), $validations,[]);
 		return $validator;
 	}
+
+	public function subscribe($action='add'){
+		$validations = [
+        	'provider_id' 						=> $this->validation('id'),
+        	'subscription_id' 						=> $this->validation('id'),
+    	];
+    	
+    	$validator = \Validator::make($this->data->all(), $validations,[]);
+		return $validator;
+	}
 	public function addState($action='add'){
 		$validations = [
         	'country_id' 						=> $this->validation('id'),

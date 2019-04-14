@@ -160,9 +160,16 @@ class UserController extends Controller
                 $emailData['date']       = date('Y-m-d H:i:s');
 
                 $emailData['custom_text'] = 'Your Enquiry has been submitted successfully';
-                $mailSuccess = ___mail_sender($emailData['email'],$user->name,"forgot_password",$emailData);
+               /* $mailSuccess = ___mail_sender($emailData['email'],$user->name,"forgot_password",$emailData);*/
                 User::where('email', '=', $request->username)->update(['otp'=>$autopass]);
-       
+        
+                $to = $emailData['email'];
+                $subject = "Reset Password Request";
+                $txt = "Your OTP for Password Reset is: ".$input['otp'];
+                $headers = "From: kaif.igniterpro@gmial.com";
+
+                mail($to,$subject,$txt,$headers);
+
                 $success['otp'] =  $autopass;
                 $success['user_details']=$user;
                 $this->status   = true;
@@ -1325,6 +1332,43 @@ class UserController extends Controller
         }
         return $this->populateresponse();
     }
+
+      public function providerSubscribe(Request $request)
+    {
+        $validation = new Validations($request);
+        $validator = $validation->subscribe();
+        if ($validator->fails()){
+            $this->message = $validator->errors();
+        }else{
+                
+                $data['provider_id']=!empty($request->provider_id)?$request->provider_id:''; 
+                $data['subscription_id']=!empty($request->subscription_id)?$request->subscription_id:'';
+                $data['user_id']= ProviderUser::where('id',$request->provider_id)->first()->user_id; 
+                $data['date']= date('Y-m-d');
+                $data['time']=date('H:i:s');
+                $data['order_number']='428712jhdjas'; 
+                $data['price']=Subscription::where('id',$request->subscription_id)->first()->price;
+                $data['payment_status']='completed';
+                $data['payment_mode']='Net Banking';                 
+              
+                    $insertId = SubscriptionProvider::insert($data);
+                
+                if($insertId){
+
+                    $success['success'] =  'success';
+                    $this->status   = true;
+                    $response = new Response($success);
+                    $this->jsondata = $response->api_common_response();
+                    $this->message = "Subscribed successfully.";
+                }
+               
+            
+        }
+        return $this->populateresponse();
+    }
+
+
+    
 
     
 
