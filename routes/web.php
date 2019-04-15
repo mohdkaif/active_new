@@ -121,5 +121,9 @@ Route::group(['namespace' => 'Admin','prefix' => 'admin', 'middleware' => ['admi
 		)
 	));
 
+	//Subscription
+	Route::resource('subscription','SubscriptionController');
+	Route::post('subscription/status','SubscriptionController@updatestatus');
+
 
 });

@@ -83,6 +83,23 @@
                                 <p>Service Provider</p>
                               </a>
                         </li>
+                         <li class="nav-item has-treeview ">
+                          <a href="#" class="nav-link @if (in_array(Request::segment(2),['subscription'])) active @endif">
+                            <i class="nav-icon fa fa-tags"></i>
+                            <p>
+                              Subscription
+                              <i class="right fa fa-angle-left"></i>
+                            </p>
+                          </a>
+                          <ul class="nav nav-treeview">
+                              <li class="nav-item">
+                                <a href="{{url('admin/subscription')}}" class="nav-link @if (in_array(Request::segment(2),['subscription'])) active @endif">
+                                  <i class="fa fa-circle-o nav-icon"></i>
+                                  <p>Subscription</p>
+                                </a>
+                              </li>
+                          </ul>
+                        </li>
                
                       <li class="nav-item">
                         <a href="{{url('admin/user')}}" class="nav-link  @if(in_array(Request::segment(2),['user'])) active @endif">
