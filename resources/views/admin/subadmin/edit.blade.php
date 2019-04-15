@@ -56,7 +56,7 @@
                         <label>Image</label><br/>
                          <input type="file" name="image" onchange="imagePreview(this, '#image1');">
                          <p class="help-block">You can upload only png and jpg or jpeg.</p>
-                            <img id="image1" height="200px;" width="250px;">
+                            <img id="image1" src="{{___defaultimage($details['image'],'assets/images/users/')}}" height="200px;" width="250px;">
                            
                       </div>
                     </div>

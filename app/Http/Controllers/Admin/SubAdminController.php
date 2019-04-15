@@ -64,6 +64,14 @@ class SubAdminController extends Controller
                 }
             return $html;
                 })
+                ->editColumn('image', function($item){
+                    $html = '<a class="imagelight" href="'.___defaultimage($item['image'],'assets/images/users/').'" target="_blank"><img style="border-radius:50%;" src="'.___defaultimage($item['image'],'assets/images/users/').'" alt="'.$item['first_name'].'" width="80" height="80"></a>';
+                    return $html;
+                })
+                 ->editColumn('name', function($item){
+
+                    return _case($item['first_name']).' '._case($item['last_name']);
+                }) 
                 ->rawColumns(['action','image','status'])
                 ->make(true);
         }
@@ -71,7 +79,8 @@ class SubAdminController extends Controller
             ->parameters([
                 "dom" => "<'row' <'col-md-6 col-sm-12 col-xs-4'l><'col-md-6 col-sm-12 col-xs-4'f>><'row filter'><'row white_box_wrapper database_table table-responsive'rt><'row' <'col-md-6'i><'col-md-6'p>>",
             ])
-            ->addColumn(['data' => 'first_name', 'name' => 'first_name','title' => 'Name','orderable' => true, 'width' => 120])
+            ->addColumn(['data' => 'image', 'name' => 'image','title' => 'Image','orderable' => true, 'width' => 120])
+            ->addColumn(['data' => 'name', 'name' => 'name','title' => 'Name','orderable' => true, 'width' => 120])
             ->addColumn(['data'=>'status','name'=>'status','title'=>'Status','orderable'=> true,'width'=> 120])
             ->addColumn(['data'=>'created_at','name'=>'created_at','title'=>'Created At','orderable'=> true,'width'=> 120])
             ->addColumn(['data'=>'updated_at','name'=>'updated_at','title'=>'Updated At','orderable'=> true,'width'=> 120])
@@ -209,6 +218,7 @@ class SubAdminController extends Controller
             $data['permanent_city']        = $request->permanent_city;
             $data['permanent_state']       = $request->permanent_state;
             $data['permanent_address']     = $request->permanent_address;
+            $data['updated_at']            = date('Y-m-d H:i:s');
             $isUpdated                     = User::change($id,$data);
             if($isUpdated){
                 $this->status   = true;

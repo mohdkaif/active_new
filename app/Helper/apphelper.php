@@ -880,13 +880,14 @@
     /*  Created By Sudeep Singh */
     function ___defaultimage($image,$path){
         if(!empty($image)||$image!=NULL){
-            if(File::exists(public_path($path.$image))){
+            if(File::exists($path.$image)){
                 return asset($path.$image);
                 }else{
-                return asset('images/default.png');
+                    dd('not dound');
+                return asset('assets/default/default.png');
             }
         }else{
-                return asset('images/default.png');
+                return asset('assets/default/default.png');
         }
     }
 

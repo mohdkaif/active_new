@@ -164,6 +164,7 @@ class SubCategoryController extends Controller
         }else{
             $data['service_category_id']       = $request->service_category_name;
             $data['service_sub_category_name'] = $request->service_sub_category_name;
+            $data['updated_at']                = date('Y-m-d H:i:s');
             $isadded                           = ServiceSubCategory::change($id,$data);
             if($isadded){
                 $this->status   = true;

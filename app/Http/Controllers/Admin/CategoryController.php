@@ -148,6 +148,7 @@ class CategoryController extends Controller
             $this->message = $validator->errors();
         }else{
             $data['service_category_name'] = $request->service_category_name;
+            $data['updated_at']            = date('Y-m-d H:i:s');
             $isadded                       = ServiceCategory::change($id,$data);
             if($isadded){
                 $this->status   = true;
