@@ -507,6 +507,36 @@ class Validate
 		return $validator;
 	}
 
+	public function resetPassword(){
+		if($this->data->web =='web'){
+			$validations = [
+			
+			'user_id'							=> $this->validation('name'),
+        	'password' 						=> $this->validation('password'),
+        	'confirm_password'				=> $this->validation('c_password')
+        	
+    	];
+    	$validator = \Validator::make($this->data->all(), $validations,[
+			
+		]);
+    	
+		}else{
+
+			$validations = [
+				
+
+				'user_id'							=> $this->validation('name'),
+				'password' 						=> $this->validation('password'),
+				'confirm_password'				=> $this->validation('c_password')
+			];
+			$validator = \Validator::make($this->data->all(), $validations,[
+			]);
+		
+		}
+		
+		return $validator;
+	}
+
 	public function signup()
 	{
 
@@ -848,11 +878,11 @@ class Validate
 		
 			$validations = [
 				'user_id'						=> $this->validation('id'),
-	        	'document_high_school'			=> $this->validation('document_file'),
-	        	'document_graduation'			=> $this->validation('document_file'),
-	        	'document_post_graduation'		=> $this->validation('document_file'),
-	        	'document_adhar_card'			=> $this->validation('document_file'),
-	        	'document_other'				=> $this->validation('document_file'),
+	        	'document_high_school'			=> $this->validation('doc_file_any'),
+	        	'document_graduation'			=> $this->validation('doc_file_any'),
+	        	'document_post_graduation'		=> $this->validation('doc_file_any'),
+	        	'document_adhar_card'			=> $this->validation('doc_file_any'),
+	        	'document_other'				=> $this->validation('doc_file_any'),
 	        
 	    	];
 

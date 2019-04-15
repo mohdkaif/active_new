@@ -299,6 +299,26 @@ class UserController extends Controller
         return $this->populateresponse();
     }
 
+    public function ResetPassword(Request $request)
+    {
+        $validation = new Validations($request);
+        $validator = $validation->resetPassword();
+        if ($validator->fails()){
+            $this->message = $validator->errors();
+        }else{
+                $data['password']=\Hash::make($request->password);
+                $user = User::where('id', '=', $request->user_id)->update($data);
+                $user_deatils = User::where('id', '=', $request->user_id)->firstOrFail();
+                $success['user'] =  $user_deatils;
+                $this->status   = true;
+                $response = new Response($success);
+                $this->jsondata = $response->api_common_response();
+                $this->message = "Password changed Successfully.";
+                
+        }
+        return $this->populateresponse();
+    }
+
     public function deleteUser(Request $request)
     {
         $validation = new Validations($request);
@@ -388,6 +408,7 @@ class UserController extends Controller
                         $user_info = _arefy(User::where('id',$user_id)->get()->first());
                     }
 
+                    $user_info['image'] = url('assets/images/users/'.$user_info['image']);
                     $success['user_details'] =  $user_info;
                 }else{
                     $success['user_details'] =  'No user found with this data';
@@ -423,24 +444,6 @@ class UserController extends Controller
                 $autopass = rand(pow(10, $digits-1), pow(10, $digits)-1);
 
                 $data['otp'] = $autopass;
-
-                ////otp
-                $apiKey = urlencode('Af8JoCyMRKc-3KCSW0EBcsbim6Y7FVTtg6SD1bOvfC');
-                // Message details
-                $phone_code=91;
-                $numbers = array($phone_code.$data['mobile']);
-                $sender = urlencode('TXTLCL');
-                $message = rawurlencode('Active Bachha Mobile verification OTP is '.$autopass);
-                $numbers = implode(',', $numbers);
-                $data = array('apikey' => $apiKey, 'numbers' => $numbers, "sender" => $sender, "message" => $message);
-                $ch = curl_init('https://api.textlocal.in/send/');
-                curl_setopt($ch, CURLOPT_POST, true);
-                curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                $response = curl_exec($ch);
-                curl_close($ch);
-                /////
-
 
                 $data['email'] = $request->email;
                 $data['address'] = (!empty($request->address))?$request->address:'';
@@ -484,6 +487,7 @@ class UserController extends Controller
 
 
             }else{
+
                 $data['facebook_id']=(!empty($request->facebook_id))?$request->facebook_id:'';
                 $data['google_id']=(!empty($request->google_id))?$request->google_id:'';
                 $data['special_service']=(!empty($request->special_service))?$request->special_service:'';
@@ -498,22 +502,7 @@ class UserController extends Controller
 
                 $data['otp'] = $autopass;
 
-                 ////otp
-                $apiKey = urlencode('Af8JoCyMRKc-3KCSW0EBcsbim6Y7FVTtg6SD1bOvfC');
-                // Message details
-                $phone_code=91;
-                $numbers = array($phone_code.$data['mobile']);
-                $sender = urlencode('TXTLCL');
-                $message = rawurlencode('Active Bachha Mobile verification OTP is '.$autopass);
-                $numbers = implode(',', $numbers);
-                $data = array('apikey' => $apiKey, 'numbers' => $numbers, "sender" => $sender, "message" => $message);
-                $ch = curl_init('https://api.textlocal.in/send/');
-                curl_setopt($ch, CURLOPT_POST, true);
-                curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                $response = curl_exec($ch);
-                curl_close($ch);
-                /////
+                 
 
                 $data['email'] = $request->email;
                 $data['permanent_address'] =(!empty($request->permanent_address))?$request->permanent_address:'';
@@ -538,6 +527,7 @@ class UserController extends Controller
                     $data['image'] = $photo_name;
                    
                 }
+                
                 $user = User::create($data);
 
                 $provider['bank_name']=(!empty($request->bank_name))?$request->bank_name:'';              
@@ -676,6 +666,23 @@ class UserController extends Controller
                     }
                 }
             }
+
+            ////otp
+            $apiKey = urlencode('Af8JoCyMRKc-3KCSW0EBcsbim6Y7FVTtg6SD1bOvfC');
+            // Message details
+            $phone_code=91;
+            $numbers = array($phone_code.$data['mobile']);
+            $sender = urlencode('TXTLCL');
+            $message = rawurlencode('Active Bachha Mobile verification OTP is '.$autopass);
+            $numbers = implode(',', $numbers);
+            $data = array('apikey' => $apiKey, 'numbers' => $numbers, "sender" => $sender, "message" => $message);
+            $ch = curl_init('https://api.textlocal.in/send/');
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            $response = curl_exec($ch);
+            curl_close($ch);
+            /////
 
             $success['success'] =  'success';
             $success['user_details'] =  $user;
