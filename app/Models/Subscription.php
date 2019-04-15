@@ -25,7 +25,7 @@ class Subscription extends Authenticatable
     
      public static function list($fetch='array',$where='',$keys=['*'],$order='id-desc'){
                 
-        $table_course = self::select($keys);
+        $table_course = self::select($keys)->where('status','!=','trashed');
 
         if($where){
             $table_course->whereRaw($where);
@@ -49,7 +49,16 @@ class Subscription extends Authenticatable
         }else{
             return $table_course->limit($limit)->get();
         }
-    }  
+    } 
+
+    public static function updateStatus($id,$data){
+        $isUpdated = false;
+        if(!empty($data)){
+            $table_name=self::where('id',$id);
+            $isUpdated = $table_name->update($data); 
+        }       
+        return (bool)$isUpdated;
+    } 
 
    
    
