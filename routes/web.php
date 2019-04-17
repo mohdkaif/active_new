@@ -65,6 +65,9 @@ Route::get('admin/login', 'Admin\LoginController@login');
 Route::post('admin/authenticate','Admin\LoginController@validateLogin')->name('admin.login');
 Route::get('admin/logout','Admin\LoginController@logout')->name('admin.logout');
 
+//Admin Forget Password
+Route::resource('admin/forget','Admin\ForgetPasswordController');
+
 Route::group(['namespace' => 'Admin','prefix' => 'admin', 'middleware' => ['adminAuth']] ,function(){
 	Route::get('dashboard', 'LoginController@dashboard')->name('dashboard');
 
@@ -124,6 +127,5 @@ Route::group(['namespace' => 'Admin','prefix' => 'admin', 'middleware' => ['admi
 	//Subscription
 	Route::resource('subscription','SubscriptionController');
 	Route::post('subscription/status','SubscriptionController@updatestatus');
-
 
 });

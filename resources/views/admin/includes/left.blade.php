@@ -27,12 +27,14 @@
                             <p>Dashboard</p>
                           </a>
                         </li>
+                        @if(Auth::user()->user_type=='admin')
                         <li class="nav-item">
                           <a href="{{route('subadmin.index') }}" class="nav-link  @if (in_array(Request::segment(2),['subadmin'])) active @endif">
                           <i class="fa fa-globe nav-icon"></i>
                           <p>Sub Admin</p>
                           </a>
                         </li>
+                        @endif
                         
                        <li class="nav-item">
                         <a href="{{ route('states.index') }}" class="nav-link  @if (in_array(Request::segment(2),['states'])) active @endif">
