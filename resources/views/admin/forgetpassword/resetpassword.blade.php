@@ -24,19 +24,21 @@
   <div class="login-logo">
     <a href="index.php"><b>Active Baccha</b></a>
   </div>
+  @if($message)
+    <div class="form-group has-feedback ">
+      <div class="alert alert-danger">
+        <strong>{{$message}}</strong> 
+      </div>
+    </div>
+
+  @else
   <!-- /.login-logo -->
   <div class="card">
     <div class="card-body login-card-body">
-      <p class="login-box-msg">Please login with your Email and Password.</p>
+      <p class="login-box-msg">Please Reset Your Password</p>
 
-      <form action="{{route('admin.login')}}" method="post" enctype="multipart/form-data">
+      <form action="{{url('admin/updatepassword/'.___encrypt($id))}}" method="post">
         {{ csrf_field() }}
-        @if(Session::has('message'))
-           <div class = "alert alert-error">
-            <button type="button" class="close" data-dismiss="success" aria-hidden="true">×</button>
-            {{ Session::get('message')}}       
-           </div>
-        @endif
         @if( $errors->any() )
         <div class = "alert alert-error">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
@@ -44,28 +46,23 @@
         </div>
         @endif
         <div class="form-group has-feedback">
-        <input type="email" name="email" value="{{old('email')}}" class="form-control" placeholder="Email">
+        <input type="password" name="password" value="{{old('password')}}" class="form-control" placeholder="Enter Password">
         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
       </div>
-      <div class="form-group has-feedback">
-        <input type="password" name="password" class="form-control" placeholder="Password">
-        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+        <div class="form-group has-feedback">
+        <input type="password" name="repassword" value="{{old('repassword')}}" class="form-control" placeholder="Re-Enter Password">
+        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
       </div>
-      <div align="right" >
-        <a href="{{url('admin/forget')}}">Forget Password</a>
-       </div>
-
       <div class="row">
         <div class="col-xs-8">
           <div class="checkbox icheck">
-
             <label>
             </label>
           </div>
         </div>
         <!-- /.col -->
         <div class="col-xs-4">
-          <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
+          <button type="submit" class="btn btn-primary btn-block btn-flat">Submit</button>
         </div>
         <!-- /.col -->
       </div>
@@ -77,6 +74,7 @@
     </div>
     <!-- /.login-card-body -->
   </div>
+  @endif
 </div>
 <!-- /.login-box -->
 
