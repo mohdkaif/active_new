@@ -31,6 +31,12 @@
 
       <form action="{{route('admin.login')}}" method="post" enctype="multipart/form-data">
         {{ csrf_field() }}
+        @if(Session::has('message'))
+           <div class = "alert alert-error">
+            <button type="button" class="close" data-dismiss="success" aria-hidden="true">×</button>
+            {{ Session::get('message')}}       
+           </div>
+        @endif
         @if( $errors->any() )
         <div class = "alert alert-error">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>

@@ -59,8 +59,8 @@ class ForgetPasswordController extends Controller
        return back()->withErrors($validate)->withInput();
       }else{
 
-        dd('stpoed');
-            $user           = User::listing('single',"email='$request->email' AND (user_type='admin' OR user_type='subadmin')",'*');
+   /*     dd('stpoed');*/
+            $user           = User::list('single',"email='$request->email' AND (user_type='admin' OR user_type='subadmin')",'*');
             $name           = $user['name'];
             $blade_name     = 'passwordreset';
             $subject        = 'Reset Password Notification.';
@@ -70,114 +70,54 @@ class ForgetPasswordController extends Controller
             $isadded            = PasswordReset::manage('email',$request->email,$data);
              if($isadded){
                ___sendTemplate($request->email,$name,$data,$blade_name,$subject);
-             
+               return redirect::back()->with('message', ' A email will be sent to that address containing a link to reset your password');
+        }else{
+              $validate->errors()->add('email','Something Went Wrong,Please Try again later');
+             return back()->withErrors($validate)->withInput();
         }
 
     }
   }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-         
+  public function setpassword(Request $request){
+    $data['page_title']  = 'Reset Password';
+    $data['site_title']  = 'Set Password';
+    $data['view']        = 'admin.forgetpassword.resetpassword';
+    $passwordDetails      = PasswordReset::listing('single','*',"token='$request->token'");
+    if(empty($request->token)){
+      $data['message']   = "Invalid Url";
+    }elseif(empty($passwordDetails)||$passwordDetails==NULL){
+      $data['message']  = "Invalid Token";
+    }elseif(___datetimediffernce($passwordDetails['created_at'])>TOKEN_TIME||___datetimediffernce($passwordDetails['created_at'])<0){
+      $data['message']  = "Token Expired";
+    }else{
+      $data['message'] ='';
+      $email      = $passwordDetails['email'];
+      $userDetails = User::list('single',"email='$email'",['id']);
+      $data['id']  = $userDetails['id'];
     }
+    return view('admin.forgetpassword.resetpassword')->with($data);
+  }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
+  public function updatepassword(Request $request, $id){
+    $id                 = ___decrypt($id);
+    $validator          = new PasswordResetValidation($request);
+    $validate           = $validator->updatepassword();
+    if($validate->fails()){
+      return back()->withErrors($validate)->withInput();
+    }else{
+      $data['password']   = bcrypt($request->password);
+      $data['updated_at'] = date('Y-m-d H:i:s');
+      $isUpdated          = User::where('id',$id)->update($data);
+      if($isUpdated){
+        $userDetails        = User::list('single',"id='$id'",['email']);
+        $email              = $userDetails['email'];
+        $delete             = PasswordReset::where('email',$email)->delete();
+        return redirect('admin/login')->with('message', 'Password Reset Successfully.');
 
-        $id                           = ___decrypt($id);
-        $data['country']              =  Country::get();
-        $data['details']              = _arefy(User::list('single',"id=$id",'*'));
-        /*dd($data['details']);*/
-        $data['view']                 ='admin.subadmin.edit';
-        return view('admin.index',$data);
+      }
     }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        $id          = ___decrypt($id);
-        $request->id = $id;
-        $validation  = new Validations($request);
-        $validator   = $validation->edit();
-        if($validator->fails()){
-            $this->message = $validator->errors();
-        }else{
-           if ($file = $request->file('image')){
-                    $photo_name = time() . '.' . $file->getClientOriginalExtension();
-                    $file->move('assets/images/users',$photo_name);
-                    $data['image'] = $photo_name;
-            }
-            $data['first_name']    = $request->first_name;
-            $data['last_name']     = $request->last_name;
-            $data['mobile']        = $request->phone_number;
-            $data['email']         = $request->email;
-            $data['gender']        = $request->gender;
-            if($request->has('date_of_birth')){
-                $data['date_of_birth'] =  $request->date_of_birth;
-
-            }
-            $data['country']               = $request->country;
-            $data['city']                  = $request->city;
-            $data['state']                 = $request->state;
-            $data['address']               = $request->address;
-            $data['country']               = $request->country;
-            $data['permanent_country']     = $request->permanent_country;
-            $data['permanent_city']        = $request->permanent_city;
-            $data['permanent_state']       = $request->permanent_state;
-            $data['permanent_address']     = $request->permanent_address;
-            $data['updated_at']            = date('Y-m-d H:i:s');
-            $isUpdated                     = User::change($id,$data);
-            if($isUpdated){
-                $this->status   = true;
-                $this->modal    = true;
-                $this->alert    = true;
-                $this->message  = "Sub Admin Updated successfully.";
-                $this->redirect = route('subadmin.index');
-            }
-        }
-        return $this->populateresponse();
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
-
-
-    public function updatestatus(Request $request){
-        $data                   = ['status'=>$request->status,'updated_at'=>date('Y-m-d H:i:s')];
-        $isUpdated              = User::updateStatus($request->id,$data);
-        if($isUpdated){
-            $this->status       = true;
-            $this->redirect     = true;
-            $this->jsondata     = [];
-        }
-        return $this->populateresponse();
-    }
+  }
 
 
 }

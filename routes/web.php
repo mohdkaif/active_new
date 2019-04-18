@@ -67,6 +67,9 @@ Route::get('admin/logout','Admin\LoginController@logout')->name('admin.logout');
 
 //Admin Forget Password
 Route::resource('admin/forget','Admin\ForgetPasswordController');
+Route::get('admin/setpassword','Admin\ForgetPasswordController@setpassword');
+Route::post('admin/updatepassword/{id}','Admin\ForgetPasswordController@updatepassword');
+
 
 Route::group(['namespace' => 'Admin','prefix' => 'admin', 'middleware' => ['adminAuth']] ,function(){
 	Route::get('dashboard', 'LoginController@dashboard')->name('dashboard');

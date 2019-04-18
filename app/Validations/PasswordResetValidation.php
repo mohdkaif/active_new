@@ -32,13 +32,13 @@ class PasswordResetValidation{
 
 	public function updatepassword(){
 	$validate = Validator::make($this->data->all(),[
-	'password'			=> ['required','regex:'.PASSWORD_FORMAT],
+	'password'			=> ['required','min:6'],
 	'repassword'		=> ['required','same:password'],
 
 	],[
 
 	'password.required'						=> 'Please Enter Password',
-	'password.regex'						=> "Password Must Be At Least 8 & max 12 characters,Contain At Leats One Uppercase Letter,Atleast One Number & Atleast One Of The Following Symbols !@#\$%\^&\*",
+	'password.min'						    => "Password Must Be At Least 6 characters  long.",
 	'repassword.required'					=> "Please Re-Enter Password.",
 	'repassword.same'						=> "Password & Re-password Not Matched.",
 

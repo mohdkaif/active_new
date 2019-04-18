@@ -24,16 +24,21 @@
   <div class="login-logo">
     <a href="index.php"><b>Active Baccha</b></a>
   </div>
+  @if($message)
+    <div class="form-group has-feedback ">
+      <div class="alert alert-danger">
+        <strong>{{$message}}</strong> 
+      </div>
+    </div>
+
+  @else
   <!-- /.login-logo -->
   <div class="card">
     <div class="card-body login-card-body">
-      <p class="login-box-msg">Please Enter Your Registered Email.</p>
+      <p class="login-box-msg">Please Reset Your Password</p>
 
-      <form action="{{url('admin/forget')}}" method="post">
+      <form action="{{url('admin/updatepassword/'.___encrypt($id))}}" method="post">
         {{ csrf_field() }}
-        @if(Session::has('message'))
-        <p class="alert alert-info">{{ Session::get('message') }}</p>
-        @endif
         @if( $errors->any() )
         <div class = "alert alert-error">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
@@ -41,7 +46,11 @@
         </div>
         @endif
         <div class="form-group has-feedback">
-        <input type="email" name="email" value="{{old('email')}}" class="form-control" placeholder="Email">
+        <input type="password" name="password" value="{{old('password')}}" class="form-control" placeholder="Enter Password">
+        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+      </div>
+        <div class="form-group has-feedback">
+        <input type="password" name="repassword" value="{{old('repassword')}}" class="form-control" placeholder="Re-Enter Password">
         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
       </div>
       <div class="row">
@@ -65,6 +74,7 @@
     </div>
     <!-- /.login-card-body -->
   </div>
+  @endif
 </div>
 <!-- /.login-box -->
 

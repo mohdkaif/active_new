@@ -891,13 +891,14 @@
         }
     }
 
+/*  Created By Sudeep Singh */
     function _dd($data){
         echo '<pre>';
         print_r($data);
         echo '<pre>';
         die();
     }
-
+/*  Created By Sudeep Singh */
     function _case($text,$type=''){
         if($type=='l'){
             return strtolower($text);
@@ -909,7 +910,7 @@
             return ucfirst($text);
         }
     }
-
+ /*  Created By Sudeep Singh */
     function _showSpan($status){
         $html = '<span class="label %s">%s</span>';
         if(ucfirst($status)=='Active'){
@@ -921,6 +922,23 @@
         }
         $html = sprintf($html, $label,_case($status));
         return $html;
+    }
+
+/*  Created By Sudeep Singh */
+    function ___sendTemplate($to, $toname, $data, $blade, $subject){
+        $r['email']= $to;
+        $r['name'] = $toname;
+        $r['sub']  = $subject;
+        Mail::send('emails/'.$blade, $data, function($message) use ($r){
+            $message->to($r['email'], $r['name'])->subject($r['sub']);
+            $message->from('kaif.igniterpro@gmail.com', 'Active');
+        });
+    }
+
+/*  Created By Sudeep Singh */
+    function ___datetimediffernce($created_at){
+    $secondsDifference=strtotime(date('Y-m-d H:i:s'))-strtotime($created_at);
+    return  intval($secondsDifference/60);
     }
 
 
