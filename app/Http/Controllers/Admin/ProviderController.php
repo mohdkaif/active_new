@@ -13,7 +13,7 @@ use Validator;
 use Validations\Validate as Validations;
 use File;
 use Intervention\Image\ImageManagerStatic as Image;
-
+use Illuminate\Support\Facades\Input;
 class ProviderController extends Controller
 {
     /**
@@ -44,6 +44,43 @@ class ProviderController extends Controller
         return view('admin.index',$data);
     }
 
+    public function locations()
+    {
+        $data['view']='admin.provider.select-provider';
+        $data['providers'] =_arrayfy(User::where('user_type','provider')->get());
+       // dd($data['user']);
+    
+        return view('admin.index',$data);
+    }
+
+    public function  viewLocation(Request $request)
+    {
+        if (Input::get('value') != "") {
+                $val = Input::get('value');
+            }
+        $val = 2;
+            /*pp(Input::get('value'));*/
+       /* $data['view']='admin.provider.provider_location';*/
+       /* $data['provider_details'] =_arrayfy(ProviderUser::where('user_id',$request->provider)->get());*/
+        $location = \App\Models\Location::where('user_id', $val)->first();
+        if(!empty($location)){
+
+            $data['latitude'] = $location->latitude;
+            $data['longitude'] = $location->longitude;
+        }else{
+           $data['latitude']  = NULL;
+            $data['longitude']  = NULL;
+        }
+       // dd($data['user']);
+        if($request->ajax()){
+
+         /*   $data =  view('admin/provider/provider_location', compact('latitude','longitude'));*/
+            return Response($data);
+        }
+        return view('admin.index',$data);
+    }
+
+   
     /**
      * Store a newly created resource in storage.
      *

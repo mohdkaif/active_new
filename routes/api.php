@@ -65,6 +65,8 @@ Route::post('provider-booking-list', 'API\UserController@providerBookingList');
 Route::post('provider-subscription-list', 'API\UserController@providerSubscriptionList');
 Route::post('provider-subscribe', 'API\UserController@providerSubscribe');
 
+Route::post('update-location', 'API\UserController@updateLocation');
+
 
 Route::group(['middleware' => 'auth:api'], function(){
 Route::post('details', 'API\UserController@details');

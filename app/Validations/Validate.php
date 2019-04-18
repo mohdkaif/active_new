@@ -183,6 +183,18 @@ class Validate
 		return $validator;
 	}
 
+	public function location(){
+		$validations = [
+        	'user_id' 						=> $this->validation('name'),
+        	'latitude' 						=> $this->validation('name'),
+        	'longitude' 						=> $this->validation('name'),
+
+    	];
+    	$validator = \Validator::make($this->data->all(), $validations,[]);
+		
+		return $validator;
+	}
+
 	public function providerBookingList(){
 		$validations = [
         	'provider_id' 						=> $this->validation('name'),
@@ -316,7 +328,7 @@ class Validate
 			'service_category_id'		  => $this->validation('id'),
         	'service_sub_category_id'   => $this->validation('country'),
         	'provider_id'   => $this->validation('phone'),
-        	'service_name'   => $this->validation('name'),
+        	'service_name'   => $this->validation('last_name'),
         	'description'   => $this->validation('address'),
         	/*'days_for_service'   => $this->validation('address'),
         	'service_start_time'		  => $this->validation('name'),

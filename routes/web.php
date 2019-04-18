@@ -109,8 +109,8 @@ Route::group(['namespace' => 'Admin','prefix' => 'admin', 'middleware' => ['admi
 	Route::resource('subcategory','SubCategoryController');
 
 	//Sub-Admin Controller
-	Route::post('subadmin/status','SubAdmincontroller@updatestatus');
-	Route::resource('subadmin','SubAdmincontroller',array(
+	Route::post('subadmin/status','SubAdminController@updatestatus');
+	Route::resource('subadmin','SubAdminController',array(
 		'names'=>array(
 				'index' =>'subadmin.index',
 				'create'=>'subadmin.create',
@@ -125,5 +125,8 @@ Route::group(['namespace' => 'Admin','prefix' => 'admin', 'middleware' => ['admi
 	Route::resource('subscription','SubscriptionController');
 	Route::post('subscription/status','SubscriptionController@updatestatus');
 
-
+	/////Locations
+	Route::get('provider-locations','ProviderController@locations');
+	Route::get('provider-location','ProviderController@viewLocation');
+	
 });

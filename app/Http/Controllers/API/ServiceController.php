@@ -417,7 +417,19 @@ class ServiceController extends Controller
                 
             $provider_id = $request->provider_id;
             $list = _arefy(Service::list('array','provider_id = '.$provider_id));
-                    
+            if(!empty($list)){
+                foreach($list as $k => $v){
+                    if(!empty($v['photo'])){
+
+                        $list[$k]['photo'] = url('assets/service/images/'.$v['photo']);
+                    }
+                    if(!empty($v['video'])){
+
+                        $list[$k]['video'] = url('assets/service/video/'.$v['video']);
+                    }
+                   
+                }
+            }
             $success['service_list']=$list;
            
             $this->status   = true;

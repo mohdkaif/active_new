@@ -12,6 +12,7 @@ use App\Models\UserChild;
 use App\Models\NotificationHistory; 
 use App\Models\Booking;
 use App\Models\Service;
+use App\Models\Location;
 use App\Models\ServiceDays;
 use App\Models\ProviderUser; 
 use Illuminate\Support\Facades\Auth; 
@@ -65,71 +66,88 @@ class UserController extends Controller
     public function login(Request $request)
     {
         if(!empty($request->facebook_id)){
-            $CheckUser = User::where('facebook_id',$request->facebook_id)->first();
-            if($CheckUser){
-                $success['user_details']=$CheckUser;
-                $success['token'] =  $CheckUser->createToken('MyApp')->accessToken;
+
+            if(is_numeric($request->username)){
+
+                $CheckUser = \DB::table('users')->where('mobile',$request->username)->update(['facebook_id'=>$request->facebook_id]);
+                $user_details = _arefy(User::where('mobile',$request->username)->get());
+            }else{
+                $CheckUser = \DB::table('users')->where('email',$request->username)->update(['facebook_id'=>$request->facebook_id]);
+                $user_details = _arefy(User::where('email',$request->username)->get());
+            }
+            /*if($CheckUser){*/
+                $success['user_details']=$user_details;
+             /*   $success['token'] =  $CheckUser->createToken('MyApp')->accessToken;*/
                 $this->status   = true;
                 $response = new Response($success);
                 $this->jsondata = $response->api_common_response();
                 $this->message = "Facebook login Successful";
 
-            }else{
+            /*}else{
                 $success['user_details']='';
                 $this->status   = true;
                 $response = new Response($success);
                 $this->jsondata = $response->api_common_response();
                 $this->message = "Facebook user not found";
-            }
+            }*/
             return $this->populateresponse();
 
-        }
-
-        if(!empty($request->google_id)){
-            $CheckUser = User::where('google_id',$request->google_id)->first();
-            if($CheckUser){
-                $success['user_details']=$CheckUser;
-                $success['token'] =  $CheckUser->createToken('MyApp')->accessToken;
+        }elseif(!empty($request->google_id)){
+            
+            //$CheckUser = User::where('google_id',$request->google_id)->first();
+            if(is_numeric($request->username)){
+                $CheckUser = \DB::table('users')->where('mobile',$request->username)->update(['google_id'=>$request->google_id]);
+                $user_details = _arefy(User::where('mobile',$request->username)->get());
+            }else{
+                 $CheckUser = \DB::table('users')->where('email',$request->username)->update(['google_id'=>$request->google_id]);
+                 $user_details = _arefy(User::where('email',$request->username)->get());
+            }
+            
+           /* if($CheckUser){*/
+                $success['user_details']=$user_details;
+                /*$success['token'] =  $CheckUser->createToken('MyApp')->accessToken;*/
                 $this->status   = true;
                 $response = new Response($success);
                 $this->jsondata = $response->api_common_response();
                 $this->message = "Google login Successful";
 
-            }else{
+            /*}else{
                 $success['user_details']='';
                 $this->status   = true;
                 $response = new Response($success);
                 $this->jsondata = $response->api_common_response();
                 $this->message = "Google user not found";
-            }
+            }*/
             return $this->populateresponse();
 
         }
 
-        $validation = new Validations($request);
-        $validator = $validation->login();
-        if ($validator->fails()){
-            $this->message = $validator->errors();
-        }else{
-            if(is_numeric($request->username)){
-                $login = Auth::attempt(['mobile' => $request->username,'password' => $request->password]);
+        else{
+            $validation = new Validations($request);
+            $validator = $validation->login();
+            if ($validator->fails()){
+                $this->message = $validator->errors();
             }else{
-                $login = Auth::attempt(['email' => $request->username,'password' => $request->password]);
+                if(is_numeric($request->username)){
+                    $login = Auth::attempt(['mobile' => $request->username,'password' => $request->password]);
+                }else{
+                    $login = Auth::attempt(['email' => $request->username,'password' => $request->password]);
+                }
+                if ($login){
+                    $user = Auth::user(); 
+                    $success['user_details']=$user;
+                    $success['token'] =  $user->createToken('MyApp')->accessToken;
+                    $this->status   = true;
+                    $response = new Response($success);
+                    $this->jsondata = $response->api_common_response();
+                    $this->message = "Login Successful";
+                   
+                }else{
+                    $this->message = $validator->errors()->add('not_exist', 'Username or Password is invalid');
+                }
             }
-            if ($login){
-                $user = Auth::user(); 
-                $success['user_details']=$user;
-                $success['token'] =  $user->createToken('MyApp')->accessToken;
-                $this->status   = true;
-                $response = new Response($success);
-                $this->jsondata = $response->api_common_response();
-                $this->message = "Login Successful";
-               
-            }else{
-                $this->message = $validator->errors()->add('not_exist', 'Username or Password is invalid');
-            }
+            return $this->populateresponse();
         }
-        return $this->populateresponse();
     }
 
     public function forgotPassword(Request $request)
@@ -1421,6 +1439,41 @@ class UserController extends Controller
                     $response = new Response($success);
                     $this->jsondata = $response->api_common_response();
                     $this->message = "Subscribed successfully.";
+                }
+               
+            
+        }
+        return $this->populateresponse();
+    }
+
+     public function updateLocation(Request $request)
+    {
+        $validation = new Validations($request);
+        $validator = $validation->location();
+        if ($validator->fails()){
+            $this->message = $validator->errors();
+        }else{
+                
+                $data['user_id']=!empty($request->user_id)?$request->user_id:''; 
+                $data['latitude']=!empty($request->latitude)?$request->latitude:'';
+                $data['longitude']=!empty($request->longitude)?$request->longitude:'';
+                
+                $data['created_at']= date('Y-m-d H:i:s');
+                $data['updated_at']= date('Y-m-d H:i:s');
+                $data['status']= 'active';
+                
+              
+                    $insertId = Location::UpdateOrCreate([
+                        'user_id' =>$request->user_id
+                    ],$data);
+                
+                if($insertId){
+
+                    $success['success'] =  'success';
+                    $this->status   = true;
+                    $response = new Response($success);
+                    $this->jsondata = $response->api_common_response();
+                    $this->message = "Location Updated successfully.";
                 }
                
             
