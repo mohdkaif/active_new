@@ -39,7 +39,8 @@ class SubAdminController extends Controller
                   data-ask="'.sprintf('Are You Sure to approve %s ?',$item['first_name']).'" data-ask_image="'.url('assets/images/delete-user.png').'"data-request="ajax-confirm" title="Approve Sub Admin"><i class="fa fa-check" aria-hidden="true"></i></a> | ';
 
                 }
-                $html   .= '<a href="'.route('subadmin.edit',___encrypt($item['id'])).'" title="Edit"><i class="fa  fa-edit"></i></a>|';
+                 $html   .= '<a href="'.route('subadmin.edit',___encrypt($item['id'])).'" title="Edit"><i class="fa  fa-edit"></i></a>|';
+                 $html.= '<a  onclick="loadEdit('.$item['id'].');" href="#"><i class="fa fa-key" aria-hidden="true" title="Reset Password"></i></a>|';
                  $html   .= '<a href="javascript:void(0);" 
               data-url="'.url(sprintf('admin/subadmin/status/?id=%s&status=trashed',$item['id'])).'"
               data-ask="'.sprintf('Are You Sure to delete %s ?',$item['first_name']).'" data-ask_image="'.url('assets/images/delete-user.png').'"data-request="ajax-confirm" title="Delete Sub Admin"><i class="fa fa-trash fa-lg" aria-hidden="true" style="color:red;"></i></a> | ';
@@ -252,6 +253,27 @@ class SubAdminController extends Controller
             $this->jsondata     = [];
         }
         return $this->populateresponse();
+    }
+
+    public function passwordreset(Request $request){
+        $validation = new Validations($request);
+        $validator   = $validation->resetpassword();
+        if($validator->fails()){
+            $this->message = $validator->errors();
+        }else{
+            $data['password']              = bcrypt($request->password);
+            $data['updated_at']            = date('Y-m-d H:i:s');
+            $isUpdated                     = User::change($request->subadminid,$data);
+            if($isUpdated){
+                $this->status   = true;
+                $this->modal    = true;
+                $this->alert    = true;
+                $this->message  = "Password has been successfully reset.";
+                $this->redirect = route('subadmin.index');
+            }
+        }
+        return $this->populateresponse();
+
     }
 
 

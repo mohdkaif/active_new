@@ -61,4 +61,23 @@ class SubAdminValidation{
 	}
 
 
+    public function resetpassword(){
+        $validations = [
+            'password'               => ['required','min:6'],
+            'confirm'                => ['same:password']
+        ];
+        
+        $validator = \Validator::make($this->data->all(), $validations,[
+        'password.required' => 'Please Enter New Password.',
+        'password.min'      => 'Password Should Be Min 6 Character Long.',
+        'confirm.same'      => 'Password & Re-Enter Password Should Be Same.',  
+
+        ]);
+        return $validator;  
+
+
+
+    }
+
+
 }

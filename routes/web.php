@@ -116,6 +116,7 @@ Route::group(['namespace' => 'Admin','prefix' => 'admin', 'middleware' => ['admi
 
 	//Sub-Admin Controller
 	Route::post('subadmin/status','SubAdminController@updatestatus');
+	Route::post('subadmin/password','SubAdminController@passwordreset')->name('subadmin.passwordreset');
 	Route::resource('subadmin','SubAdminController',array(
 		'names'=>array(
 				'index' =>'subadmin.index',

@@ -52,6 +52,43 @@
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
+  <div class="ibox-content">
+        <div id="editModel" class="modal fade" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <h1>Reset Password</h1>
+                         <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <form id="editModelForm" role="editpassword"  method="post" action="">
+                                    <div class="form-group"><label>New Password</label><input type="text" placeholder="Enter Password" name="password" class="form-control"></div>
+                                    <div class="form-group"><label>Confirm Password</label><input type="text" placeholder="Re-Enter Password" name="confirm" class="form-control"></div>
+                                    <div>
+                                        <button class="btn btn-sm btn-primary float-right m-t-n-xs" data-target='[role="editpassword"]' data-request="ajax-submit" type="button"><strong>Reset</strong></button>
+                                    </div>
+                                </form>
+                    </div>
+                     <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+       </div>
+</div>
   @push('scripts')
   {!! $html->scripts()!!}
   @endpush
+
+  @section('requirejs')
+   <script type="text/javascript">
+    
+    function loadEdit(id){
+       var route = '{{route("subadmin.passwordreset",["subadminid"=>"Sudeep"])}}';
+        route = route.replace('Sudeep',id);
+        console.log(route);
+        $('#editModelForm').attr('action',route);
+        $('#editModel').modal('show');
+
+    }
+</script>
+@endsection
+
