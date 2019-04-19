@@ -44,9 +44,9 @@ $("#time").load("hh.php");
 
          <a href="#" class=""  data-toggle="dropdown">
 
-                  <img src="{{asset('assets/images/logo.png')}}" class="user-image" alt="User Image">
+                  <img src="{{___defaultimage(Auth::user()->image,'assets/images/users/')}}" class="user-image" alt="User Image">
 
-                  <span class="hidden-xs">admin</span>
+                  <span class="hidden-xs">{{Auth::user()->first_name}} {{Auth::user()->last_name}}</span>
 
           </a>
 
@@ -56,11 +56,13 @@ $("#time").load("hh.php");
 
               <li class="user-header">
 
-               <img src="{{asset('assets/images/logo.png')}}" class="img-circle" alt="User Image">
+               <img src="{{___defaultimage(Auth::user()->image,'assets/images/users/')}}" class="img-circle" alt="User Image">
 
                 <p>
 
-                 admin
+                 {{Auth::user()->first_name}} {{Auth::user()->last_name}}
+                 <br>
+                 {{strtoupper(Auth::user()->user_type)}}
 
                 </p>
 
