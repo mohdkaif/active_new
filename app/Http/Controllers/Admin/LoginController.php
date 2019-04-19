@@ -56,4 +56,10 @@ class LoginController extends Controller
     	$data['view'] = 'admin.dashboard';
     	return view('admin.index',$data);
     }
+
+
+    public function edit(Request $request){
+        $data['view'] = 'admin.profile.profile';
+        return view('admin.index',$data);
+    }
 }

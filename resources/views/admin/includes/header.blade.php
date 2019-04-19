@@ -72,7 +72,7 @@ $("#time").load("hh.php");
 
                 <div class="pull-left">
 
-                 <a href="editprofile.php" class="btn btn-default btn-flat">Profile</a>
+                 <a href="{{route('profile.edit')}}" class="btn btn-default btn-flat">Profile</a>
 
                </div>
 
