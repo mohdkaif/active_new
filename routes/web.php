@@ -74,6 +74,7 @@ Route::post('admin/updatepassword/{id}','Admin\ForgetPasswordController@updatepa
 Route::group(['namespace' => 'Admin','prefix' => 'admin', 'middleware' => ['adminAuth']] ,function(){
 	Route::get('dashboard', 'LoginController@dashboard')->name('dashboard');
 	Route::get('profile/edit','LoginController@edit')->name('profile.edit');
+	Route::post('profie/update','LoginController@updateprofile')->name('profile.updateprofile');
 
 	//state	
 	Route::get('states/table/','StateController@datatableView')->name('states.table');

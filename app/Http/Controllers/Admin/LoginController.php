@@ -62,4 +62,43 @@ class LoginController extends Controller
         $data['view'] = 'admin.profile.profile';
         return view('admin.index',$data);
     }
+
+    public function updateprofile(Request $request){
+        $validations = [
+            'password'               => ['nullable','required_without:profile','min:6'],
+            'confirm'                => ['same:password'],
+            'profile'                =>  ['nullable','required_without:password','image'],
+        ];
+        
+        $validator = \Validator::make($request->all(), $validations,[
+        'password.required' => 'Please Enter New Password.',
+        'password.min'      => 'Password Should Be Min 6 Character Long.',
+        'confirm.same'      => 'Password & Re-Enter Password Should Be Same.',  
+
+        ]);
+        if($validator->fails()){
+            $this->message = $validator->errors();
+        }else{
+            $id = Auth::user()->id;
+            if($file = $request->file('profile')){
+                $photo_name = time() . '.' . $file->getClientOriginalExtension();
+                $file->move('assets/images/users',$photo_name);
+                $data['image'] = $photo_name;
+            }
+            if($request->password){
+                $data['password']              = bcrypt($request->password);  
+            }
+            $data['updated_at']            = date('Y-m-d H:i:s');
+            $isUpdated                     = User::change($id,$data);
+            if($isUpdated){
+                $this->status   = true;
+                $this->modal    = true;
+                $this->alert    = true;
+                $this->message  = "Profile Updated Successfully.";
+                $this->redirect = route('profile.edit');
+            }
+        }
+        return $this->populateresponse();
+        
+    }
 }

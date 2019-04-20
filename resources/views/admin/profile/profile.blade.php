@@ -47,42 +47,32 @@
             </div>
             <!-- /.card-header -->
             <div class="card-body">
-                <form  method="post" enctype="multipart/form-data">
-                      <div class="form-group">
-                        <label class="col-sm-2 control-label">Username</label>
-                        <div class="col-sm-10">
-                          <input type="text" name="userName" value="" class="form-control" placeholder="Enter Username">
+                <form  role="add" method="post" action="{{route('profile.updateprofile')}}" enctype="multipart/form-data">
+                           <div class="row" class="col-sm-12">
+                      <div class="form-group col-sm-6">
+                        <label class="col-sm-4 control-label">Password</label>
+                        <div class="col-sm-12">
+                           <input type="text" name="password" class="form-control">
                         </div>
                       </div>
-                      <div class="form-group">
-                        <label class="col-sm-2 control-label">Password</label>
-                        <div class="col-sm-10">
-                          <input type="password" name="password" value="" class="form-control" placeholder="Enter Password">
+                       <div class="form-group col-sm-6">
+                        <label class="col-sm-4 control-label">Confirm Password</label>
+                        <div class="col-sm-12">
+                           <input type="text" name="confirm"  class="form-control">
                         </div>
                       </div>
+                  </div>
                       <div class="form-group">
-                        <label class="col-sm-2 control-label">User Image</label>
+                        <label class="col-sm-2 control-label">Update Profile Picture</label>
                         <div class="col-sm-10">
-                         <input type="file" name="imageAdmin" onChange="readURL(this,1);">
+                         <input type="file" name="profile" onChange="readURL(this,1);">
                          <p class="help-block">You can upload only png and jpg or jpeg.</p>
-                  <img id="image1" height="200px;" width="250px;" src="">
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <label class="col-sm-2 control-label">Your Name</label>
-                        <div class="col-sm-10">
-                          <input type="text" name="nameAdmin" value="" class="form-control" placeholder="Enter Name">
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <label class="col-sm-2 control-label">Email Id</label>
-                        <div class="col-sm-10">
-                          <input type="email" name="email" value="" class="form-control" placeholder="Enter Email">
+                              <img id="image1" height="200px;" width="250px;" src="{{___defaultimage(Auth::user()->image,'assets/images/users/')}}">
                         </div>
                       </div>
                       <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
-                          <button type="submit" name="submit" class="btn btn-success btn-flat">Submit</button>
+                          <button type="button" data-request="ajax-submit" data-target='[role="add"]' class="btn btn-success btn-flat">Submit</button>
                           <a href="index.php">
                             <input type="button" class="btn btn-info btn-flat" value="Back" style="margin-left:10px;">
                           </a>
@@ -102,3 +92,20 @@
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
+  @section('requirejs')
+    <script type="text/javascript">
+       
+        function readURL(input) {
+
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#image1').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }   
+        }
+    </script>
+  @endsection
