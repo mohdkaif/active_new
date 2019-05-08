@@ -16,7 +16,7 @@
    </div>
    <div class="row">
       <div class="col-md-12 col-sm-12 col-xs-12">
-         <h2> Child details</h2>
+         <h2 class="p-t-b"> Child details</h2>
          <div class="container1 row">
             <div  class="col-md-6 form-group">
                <input type="hidden" name="child_name" class="form-control">
@@ -56,7 +56,7 @@
                </select>
             </div>
             
-            <div  class="col-md-6 form-group">
+            <div  class="col-md-6 form-group p-t-15">
                <label> Gender</label>
               
                <ul class="list-inline">
@@ -91,13 +91,13 @@
       </div>
    </div> 
       <div class="row">
-         <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+         <div class="col-md-12 col-sm-12 col-xs-12 form-group">
             <label>
             Mobile number
             </label>
             <input type="text" name="mobile" placeholder=" Mobile number *" class="form-control">
          </div>
-         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 form-group">
+         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-group" style="padding:16px 15px">
             <label>Address </label>
             <textarea name="address" class="form-control" placeholder="Address" style="border-bottom: 1px solid rgba(119,119,119,1);
                height: 80px"></textarea>

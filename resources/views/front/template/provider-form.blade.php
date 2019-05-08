@@ -1,7 +1,7 @@
 <div class="container">
   <h2>Personal Information</h2>
   <form role="provider-signup" method="post" action="{{url('/signup')}}" >
-    <div class="row">
+    <div class="row ">
       <div class="form-group col-md-6">
         <label for="email">First Name:</label>
         <input type="text" name="first_name" placeholder="First Name *" class="form-control">

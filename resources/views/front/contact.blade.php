@@ -27,23 +27,23 @@
                         <!--Contact Form-->
                         <form method="post" action="#" id="contact-form" novalidate>
                             <div class="row clearfix">
-                                <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+                                <div class="col-md-6 col-sm-6 col-xs-12 form-group black-color">
                                     <input type="text" name="username" placeholder="Full Name *" required="">
                                 </div>
                                 
-                                <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+                                <div class="col-md-6 col-sm-6 col-xs-12 form-group black-color">
                                     <input type="email" name="email" placeholder="Email address *" required="">
                                 </div>
 
-                                <div class="col-md-12 col-sm-12 col-xs-12 form-group">
+                                <div class="col-md-12 col-sm-12 col-xs-12 form-group black-color">
                                     <input type="text" name="subject" placeholder="Subject" required="">
                                 </div>
 
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-group">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-group black-color">
                                     <textarea name="message" placeholder="Message"></textarea>
                                 </div>
                                 
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-group">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-group ">
                                     <button type="submit" class="theme-btn btn-style-one">Send Message</button>
                                 </div>
                             </div>
