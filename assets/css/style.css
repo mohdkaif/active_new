@@ -8155,3 +8155,38 @@ span.fa.fa-chevron-circle-left {
 .MS-content .col-md-12 h3 {
 	padding-top: 20px;
 }
+
+.item .imgTitle ~ .col-md-12 {
+	text-align: center;
+}
+
+.item .imgTitle ~ .col-md-12 h3 > a {
+	display: block;
+}
+
+a.theme-btn.btn-style-one {
+	float: none !important;
+	margin: 35px 0 !important;
+}
+
+.item .imgTitle ~ .col-md-12 > h3 {
+	padding-bottom: 16px;
+	font-size: 21px;
+}
+
+.list-inline + .col-md-6 {
+	display: none;
+}
+
+.list-inline > .col-md-6:first-child {
+	display: none;
+}
+
+.list-inline > .col-md-6:last-child {
+	width: 100% !important;
+	text-align: center;
+}
+
+.list-inline > .col-md-6:last-child > .pull-right {
+	float: none !important;
+}
